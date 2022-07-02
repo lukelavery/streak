@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/grid_view.dart';
 import 'package:streak/providers/providers.dart';
-import 'package:streak/ui/habit_card.dart';
+import 'package:streak/user_profile_page.dart';
 
 import 'search_delegate.dart';
 
@@ -16,6 +16,18 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.grey[50],
+        actions: [
+          IconButton(
+            color: Colors.grey,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserProfilePage()));
+            },
+            icon: Icon(Icons.account_circle),
+          )
+        ],
         title: Stack(
           alignment: Alignment.centerLeft,
           clipBehavior: Clip.none,
@@ -42,11 +54,11 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, ref, child) => MyGridView(
-            streaks: ref.watch(habitPovider).habits,
-            habits: ref.watch(habitPovider).habits,
-            crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
-            increment: ref.read(habitPovider).streak,
-          ),
+          streaks: ref.watch(habitPovider).habits,
+          habits: ref.watch(habitPovider).habits,
+          crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
+          increment: ref.read(habitPovider).streak,
+        ),
       ),
       // child: MyCircularProgressIndicator()),
       floatingActionButton: Consumer(
@@ -54,7 +66,8 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             showSearch(
               context: context,
-              delegate: CustomSearchDelegate(addHabit: ref.read(habitPovider).addHabit),
+              delegate: CustomSearchDelegate(
+                  addHabit: ref.read(habitPovider).addHabit),
             );
           },
           child: const Icon(Icons.add),

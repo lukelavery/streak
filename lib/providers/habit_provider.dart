@@ -39,8 +39,7 @@ class HabitProvider extends ChangeNotifier {
     //   }
     //   notifyListeners();
     // },
-    onError:
-    (error) {};
+    onError: (error) {};
   }
 
   Future<void> addHabit(Map data) {
@@ -52,7 +51,7 @@ class HabitProvider extends ChangeNotifier {
   Future<void> _addStreak(Map data, Timestamp timestamp) {
     data['uid'] = _uid;
     data['active'] = true;
-    data['streak'] = timestamp;
+    // data['streak'] = timestamp;
     data['timestamp'] = timestamp;
     return habitsRef.add(data);
   }

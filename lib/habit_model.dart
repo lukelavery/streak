@@ -26,22 +26,42 @@ class Habit {
       throw StateError('missing data');
     }
     var timestamp = data['timestamp'] as Timestamp;
-    var streakTimestamp = data['streak'] as Timestamp;
+    var streakTimestamp = data['streak'] as Timestamp?;
 
     DateTime dateTime = timestamp.toDate();
-    DateTime streakDateTime = streakTimestamp.toDate();
+    DateTime? streakDateTime = streakTimestamp?.toDate();
 
-    final difference = streakDateTime.difference(dateTime);
-    final counter = difference.inDays;
+    final difference = streakDateTime?.difference(dateTime);
+    if (difference == null) {
+      var counter1 = 0;
 
-    return Habit(
-      id: id,
-      name: data['name'],
-      iconCodePoint: data['iconCodePoint'],
-      iconFontFamily: data['iconFontFamily'],
-      iconFontPackage: data['iconFontPackage'],
-      counter: counter,
-    );
+      return Habit(
+        id: id,
+        name: data['name'],
+        iconCodePoint: data['iconCodePoint'],
+        iconFontFamily: data['iconFontFamily'],
+        iconFontPackage: data['iconFontPackage'],
+        counter: counter1,
+      );
+    } else {
+      return Habit(
+        id: id,
+        name: data['name'],
+        iconCodePoint: data['iconCodePoint'],
+        iconFontFamily: data['iconFontFamily'],
+        iconFontPackage: data['iconFontPackage'],
+        counter: difference.inDays + 1,
+      );
+    }
+
+    // return Habit(
+    //   id: id,
+    //   name: data['name'],
+    //   iconCodePoint: data['iconCodePoint'],
+    //   iconFontFamily: data['iconFontFamily'],
+    //   iconFontPackage: data['iconFontPackage'],
+    //   counter: counter,
+    // );
   }
 
   Map<String, dynamic> toMap() {
@@ -88,7 +108,7 @@ class HabitPreset {
       'iconFontFamily': iconFontFamily,
       'iconFontPackage': iconFontPackage,
       'timestamp': now,
-      'streak': now,
+      // 'streak': now,
     };
   }
 }

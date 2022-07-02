@@ -60,13 +60,14 @@ class HabitCard extends StatefulWidget {
       required this.name,
       required this.icon,
       required this.counter,
-      required this.increment})
+      required this.increment,
+      })
       : super(key: key);
 
   final Habit habit;
   final String name;
   final IconData icon;
-  final int counter;
+  final int? counter;
   final Future<void> Function(Map<dynamic, dynamic>, DateTime) increment;
 
   @override
