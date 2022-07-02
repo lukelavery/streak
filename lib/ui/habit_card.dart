@@ -148,9 +148,12 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
                       // borderRadius: BorderRadius.circular(10),
                       color: Color.fromARGB(255, 255, 197, 23),
                       shape: BoxShape.circle),
-                  child: Text(
+                  child: (widget.counter != null) ? Text(
                     widget.counter.toString(),
                     style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ) : const Text(
+                    '0',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
               ),
