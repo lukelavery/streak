@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -10,6 +11,7 @@ class Habit {
     required this.iconCodePoint,
     required this.iconFontFamily,
     this.iconFontPackage,
+    required this.counter,
   });
 
   final String id;
@@ -17,17 +19,28 @@ class Habit {
   final int iconCodePoint;
   final String iconFontFamily;
   final String? iconFontPackage;
+  final int counter;
 
   factory Habit.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
       throw StateError('missing data');
     }
+    var timestamp = data['timestamp'] as Timestamp;
+    var streakTimestamp = data['streak'] as Timestamp;
+
+    DateTime dateTime = timestamp.toDate();
+    DateTime streakDateTime = streakTimestamp.toDate();
+
+    final difference = streakDateTime.difference(dateTime);
+    final counter = difference.inDays;
+
     return Habit(
       id: id,
       name: data['name'],
       iconCodePoint: data['iconCodePoint'],
       iconFontFamily: data['iconFontFamily'],
       iconFontPackage: data['iconFontPackage'],
+      counter: counter,
     );
   }
 
@@ -68,11 +81,14 @@ class HabitPreset {
   // }
 
   Map<String, dynamic> toMap() {
+    var now = Timestamp.now();
     return {
       'name': name,
       'iconCodePoint': iconCodePoint,
       'iconFontFamily': iconFontFamily,
       'iconFontPackage': iconFontPackage,
+      'timestamp': now,
+      'streak': now,
     };
   }
 }

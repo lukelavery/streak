@@ -59,15 +59,15 @@ class HabitCard extends StatefulWidget {
       required this.habit,
       required this.name,
       required this.icon,
-      this.counter,
+      required this.counter,
       required this.increment})
       : super(key: key);
 
   final Habit habit;
   final String name;
   final IconData icon;
-  final int? counter;
-  final Future<void> Function(Map<dynamic, dynamic>) increment;
+  final int counter;
+  final Future<void> Function(Map<dynamic, dynamic>, DateTime) increment;
 
   @override
   State<HabitCard> createState() => _HabitCardState();
@@ -84,8 +84,8 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
     )..addListener(() {
         setState(() {});
         if (controller.value == 1) {
-          print('increment');
-          widget.increment(widget.habit.toMap());
+          DateTime dateTime = DateTime.now();
+          widget.increment(widget.habit.toMap(), dateTime);
           // HapticFeedback.heavyImpact();
           Vibration.vibrate(duration: 500);
           controller.reset();
@@ -148,13 +148,11 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
                       // borderRadius: BorderRadius.circular(10),
                       color: Color.fromARGB(255, 255, 197, 23),
                       shape: BoxShape.circle),
-                  child: (widget.counter != null) ? Text(
-                    widget.counter.toString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ) : const Text(
-                    '0',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+                  child: Text(
+                          widget.counter.toString(),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20),
+                        )
                 ),
               ),
             ],

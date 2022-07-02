@@ -10,10 +10,10 @@ class MyGridView extends StatelessWidget {
     required this.crossAxisCount,
     required this.increment,
   }) : super(key: key);
-  final Map<String, int> streaks;
+  final List<Habit> streaks;
   final List<Habit> habits;
   final int crossAxisCount;
-  final Future<void> Function(Map<dynamic, dynamic>) increment;
+  final Future<void> Function(Map<dynamic, dynamic>, DateTime) increment;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class MyGridView extends StatelessWidget {
             icon: IconData(habit.iconCodePoint,
                 fontFamily: habit.iconFontFamily,
                 fontPackage: habit.iconFontPackage),
-            counter: streaks[habit.name],
+            counter: habit.counter,
             increment: increment);
       },
     );

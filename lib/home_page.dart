@@ -42,7 +42,7 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, ref, child) => MyGridView(
-            streaks: ref.watch(habitPovider).streaks,
+            streaks: ref.watch(habitPovider).habits,
             habits: ref.watch(habitPovider).habits,
             crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
             increment: ref.read(habitPovider).streak,
