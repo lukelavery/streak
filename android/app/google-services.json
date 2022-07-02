@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "250643361626",
+    "project_id": "streak-bec7c",
+    "storage_bucket": "streak-bec7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250643361626:android:71947f64c87668661a0d63",
+        "android_client_info": {
+          "package_name": "com.example.streak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250643361626-ep1j4kkvakv5gn8u2iv7c4mbq9j7o3tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAMuZ38-bjlWK7znw8S1lJLqrKTX7FrCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250643361626-ep1j4kkvakv5gn8u2iv7c4mbq9j7o3tv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
