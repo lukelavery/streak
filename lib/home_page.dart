@@ -54,10 +54,10 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Consumer(
         builder: (context, ref, child) => MyGridView(
-          streaks: ref.watch(habitPovider).habits,
+          counters: ref.watch(streakProvider).counters,
           habits: ref.watch(habitPovider).habits,
           crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
-          increment: ref.read(habitPovider).streak,
+          increment: ref.read(habitPovider).addStreak,
         ),
       ),
       // child: MyCircularProgressIndicator()),
@@ -73,6 +73,7 @@ class MyHomePage extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: [BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'), BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')]),
     );
   }
 }

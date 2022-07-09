@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streak/habit_model.dart';
+import 'package:streak/models/habit_model.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   CustomSearchDelegate({required this.addHabit});
@@ -49,6 +49,7 @@ class CustomSearchDelegate extends SearchDelegate {
               title: Text(habit.name),
               onTap: () {
                 addHabit(habit.toMap());
+                Navigator.pop(context);
               });
         });
   }

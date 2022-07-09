@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Habit {
   const Habit({
@@ -26,33 +22,18 @@ class Habit {
       throw StateError('missing data');
     }
     var timestamp = data['timestamp'] as Timestamp;
-    var streakTimestamp = data['streak'] as Timestamp?;
 
     DateTime dateTime = timestamp.toDate();
-    DateTime? streakDateTime = streakTimestamp?.toDate();
 
-    final difference = streakDateTime?.difference(dateTime);
-    if (difference == null) {
-      var counter1 = 0;
-
-      return Habit(
-        id: id,
-        name: data['name'],
-        iconCodePoint: data['iconCodePoint'],
-        iconFontFamily: data['iconFontFamily'],
-        iconFontPackage: data['iconFontPackage'],
-        counter: counter1,
-      );
-    } else {
-      return Habit(
-        id: id,
-        name: data['name'],
-        iconCodePoint: data['iconCodePoint'],
-        iconFontFamily: data['iconFontFamily'],
-        iconFontPackage: data['iconFontPackage'],
-        counter: difference.inDays + 1,
-      );
-    }
+    return Habit(
+      id: id,
+      name: data['name'],
+      iconCodePoint: data['iconCodePoint'],
+      iconFontFamily: data['iconFontFamily'],
+      iconFontPackage: data['iconFontPackage'],
+      counter: 0,
+    );
+    ;
 
     // return Habit(
     //   id: id,

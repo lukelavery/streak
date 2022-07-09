@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streak/habit_model.dart';
+import 'package:streak/models/habit_model.dart';
 import 'package:vibration/vibration.dart';
 
 // class HabitCard extends StatelessWidget {
@@ -68,7 +68,7 @@ class HabitCard extends StatefulWidget {
   final String name;
   final IconData icon;
   final int? counter;
-  final Future<void> Function(Map<dynamic, dynamic>, DateTime) increment;
+  final Future<void> Function(String, DateTime) increment;
 
   @override
   State<HabitCard> createState() => _HabitCardState();
@@ -86,9 +86,9 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
         setState(() {});
         if (controller.value == 1) {
           DateTime dateTime = DateTime.now();
-          widget.increment(widget.habit.toMap(), dateTime);
+          widget.increment(widget.habit.id, dateTime);
           // HapticFeedback.heavyImpact();
-          Vibration.vibrate(duration: 500);
+          // Vibration.vibrate(duration: 500);
           controller.reset();
         }
       });
@@ -153,7 +153,7 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
                           widget.counter.toString(),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 20),
-                        )
+                        ),
                 ),
               ),
             ],

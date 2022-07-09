@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:streak/habit_model.dart';
+import 'package:streak/models/habit_model.dart';
+import 'package:streak/models/streak_model.dart';
 import 'package:streak/ui/habit_card.dart';
+
+import 'models/counter_model.dart';
 
 class MyGridView extends StatelessWidget {
   const MyGridView({
     Key? key,
-    required this.streaks,
+    required this.counters,
     required this.habits,
     required this.crossAxisCount,
     required this.increment,
   }) : super(key: key);
-  final List<Habit> streaks;
+  final Map<String, Counter> counters;
   final List<Habit> habits;
   final int crossAxisCount;
-  final Future<void> Function(Map<dynamic, dynamic>, DateTime) increment;
+  final Future<void> Function(String, DateTime) increment;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class MyGridView extends StatelessWidget {
             icon: IconData(habit.iconCodePoint,
                 fontFamily: habit.iconFontFamily,
                 fontPackage: habit.iconFontPackage),
-            counter: habit.counter,
+            counter: counters[habit.id]?.count,
             increment: increment);
       },
     );
