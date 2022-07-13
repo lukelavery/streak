@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/models/habit_model.dart';
 import 'package:vibration/vibration.dart';
 
@@ -54,15 +55,14 @@ import 'package:vibration/vibration.dart';
 // }
 
 class HabitCard extends StatefulWidget {
-  const HabitCard(
-      {Key? key,
-      required this.habit,
-      required this.name,
-      required this.icon,
-      required this.counter,
-      required this.increment,
-      })
-      : super(key: key);
+  const HabitCard({
+    Key? key,
+    required this.habit,
+    required this.name,
+    required this.icon,
+    required this.counter,
+    required this.increment,
+  }) : super(key: key);
 
   final Habit habit;
   final String name;
@@ -88,7 +88,7 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
           DateTime dateTime = DateTime.now();
           widget.increment(widget.habit.id, dateTime);
           // HapticFeedback.heavyImpact();
-          // Vibration.vibrate(duration: 500);
+          Vibration.vibrate(duration: 500);
           controller.reset();
         }
       });
@@ -122,12 +122,27 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
             alignment: Alignment.center,
             children: [
               SizedBox(
-                height: 90,
-                width: 90,
-                child: CircularProgressIndicator(
-                  color: Colors.pink,
-                  value: controller.value,
-                  strokeWidth: 5,
+                height: 110,
+                width: 110,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CircularProgressIndicator(
+                    color: Colors.grey[300],
+                    value: 1,
+                    strokeWidth: 10,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 110,
+                width: 110,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CircularProgressIndicator(
+                    color: Color.fromARGB(255, 255, 197, 23),
+                    value: controller.value,
+                    strokeWidth: 10,
+                  ),
                 ),
               ),
               Padding(
@@ -147,19 +162,92 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
                       // borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 255, 197, 23),
+                      color: Colors.red,
                       shape: BoxShape.circle),
                   child: Text(
-                          widget.counter.toString(),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
-                        ),
+                    widget.counter.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                 ),
               ),
             ],
           ),
         ),
         Text(widget.name,
+            style: const TextStyle(
+                fontFamily: 'Montserrat', fontWeight: FontWeight.w700)),
+      ],
+    );
+  }
+}
+
+class slessHabitCard extends StatelessWidget {
+  const slessHabitCard({
+    Key? key,
+    required this.habit,
+    required this.name,
+    required this.icon,
+    required this.counter,
+  }) : super(key: key);
+
+  final Habit habit;
+  final String name;
+  final IconData icon;
+  final int? counter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              height: 110,
+              width: 110,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CircularProgressIndicator(
+                  color: Colors.grey[50],
+                  value: 1,
+                  strokeWidth: 10,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CircleAvatar(
+                backgroundColor: Color.fromARGB(255, 255, 197, 23),
+                radius: 40,
+                child: Icon(
+                  color: Color.fromARGB(255, 217, 143, 15),
+                  icon,
+                  size: 25,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                    // borderRadius: BorderRadius.circular(10),
+                    color: Colors.red,
+                    shape: BoxShape.circle),
+                child: Text(
+                  counter.toString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+              // child: Stack(alignment: Alignment.center, children: [
+              //   FaIcon(FontAwesomeIcons.fire)
+              // ],)
+            ),
+          ],
+        ),
+        Text(name,
             style: const TextStyle(
                 fontFamily: 'Montserrat', fontWeight: FontWeight.w700)),
       ],

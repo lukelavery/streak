@@ -12,11 +12,13 @@ class MyGridView extends StatelessWidget {
     required this.habits,
     required this.crossAxisCount,
     required this.increment,
+    required this.streaks,
   }) : super(key: key);
   final Map<String, Counter> counters;
   final List<Habit> habits;
   final int crossAxisCount;
   final Future<void> Function(String, DateTime) increment;
+  final Map<String, List<Streak>> streaks;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +30,40 @@ class MyGridView extends StatelessWidget {
       itemCount: habits.length,
       itemBuilder: (context, index) {
         var habit = habits[index];
-        return HabitCard(
+        DateTime now = DateTime.now();
+        var streak = streaks[habit.id];
+        // return HabitCard(
+        //     habit: habit,
+        //     name: habit.name,
+        //     icon: IconData(habit.iconCodePoint,
+        //         fontFamily: habit.iconFontFamily,
+        //         fontPackage: habit.iconFontPackage),
+        //     counter: counters[habit.id]?.count,
+        //     increment: increment);
+
+        if (streak != null) {
+          if (now.difference(streak[0].dateTime).inDays == 0) {
+          return slessHabitCard(
             habit: habit,
             name: habit.name,
             icon: IconData(habit.iconCodePoint,
                 fontFamily: habit.iconFontFamily,
                 fontPackage: habit.iconFontPackage),
             counter: counters[habit.id]?.count,
-            increment: increment);
+          );
+        }
+
+
+        }
+        return HabitCard(
+          habit: habit,
+          name: habit.name,
+          icon: IconData(habit.iconCodePoint,
+              fontFamily: habit.iconFontFamily,
+              fontPackage: habit.iconFontPackage),
+          counter: counters[habit.id]?.count,
+          increment: increment,
+        );
       },
     );
   }

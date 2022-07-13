@@ -58,6 +58,7 @@ class MyHomePage extends StatelessWidget {
           habits: ref.watch(habitPovider).habits,
           crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
           increment: ref.read(habitPovider).addStreak,
+          streaks: ref.watch(streakProvider).streaks,
         ),
       ),
       // child: MyCircularProgressIndicator()),
