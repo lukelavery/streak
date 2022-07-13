@@ -242,7 +242,9 @@ class slessHabitCard extends StatelessWidget {
                 ),
               ),
               // child: Stack(alignment: Alignment.center, children: [
-              //   FaIcon(FontAwesomeIcons.fire)
+              //   Container(decoration: BoxDecoration(color: Colors.yellow, borderRadius: BorderRadius.circular(100)), height: 30, width: 30,),
+              //   FaIcon(FontAwesomeIcons.fire, size: 35, color: Colors.orange,),
+              //   Text(counter.toString(), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
               // ],)
             ),
           ],
