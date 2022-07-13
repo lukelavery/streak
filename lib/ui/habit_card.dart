@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/models/habit_model.dart';
+import 'package:streak/providers/providers.dart';
 import 'package:vibration/vibration.dart';
 
 // class HabitCard extends StatelessWidget {
@@ -230,17 +232,18 @@ class slessHabitCard extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                    // borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
-                    shape: BoxShape.circle),
-                child: Text(
-                  counter.toString(),
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
+              child: MyCounter(counter: counter, habit: habit,),
+              // child: Container(
+              //   padding: const EdgeInsets.all(8),
+              //   decoration: const BoxDecoration(
+              //       // borderRadius: BorderRadius.circular(10),
+              //       color: Colors.red,
+              //       shape: BoxShape.circle),
+              //   child: Text(
+              //     counter.toString(),
+              //     style: const TextStyle(color: Colors.white, fontSize: 20),
+              //   ),
+              // ),
               // child: Stack(alignment: Alignment.center, children: [
               //   Container(decoration: BoxDecoration(color: Colors.yellow, borderRadius: BorderRadius.circular(100)), height: 30, width: 30,),
               //   FaIcon(FontAwesomeIcons.fire, size: 35, color: Colors.orange,),
@@ -253,6 +256,46 @@ class slessHabitCard extends StatelessWidget {
             style: const TextStyle(
                 fontFamily: 'Montserrat', fontWeight: FontWeight.w700)),
       ],
+    );
+  }
+}
+
+class MyCounter extends ConsumerWidget {
+  const MyCounter({Key? key, required this.counter, required this.habit}) : super(key: key);
+
+  final int? counter;
+  final Habit habit;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final edit = ref.watch(editStateProvider);
+    final habits = ref.read(habitPovider);
+
+    if (edit) {
+      return GestureDetector(
+        onTap: (() {
+          habits.deleteHabit(habit.id);
+          ref.read(editStateProvider.notifier).update((state) => !state);
+        }),
+        child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: const BoxDecoration(
+                // borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+                shape: BoxShape.circle),
+            child: Icon(Icons.remove)),
+      );
+    }
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+          // borderRadius: BorderRadius.circular(10),
+          color: Colors.red,
+          shape: BoxShape.circle),
+      child: Text(
+        counter.toString(),
+        style: const TextStyle(color: Colors.white, fontSize: 20),
+      ),
     );
   }
 }

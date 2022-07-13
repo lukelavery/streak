@@ -7,23 +7,30 @@ import 'package:streak/user_profile_page.dart';
 
 import 'search_delegate.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final edit = ref.watch(editStateProvider);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.grey[50],
         actions: [
           IconButton(
+              onPressed: () {
+                ref.read(editStateProvider.notifier).update((state) => !state);
+              },
+              icon: Icon(
+                Icons.edit,
+                color: Colors.grey,
+              )),
+          IconButton(
             color: Colors.grey,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserProfilePage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserProfilePage()));
             },
             icon: Icon(Icons.account_circle),
           )
@@ -74,7 +81,10 @@ class MyHomePage extends StatelessWidget {
           child: const Icon(Icons.add),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'), BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')]),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+        BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')
+      ]),
     );
   }
 }

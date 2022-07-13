@@ -77,6 +77,10 @@ class HabitProvider extends ChangeNotifier {
     return habitsRef.add(data);
   }
 
+  Future<void> deleteHabit(String id) {
+    return habitsRef.doc(id).delete();
+  }
+
   // Future<void> _addStreak(Map data, Timestamp timestamp) {
   //   data['uid'] = _uid;
   //   data['active'] = true;
