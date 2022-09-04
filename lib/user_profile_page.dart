@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/providers/providers.dart';
-
-import '../../../authenticate/presentation/widgets/design/styled_button.dart';
+import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/design/styled_button.dart';
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class UserProfilePage extends StatelessWidget {
               child: Consumer(
                 builder: ((context, ref, child) => StyledButton(
                       onPressed: (() {
-                        ref.read(appStateProvider).signOut();
+                        ref.read(authControllerProvider.notifier).signOut();
                         Navigator.pop(context);
                       }),
                       child: const Text('LOGOUT'),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/providers/providers.dart';
-
-import '../../domain/application_login_model.dart';
+import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
+import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import '../../domain/login_state_model.dart';
 import '../widgets/forms/email_form.dart';
 import '../widgets/forms/password_form.dart';
 import '../widgets/forms/register_form.dart';
@@ -14,22 +14,30 @@ class LogInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Center(
-            child: Consumer(
-        builder: ((context, ref, child) => LoggedOut(
-                loginState: ref.watch(appStateProvider).loginState,
-                email: ref.read(appStateProvider).email,
-                startLoginFlow: ref.read(appStateProvider).startLoginFlow,
-                verifyEmail: ref.read(appStateProvider).verifyEmail,
-                signInWithEmailAndPassword: ref.read(appStateProvider).signInWithEmailAndPassword,
-                cancelRegistration: ref.read(appStateProvider).cancelRegistration,
-                registerAccount: ref.read(appStateProvider).registerAccount,
+    return Scaffold(
+        body: SafeArea(
+      child: Center(
+        child: Consumer(
+          builder: ((context, ref, child) => LoggedOut(
+                loginState: ref.watch(loginControllerProvider),
+                email: ref.read(authControllerProvider).email,
+                startLoginFlow:
+                    ref.read(loginControllerProvider.notifier).startLoginFlow,
+                verifyEmail:
+                    ref.read(loginControllerProvider.notifier).verifyEmail,
+                setEmail: ref.read(authControllerProvider.notifier).setEmail,
+                signInWithEmailAndPassword: ref
+                    .read(authControllerProvider.notifier)
+                    .signInWithEmailAndPassword,
+                cancelRegistration: ref
+                    .read(loginControllerProvider.notifier)
+                    .cancelRegistration,
+                registerAccount:
+                    ref.read(authControllerProvider.notifier).registerAccount,
               )),
+        ),
       ),
-          )),
-    );
+    ));
   }
 }
 
@@ -40,35 +48,34 @@ class LoggedOut extends StatelessWidget {
     required this.email,
     required this.startLoginFlow,
     required this.verifyEmail,
+    required this.setEmail,
     required this.signInWithEmailAndPassword,
     required this.cancelRegistration,
     required this.registerAccount,
   }) : super(key: key);
 
-  final ApplicationLoginState loginState;
+  final LoginStateModel loginState;
   final String? email;
   final void Function() startLoginFlow;
   final void Function(
     String email,
-    void Function(Exception e) error,
   ) verifyEmail;
+  final void Function(String) setEmail;
   final void Function(
     String email,
     String password,
-    void Function(Exception e) error,
   ) signInWithEmailAndPassword;
   final void Function() cancelRegistration;
   final void Function(
     String email,
     String displayName,
     String password,
-    void Function(Exception e) error,
   ) registerAccount;
 
   @override
   Widget build(BuildContext context) {
     switch (loginState) {
-      case ApplicationLoginState.loggedOut:
+      case LoginStateModel.loggedOut:
         return Row(
           children: [
             Padding(
@@ -82,19 +89,25 @@ class LoggedOut extends StatelessWidget {
             ),
           ],
         );
-      case ApplicationLoginState.emailAddress:
-        return EmailForm(
-            callback: (email) => verifyEmail(
-                email, (e) => showErrorDialog(context, 'Invalid email', e)));
-      case ApplicationLoginState.password:
+      case LoginStateModel.emailAddress:
+        return EmailForm(callback: (email) {
+          verifyEmail(
+            email,
+            // (e) => showErrorDialog(context, 'Invalid email', e)
+          );
+          setEmail(email);
+        });
+      case LoginStateModel.password:
         return PasswordForm(
           email: email!,
           login: (email, password) {
-            signInWithEmailAndPassword(email, password,
-                (e) => showErrorDialog(context, 'Failed to sign in', e));
+            signInWithEmailAndPassword(
+              email, password,
+              // (e) => showErrorDialog(context, 'Failed to sign in', e)
+            );
           },
         );
-      case ApplicationLoginState.register:
+      case LoginStateModel.register:
         return RegisterForm(
           email: email!,
           cancel: () {
@@ -106,14 +119,12 @@ class LoggedOut extends StatelessWidget {
             password,
           ) {
             registerAccount(
-                email,
-                displayName,
-                password,
-                (e) =>
-                    showErrorDialog(context, 'Failed to create account', e));
+              email, displayName, password,
+              // (e) => showErrorDialog(context, 'Failed to create account', e),
+            );
           },
         );
-      // case ApplicationLoginState.loggedIn:
+      // case LoginStateModel.loggedIn:
       //   return Row(
       //     children: [
       //       Padding(
