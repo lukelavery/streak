@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:streak/models/counter_model.dart';
-import 'package:streak/models/habit_model.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 
 import '../models/streak_model.dart';
 
 class StreakProvider extends ChangeNotifier {
-  StreakProvider({required String? uid, required List<Habit> habits})
+  StreakProvider({required String? uid, required List<HabitModel> habits})
       : _uid = uid,
         _habits = habits {
     init();
   }
 
   final String? _uid;
-  final List<Habit> _habits;
+  final List<HabitModel> _habits;
 
   Map<String, List<Streak>> _streaks = {};
   Map<String, List<Streak>> get streaks => _streaks;

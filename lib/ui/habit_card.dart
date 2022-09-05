@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/models/habit_model.dart';
 import 'package:streak/providers/providers.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:vibration/vibration.dart';
 
 // class HabitCard extends StatelessWidget {
@@ -66,7 +65,7 @@ class HabitCard extends StatefulWidget {
     required this.increment,
   }) : super(key: key);
 
-  final Habit habit;
+  final HabitModel habit;
   final String name;
   final IconData icon;
   final int? counter;
@@ -192,7 +191,7 @@ class slessHabitCard extends StatelessWidget {
     required this.counter,
   }) : super(key: key);
 
-  final Habit habit;
+  final HabitModel habit;
   final String name;
   final IconData icon;
   final int? counter;
@@ -264,7 +263,7 @@ class MyCounter extends ConsumerWidget {
   const MyCounter({Key? key, required this.counter, required this.habit}) : super(key: key);
 
   final int? counter;
-  final Habit habit;
+  final HabitModel habit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

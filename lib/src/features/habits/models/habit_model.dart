@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Habit {
-  const Habit({
+class HabitModel {
+  const HabitModel({
     required this.id,
     required this.name,
     required this.iconCodePoint,
@@ -17,7 +17,7 @@ class Habit {
   final String? iconFontPackage;
   final int counter;
 
-  factory Habit.fromMap(String id, Map<String, dynamic>? data) {
+  factory HabitModel.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
       throw StateError('missing data');
     }
@@ -25,7 +25,7 @@ class Habit {
 
     DateTime dateTime = timestamp.toDate();
 
-    return Habit(
+    return HabitModel(
       id: id,
       name: data['name'],
       iconCodePoint: data['iconCodePoint'],
@@ -33,16 +33,6 @@ class Habit {
       iconFontPackage: data['iconFontPackage'],
       counter: 0,
     );
-    ;
-
-    // return Habit(
-    //   id: id,
-    //   name: data['name'],
-    //   iconCodePoint: data['iconCodePoint'],
-    //   iconFontFamily: data['iconFontFamily'],
-    //   iconFontPackage: data['iconFontPackage'],
-    //   counter: counter,
-    // );
   }
 
   Map<String, dynamic> toMap() {
@@ -67,19 +57,6 @@ class HabitPreset {
   final int iconCodePoint;
   final String iconFontFamily;
   final String? iconFontPackage;
-
-  // factory Habit.fromMap(String id, Map<String, dynamic>? data) {
-  //   if (data == null) {
-  //     throw StateError('missing data');
-  //   }
-  //   return Habit(
-  //     id: id,
-  //     name: data['name'],
-  //     iconCodePoint: data['iconCodePoint'],
-  //     iconFontFamily: data['iconFontFamily'],
-  //     iconFontPackage: data['iconFontPackage'],
-  //   );
-  // }
 
   Map<String, dynamic> toMap() {
     var now = Timestamp.now();

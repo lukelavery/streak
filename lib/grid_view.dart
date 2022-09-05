@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streak/models/habit_model.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/models/streak_model.dart';
 import 'package:streak/ui/habit_card.dart';
 
@@ -15,7 +15,7 @@ class MyGridView extends StatelessWidget {
     required this.streaks,
   }) : super(key: key);
   final Map<String, Counter> counters;
-  final List<Habit> habits;
+  final List<HabitModel> habits;
   final int crossAxisCount;
   final Future<void> Function(String, DateTime) increment;
   final Map<String, List<Streak>> streaks;

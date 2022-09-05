@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/grid_view.dart';
 import 'package:streak/providers/providers.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/user_profile_page.dart';
 
 import 'search_delegate.dart';
@@ -12,7 +13,6 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final edit = ref.watch(editStateProvider);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -22,17 +22,19 @@ class MyHomePage extends ConsumerWidget {
               onPressed: () {
                 ref.read(editStateProvider.notifier).update((state) => !state);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.edit,
                 color: Colors.grey,
               )),
           IconButton(
             color: Colors.grey,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserProfilePage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserProfilePage()));
             },
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
           )
         ],
         title: Stack(
@@ -59,15 +61,23 @@ class MyHomePage extends ConsumerWidget {
           ],
         ),
       ),
-      body: Consumer(
-        builder: (context, ref, child) => MyGridView(
-          counters: ref.watch(streakProvider).counters,
-          habits: ref.watch(habitPovider).habits,
-          crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
-          increment: ref.read(habitPovider).addStreak,
-          streaks: ref.watch(streakProvider).streaks,
-        ),
-      ),
+      body: Consumer(builder: (context, ref, child) {
+        final habitsState = ref.watch(habitControllerProvider);
+        return habitsState.when(
+          data: (habits) {
+            return MyGridView(
+              counters: ref.watch(streakProvider).counters,
+              habits: ref.watch(habitPovider).habits,
+              crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
+              increment: ref.read(habitPovider).addStreak,
+              streaks: ref.watch(streakProvider).streaks,
+            );
+          
+        },
+        loading: (() => const Center(child: CircularProgressIndicator())),
+        error: (e, st) => const Center(child: CircularProgressIndicator())
+        );
+      }),
       // child: MyCircularProgressIndicator()),
       floatingActionButton: Consumer(
         builder: (context, ref, child) => FloatingActionButton(
@@ -81,7 +91,7 @@ class MyHomePage extends ConsumerWidget {
           child: const Icon(Icons.add),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
+      bottomNavigationBar: BottomNavigationBar(items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
         BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')
       ]),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streak/models/habit_model.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   CustomSearchDelegate({required this.addHabit});
