@@ -42,7 +42,10 @@ class MyGridView extends StatelessWidget {
         //     increment: increment);
 
         if (streak != null) {
-          if (now.difference(streak[0].dateTime).inDays == 0) {
+          if (
+            // now.difference(streak[0].dateTime).inDays == 0
+            getDifference(streak[0].dateTime, now) == 0
+            ) {
           return slessHabitCard(
             habit: habit,
             name: habit.name,
