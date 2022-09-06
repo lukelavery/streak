@@ -31,7 +31,8 @@ class HabitProvider extends ChangeNotifier {
     }, onError: (error) {});
   }
 
-  Future<void> addHabit(Map data) {
+  Future<void> addHabit(HabitModel habit) {
+    var data = habit.toMap();
     data['active'] = true;
     data['uid'] = _uid;
     return habitsRef.add(data);

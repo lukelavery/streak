@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/providers/providers.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:vibration/vibration.dart';
 
@@ -268,7 +269,7 @@ class MyCounter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final edit = ref.watch(editStateProvider);
-    final habits = ref.read(habitPovider);
+    final habits = ref.read(habitControllerProvider.notifier);
 
     if (edit) {
       return GestureDetector(

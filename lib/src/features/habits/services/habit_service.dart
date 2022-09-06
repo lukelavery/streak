@@ -5,7 +5,7 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class HabitService {
   Stream<List<HabitModel>> get retrieveHabits;
-  Future<void> createHabit({required HabitModel habit});
+  Future<void> createHabit({required HabitPreset habit});
   Future<void> deleteHabit({required String habitId});
 }
 
@@ -19,6 +19,8 @@ class FirebaseHabitService implements HabitService {
 
   CollectionReference habitsRef =
       FirebaseFirestore.instance.collection('habits');
+  CollectionReference streaksRef =
+      FirebaseFirestore.instance.collection('streaks');
 
   @override
   Stream<List<HabitModel>> get retrieveHabits {
@@ -30,7 +32,7 @@ class FirebaseHabitService implements HabitService {
   }
 
   @override
-  Future<void> createHabit({required HabitModel habit}) {
+  Future<void> createHabit({required HabitPreset habit}) {
     Map data = habit.toMap();
     data['active'] = true;
     data['uid'] = uid;
@@ -40,5 +42,15 @@ class FirebaseHabitService implements HabitService {
   @override
   Future<void> deleteHabit({required String habitId}) {
     return habitsRef.doc(habitId).delete();
+  }
+
+  Future<void> addStreak(String habitId, DateTime dateTime) {
+    Map<String, dynamic> data = {};
+
+    data['uid'] = uid;
+    data['habitId'] = habitId;
+    data['timestamp'] = Timestamp.fromDate(dateTime);
+
+    return streaksRef.add(data);
   }
 }

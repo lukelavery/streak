@@ -9,13 +9,13 @@ class Counter {
     DateTime now = DateTime.now();
 
     if (streaks == null) {
-      return Counter(count: 0);
+      return const Counter(count: 0);
     }
 
     int difference = now.difference(streaks[0].dateTime).inDays;
 
     if (difference > 1) {
-      return Counter(count: 0);
+      return const Counter(count: 0);
     } else {
       int count = 1;
 

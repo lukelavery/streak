@@ -27,11 +27,22 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
-  Future<void> createHabit(HabitModel habit) async {
+  Future<void> createHabit(HabitPreset habit) async {
     await _read(habitServiceProvider).createHabit(habit: habit);
   }
 
   Future<void> deleteHabit(String habitId) async {
     await _read(habitServiceProvider).deleteHabit(habitId: habitId);
+  }
+
+  Future<void> addStreak(String habitId, DateTime dateTime) async {
+    await _read(habitServiceProvider).addStreak(habitId, dateTime);
+  }
+
+  int getCrossAxisCount() {
+    if (state.value!.length < 3) {
+      return 1;
+    }
+    return 2;
   }
 }

@@ -67,9 +67,9 @@ class MyHomePage extends ConsumerWidget {
           data: (habits) {
             return MyGridView(
               counters: ref.watch(streakProvider).counters,
-              habits: ref.watch(habitPovider).habits,
-              crossAxisCount: ref.watch(habitPovider).getCrossAxisCount(),
-              increment: ref.read(habitPovider).addStreak,
+              habits: ref.watch(habitControllerProvider).value!,
+              crossAxisCount: ref.watch(habitControllerProvider.notifier).getCrossAxisCount(),
+              increment: ref.read(habitControllerProvider.notifier).addStreak,
               streaks: ref.watch(streakProvider).streaks,
             );
           
@@ -85,7 +85,7 @@ class MyHomePage extends ConsumerWidget {
             showSearch(
               context: context,
               delegate: CustomSearchDelegate(
-                  addHabit: ref.read(habitPovider).addHabit),
+                  addHabit: ref.read(habitControllerProvider.notifier).createHabit),
             );
           },
           child: const Icon(Icons.add),

@@ -4,7 +4,7 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 class CustomSearchDelegate extends SearchDelegate {
   CustomSearchDelegate({required this.addHabit});
   // final void Function() addHabit;
-  final Future<void> Function(Map<dynamic, dynamic>) addHabit;
+  final Future<void> Function(HabitPreset) addHabit;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -48,7 +48,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   fontPackage: habit.iconFontPackage)),
               title: Text(habit.name),
               onTap: () {
-                addHabit(habit.toMap());
+                addHabit(habit);
                 Navigator.pop(context);
               });
         });

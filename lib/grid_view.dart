@@ -24,7 +24,7 @@ class MyGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        // mainAxisExtent: (MediaQuery.of(context).size.height - 82) / 2,
+        mainAxisExtent: (MediaQuery.of(context).size.height - 200) / 2,
         crossAxisCount: crossAxisCount,
       ),
       itemCount: habits.length,
