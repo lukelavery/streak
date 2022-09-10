@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/custom_exception.dart';
+import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
 
 abstract class AuthService {

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/grid_view.dart';
-import 'package:streak/providers/providers.dart';
+import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
+import 'package:streak/src/features/habits/ui/grid_view.dart';
+import 'package:streak/src/features/habits/ui/search_delegate.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
-import 'package:streak/user_profile_page.dart';
-
-import 'search_delegate.dart';
+import 'package:streak/src/features/streaks/controllers/counter_controller.dart';
+import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
+import 'package:streak/src/features/authenticate/ui/screens/user_profile_page.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class MyHomePage extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                ref.read(editStateProvider.notifier).update((state) => !state);
+                ref.read(habitViewController.notifier).update((state) => !state);
               },
               icon: const Icon(
                 Icons.edit,
@@ -63,16 +64,19 @@ class MyHomePage extends ConsumerWidget {
       ),
       body: Consumer(builder: (context, ref, child) {
         final habitsState = ref.watch(habitControllerProvider);
+        final streaksState = ref.watch(streakControllerProvider);
         return habitsState.when(
           data: (habits) {
-            return MyGridView(
-              counters: ref.watch(streakProvider).counters,
+            return streaksState.when(data: (data) => MyGridView(
+              counters: ref.watch(counterControllerProvider).value!,
               habits: ref.watch(habitControllerProvider).value!,
               crossAxisCount: ref.watch(habitControllerProvider.notifier).getCrossAxisCount(),
               increment: ref.read(habitControllerProvider.notifier).addStreak,
-              streaks: ref.watch(streakProvider).streaks,
-            );
-          
+              streaks: ref.watch(streakControllerProvider).value!,
+            ), 
+            loading:() => const Center(child: CircularProgressIndicator()),
+            error: (e, st) => const Center(child: CircularProgressIndicator()),
+          );   
         },
         loading: (() => const Center(child: CircularProgressIndicator())),
         error: (e, st) => const Center(child: CircularProgressIndicator())
@@ -98,85 +102,3 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 }
-
-
-        //   child: Consumer(
-        // builder: ((context, value, child) => HabitCard(
-        //       icon: Icons.computer,
-        //       name: 'Code',
-        //       counter: value.watch(habitPovider).count,
-        //       increment: value.read(habitPovider).incrementCount,
-        //     )),
-
-// class MyCircularProgressIndicator extends StatefulWidget {
-//   const MyCircularProgressIndicator({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyCircularProgressIndicator> createState() =>
-//       _MyCircularProgressIndicatorState();
-// }
-
-// class _MyCircularProgressIndicatorState
-//     extends State<MyCircularProgressIndicator> with TickerProviderStateMixin {
-//   late AnimationController controller;
-
-//   @override
-//   void initState() {
-//     controller = AnimationController(
-//       vsync: this,
-//       duration: const Duration(seconds: 1),
-//     )..addListener(() {
-//         setState(() {});
-//       });
-//     super.initState();
-//   }
-
-//   void startAnimation() {
-//     controller.forward();
-//   }
-
-//   void cancelAnimation() {
-//     controller.reset();
-//   }
-
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       alignment: Alignment.center,
-//       children: [
-//         GestureDetector(
-//           behavior: HitTestBehavior.translucent,
-//           child: Consumer<HabitProvider>(
-//               builder: ((context, value, child) => HabitCard(
-//                     icon: Icons.computer,
-//                     name: 'Code',
-//                     counter: value.count,
-//                   )),
-//             ),
-          
-//           onTapDown: (_) {
-//             startAnimation();
-//             print('start');
-//           },
-//           onTapUp: (_) => cancelAnimation(),
-//           onTapCancel: () => cancelAnimation(),
-//         ),
-//         SizedBox(
-//           height: 60,
-//           width: 60,
-//           child: CircularProgressIndicator(
-//             value: controller.value,
-//             color: Colors.pink,
-//             strokeWidth: 6.0,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

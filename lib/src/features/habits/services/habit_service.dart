@@ -9,7 +9,7 @@ abstract class HabitService {
   Future<void> deleteHabit({required String habitId});
 }
 
-final habitServiceProvider = Provider<FirebaseHabitService>(
+final habitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
     (ref) => FirebaseHabitService(ref.read(authControllerProvider).uid));
 
 class FirebaseHabitService implements HabitService {

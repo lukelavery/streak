@@ -21,9 +21,6 @@ class HabitModel {
     if (data == null) {
       throw StateError('missing data');
     }
-    var timestamp = data['timestamp'] as Timestamp;
-
-    DateTime dateTime = timestamp.toDate();
 
     return HabitModel(
       id: id,

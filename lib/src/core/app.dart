@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 
 import 'home_page.dart';
-import 'src/features/authenticate/ui/screens/logged_out.dart';
+import '../features/authenticate/ui/screens/logged_out.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

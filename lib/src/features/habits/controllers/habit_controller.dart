@@ -4,7 +4,7 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final habitControllerProvider =
-    StateNotifierProvider<HabitController, AsyncValue<List<HabitModel>>>(
+    StateNotifierProvider.autoDispose<HabitController, AsyncValue<List<HabitModel>>>(
         (ref) => HabitController(ref.read));
 
 class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {

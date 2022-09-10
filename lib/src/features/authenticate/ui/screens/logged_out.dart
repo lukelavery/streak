@@ -7,7 +7,6 @@ import '../widgets/forms/email_form.dart';
 import '../widgets/forms/password_form.dart';
 import '../widgets/forms/register_form.dart';
 import '../widgets/design/styled_button.dart';
-import '../widgets/dialogs/error_dialog.dart';
 
 class LogInPage extends StatelessWidget {
   const LogInPage({Key? key}) : super(key: key);

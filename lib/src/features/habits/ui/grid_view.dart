@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/models/streak_model.dart';
-import 'package:streak/ui/habit_card.dart';
+import 'package:streak/src/features/streaks/models/streak_model.dart';
+import 'package:streak/src/features/habits/ui/habit_card.dart';
 
-import 'models/counter_model.dart';
+import '../../streaks/models/counter_model.dart';
 
 class MyGridView extends StatelessWidget {
   const MyGridView({
@@ -46,7 +46,7 @@ class MyGridView extends StatelessWidget {
             // now.difference(streak[0].dateTime).inDays == 0
             getDifference(streak[0].dateTime, now) == 0
             ) {
-          return slessHabitCard(
+          return SlessHabitCard(
             habit: habit,
             name: habit.name,
             icon: IconData(habit.iconCodePoint,
