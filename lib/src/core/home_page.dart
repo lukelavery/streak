@@ -95,10 +95,10 @@ class MyHomePage extends ConsumerWidget {
           child: const Icon(Icons.add),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-        BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')
-      ]),
+      // bottomNavigationBar: BottomNavigationBar(items: const [
+      //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+      //   BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')
+      // ]),
     );
   }
 }

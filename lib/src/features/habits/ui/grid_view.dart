@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:streak/src/features/calendar/ui/calendar.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 import 'package:streak/src/features/habits/ui/habit_card.dart';
@@ -46,26 +47,33 @@ class MyGridView extends StatelessWidget {
             // now.difference(streak[0].dateTime).inDays == 0
             getDifference(streak[0].dateTime, now) == 0
             ) {
-          return SlessHabitCard(
+          return GestureDetector(
+            onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id]))))),
+            child: SlessHabitCard(
+              habit: habit,
+              name: habit.name,
+              icon: IconData(habit.iconCodePoint,
+                  fontFamily: habit.iconFontFamily,
+                  fontPackage: habit.iconFontPackage),
+              counter: counters[habit.id]?.count,
+            ),
+          );
+        }
+
+
+        }
+        // return GestureDetector(
+        //   onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id]))))),
+          return HabitCard(
             habit: habit,
             name: habit.name,
             icon: IconData(habit.iconCodePoint,
                 fontFamily: habit.iconFontFamily,
                 fontPackage: habit.iconFontPackage),
             counter: counters[habit.id]?.count,
-          );
-        }
-
-
-        }
-        return HabitCard(
-          habit: habit,
-          name: habit.name,
-          icon: IconData(habit.iconCodePoint,
-              fontFamily: habit.iconFontFamily,
-              fontPackage: habit.iconFontPackage),
-          counter: counters[habit.id]?.count,
-          increment: increment,
+            increment: increment,
+            streaks: streaks[habit.id],
+          // );
         );
       },
     );

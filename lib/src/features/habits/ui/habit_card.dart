@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:streak/src/features/calendar/ui/calendar.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/streaks/models/streak_model.dart';
 import 'package:streak/src/features/streaks/ui/counter.dart';
 import 'package:vibration/vibration.dart';
 
@@ -11,6 +13,7 @@ class HabitCard extends StatefulWidget {
     required this.icon,
     required this.counter,
     required this.increment,
+    required this.streaks,
   }) : super(key: key);
 
   final HabitModel habit;
@@ -18,6 +21,7 @@ class HabitCard extends StatefulWidget {
   final IconData icon;
   final int? counter;
   final Future<void> Function(String, DateTime) increment;
+  final List<Streak>? streaks;
 
   @override
   State<HabitCard> createState() => _HabitCardState();
@@ -49,6 +53,13 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
   }
 
   void endAnimation() {
+            if (controller.value < 0.1) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) =>
+                      CalendarPage(streaks: widget.streaks))));
+        }
     controller.reset();
   }
 
@@ -107,17 +118,21 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
               Positioned(
                 top: 0,
                 right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                      // borderRadius: BorderRadius.circular(10),
-                      color: Colors.red,
-                      shape: BoxShape.circle),
-                  child: Text(
-                    widget.counter.toString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
+                child: MyCounter(
+                counter: widget.counter,
+                habit: widget.habit,
+              ),
+                // Container(
+                //   padding: const EdgeInsets.all(8),
+                //   decoration: const BoxDecoration(
+                //       // borderRadius: BorderRadius.circular(10),
+                //       color: Colors.red,
+                //       shape: BoxShape.circle),
+                //   child: Text(
+                //     widget.counter.toString(),
+                //     style: const TextStyle(color: Colors.white, fontSize: 20),
+                //   ),
+                // ),
               ),
             ],
           ),
@@ -179,7 +194,10 @@ class SlessHabitCard extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: MyCounter(counter: counter, habit: habit,),
+              child: MyCounter(
+                counter: counter,
+                habit: habit,
+              ),
             ),
           ],
         ),
