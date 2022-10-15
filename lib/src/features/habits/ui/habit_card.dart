@@ -58,7 +58,7 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
               context,
               MaterialPageRoute(
                   builder: ((context) =>
-                      CalendarPage(streaks: widget.streaks))));
+                      CalendarPage(streaks: widget.streaks, habit: widget.habit,))));
         }
     controller.reset();
   }

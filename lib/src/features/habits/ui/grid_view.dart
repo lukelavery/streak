@@ -48,7 +48,7 @@ class MyGridView extends StatelessWidget {
             getDifference(streak[0].dateTime, now) == 0
             ) {
           return GestureDetector(
-            onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id]))))),
+            onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id], habit: habit,))))),
             child: SlessHabitCard(
               habit: habit,
               name: habit.name,
