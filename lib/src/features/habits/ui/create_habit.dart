@@ -1,0 +1,186 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
+import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
+import 'package:streak/src/features/habits/ui/search_delegate.dart';
+
+const TextStyle h1 = TextStyle(
+    fontSize: 30, fontFamily: 'Montserrat', fontWeight: FontWeight.w500);
+const TextStyle sh1 = TextStyle(
+    fontSize: 15, fontFamily: 'Montserrat', fontWeight: FontWeight.w400);
+const TextStyle cardTitle = TextStyle(
+    color: Colors.white,
+    fontSize: 22,
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w400);
+const TextStyle cardSubtitle = TextStyle(
+    color: Color(0xFFE0E0E0),
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w400);
+
+class CreateHabitPage extends ConsumerWidget {
+  const CreateHabitPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.close)),
+                ),
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Choose a goal',
+                    style: h1,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Calendar will choose the best times to schedule sessions for your goal.',
+                    style: sh1,
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: GoalCard(
+                      title: 'Exercise',
+                      subtitle: 'Run, do yoga, get your body moving',
+                      // searchDelegate: CustomSearchDelegate(
+                      //   addHabit: ref
+                      //       .read(newHabitControllerProvider.notifier)
+                      //       .createHabit,
+                      searchDelegate: CustomSearchDelegate(
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: GoalCard(
+                  //     title: 'Build a skill',
+                  //     subtitle: 'Learn a language, practise an instrument',
+                  //     searchDelegate: CustomSearchDelegate(
+                  //       addHabit: ref
+                  //           .read(habitControllerProvider.notifier)
+                  //           .createHabit,
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: GoalCard(
+                  //     title: 'Family & friends',
+                  //     subtitle: 'Make time for the people who matter most',
+                  //     searchDelegate: CustomSearchDelegate(
+                  //       addHabit: ref
+                  //           .read(habitControllerProvider.notifier)
+                  //           .createHabit,
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: GoalCard(
+                  //     title: 'Me time',
+                  //     subtitle: 'Read, meditate, take care of yourself',
+                  //     searchDelegate: CustomSearchDelegate(
+                  //       addHabit: ref
+                  //           .read(habitControllerProvider.notifier)
+                  //           .createHabit,
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: GoalCard(
+                  //     title: 'Organise my life',
+                  //     subtitle: 'Stay on tope of things',
+                  //     searchDelegate: CustomSearchDelegate(
+                  //       addHabit: ref
+                  //           .read(habitControllerProvider.notifier)
+                  //           .createHabit,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GoalCard extends StatelessWidget {
+  const GoalCard(
+      {Key? key,
+      required this.title,
+      required this.subtitle,
+      required this.searchDelegate})
+      : super(key: key);
+
+  final String title;
+  final String subtitle;
+  final SearchDelegate searchDelegate;
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: () => showSearch(context: context, delegate: searchDelegate),
+      child: Stack(
+        alignment: AlignmentDirectional.bottomStart,
+        children: [
+          Container(
+            width: width,
+            height: 175,
+            color: Colors.grey,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: cardTitle,
+                ),
+                Text(
+                  subtitle,
+                  style: cardSubtitle,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+            // showSearch(
+            //   context: context,
+            //   delegate: CustomSearchDelegate(
+            //       addHabit: ref.read(habitControllerProvider.notifier).createHabit),
+            // );

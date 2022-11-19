@@ -17,13 +17,26 @@ class FirebaseHabitService implements HabitService {
 
   final String? uid;
 
+  // deprecated
   CollectionReference habitsRef =
       FirebaseFirestore.instance.collection('habits');
+  CollectionReference habitsRefNew =
+      FirebaseFirestore.instance.collection('habits_new');
   CollectionReference streaksRef =
       FirebaseFirestore.instance.collection('streaks');
 
+  // deprecated
   @override
   Stream<List<HabitModel>> get retrieveHabits {
+    final ref = habitsRef.where('uid', isEqualTo: uid);
+    return ref.snapshots().map((event) => event.docs
+        .map((doc) =>
+            HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
+        .toList());
+  }
+
+  @override
+  Stream<List<HabitModel>> get retrieveHabitsNew {
     final ref = habitsRef.where('uid', isEqualTo: uid);
     return ref.snapshots().map((event) => event.docs
         .map((doc) =>
