@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/habits/controllers/habit_type_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/services/_habit_service.dart';
 
 final habitSearchControllerProvider = StateNotifierProvider.autoDispose<
-    HabitController,
-    AsyncValue<List<HabitModel>>>((ref) => HabitController(ref.read));
+        HabitController, AsyncValue<List<HabitModel>>>(
+    (ref) => HabitController(ref.read, ref.watch(habitTypeController)));
 
 class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
-  HabitController(this._read) : super(const AsyncValue.loading()) {
+  HabitController(this._read, this.habitType)
+      : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
-    _habitStreamSubscription =
-        _read(newHabitServiceProvider).getHabits.listen((habits) {
-      state = AsyncValue.data(habits.toList());
+    _habitStreamSubscription = _read(newHabitServiceProvider)
+        .getHabits(habitType: habitType)
+        .listen((habits) {
+      habitList = habits;
+      state = AsyncValue.data(habitList);
     });
   }
 
@@ -23,13 +27,16 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   }
 
   final Reader _read;
-  final String _query = '';
-
+  final String habitType;
+  late List<HabitModel> habitList;
+  
   void query(String q) {
     if (state.value != null) {
-      state = AsyncValue.data(state.value
-          !.where((element) => element.name.toLowerCase().contains(_query))
+      state = AsyncValue.data(habitList
+          .where(
+              (element) => element.name.toLowerCase().contains(q.toLowerCase()))
           .toList());
+      print(state.value);
     }
   }
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
+import 'package:streak/src/features/habits/controllers/habit_type_controller.dart';
 import 'package:streak/src/features/habits/ui/search_delegate.dart';
+import 'package:streak/src/features/habits/ui/search_view.dart';
 
 const TextStyle h1 = TextStyle(
     fontSize: 30, fontFamily: 'Montserrat', fontWeight: FontWeight.w500);
@@ -60,9 +62,9 @@ class CreateHabitPage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: GoalCard(
                       title: 'Exercise',
                       subtitle: 'Run, do yoga, get your body moving',
@@ -70,8 +72,7 @@ class CreateHabitPage extends ConsumerWidget {
                       //   addHabit: ref
                       //       .read(newHabitControllerProvider.notifier)
                       //       .createHabit,
-                      searchDelegate: CustomSearchDelegate(
-                      ),
+                      habitType: 'exercise',
                     ),
                   ),
                   // Padding(
@@ -132,23 +133,77 @@ class CreateHabitPage extends ConsumerWidget {
   }
 }
 
-class GoalCard extends StatelessWidget {
-  const GoalCard(
-      {Key? key,
-      required this.title,
-      required this.subtitle,
-      required this.searchDelegate})
-      : super(key: key);
+// class GoalCard extends StatelessWidget {
+//   const GoalCard(
+//       {Key? key,
+//       required this.title,
+//       required this.subtitle,
+//       required this.searchDelegate})
+//       : super(key: key);
+
+//   final String title;
+//   final String subtitle;
+//   final SearchDelegate searchDelegate;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double width = MediaQuery.of(context).size.width;
+//     return GestureDetector(
+//       onTap: () => showSearch(context: context, delegate: searchDelegate),
+//       child: Stack(
+//         alignment: AlignmentDirectional.bottomStart,
+//         children: [
+//           Container(
+//             width: width,
+//             height: 175,
+//             color: Colors.grey,
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   title,
+//                   style: cardTitle,
+//                 ),
+//                 Text(
+//                   subtitle,
+//                   style: cardSubtitle,
+//                 ),
+//               ],
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class GoalCard extends ConsumerWidget {
+  const GoalCard({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.habitType,
+  }) : super(key: key);
 
   final String title;
   final String subtitle;
-  final SearchDelegate searchDelegate;
+  final String habitType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () => showSearch(context: context, delegate: searchDelegate),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    ref
+                    .read(habitTypeController.notifier)
+                    .update((state) => habitType);
+          return const SearchView();
+        }));
+      },
       child: Stack(
         alignment: AlignmentDirectional.bottomStart,
         children: [
@@ -178,9 +233,3 @@ class GoalCard extends StatelessWidget {
     );
   }
 }
-
-            // showSearch(
-            //   context: context,
-            //   delegate: CustomSearchDelegate(
-            //       addHabit: ref.read(habitControllerProvider.notifier).createHabit),
-            // );

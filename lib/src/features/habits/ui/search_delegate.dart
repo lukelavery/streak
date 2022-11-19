@@ -64,7 +64,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   return ListTile(
                       leading: Icon(IconData(habit.iconCodePoint,
                           fontFamily: habit.iconFontFamily,
-                          fontPackage: habit.iconFontPackage)),
+                          fontPackage: habit.iconFontPackage),),
                       title: Text(habit.name),
                       onTap: () {
                         Navigator.pop(context);

@@ -4,7 +4,7 @@ import 'package:streak/src/features/authenticate/controllers/auth_controller.dar
 import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class NewHabitService {
-  Stream<List<HabitModel>> get getHabits;
+  Stream<List<HabitModel>> getHabits({required String habitType});
   // Future<void> createHabit({required HabitPreset habit});
   // Future<void> deleteHabit({required String habitId});
 }
@@ -22,9 +22,18 @@ class FirebaseHabitService implements NewHabitService {
   CollectionReference streaksRef =
       FirebaseFirestore.instance.collection('streaks');
 
+  // @override
+  // Stream<List<HabitModel>> get getHabits {
+  //   final ref = habitsRef;
+  //   return ref.snapshots().map((event) => event.docs
+  //       .map((doc) =>
+  //           HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
+  //       .toList());
+  // }
+
   @override
-  Stream<List<HabitModel>> get getHabits {
-    final ref = habitsRef;
+  Stream<List<HabitModel>> getHabits({required String habitType}) {
+    final ref = habitsRef.where('type', isEqualTo: habitType);
     return ref.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))

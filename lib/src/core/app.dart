@@ -7,7 +7,7 @@ import '../features/authenticate/ui/screens/logged_out.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
