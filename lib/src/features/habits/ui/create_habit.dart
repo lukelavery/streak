@@ -68,25 +68,17 @@ class CreateHabitPage extends ConsumerWidget {
                     child: GoalCard(
                       title: 'Exercise',
                       subtitle: 'Run, do yoga, get your body moving',
-                      // searchDelegate: CustomSearchDelegate(
-                      //   addHabit: ref
-                      //       .read(newHabitControllerProvider.notifier)
-                      //       .createHabit,
                       habitType: 'exercise',
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 8.0),
-                  //   child: GoalCard(
-                  //     title: 'Build a skill',
-                  //     subtitle: 'Learn a language, practise an instrument',
-                  //     searchDelegate: CustomSearchDelegate(
-                  //       addHabit: ref
-                  //           .read(habitControllerProvider.notifier)
-                  //           .createHabit,
-                  //     ),
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: GoalCard(
+                      title: 'Build a skill',
+                      subtitle: 'Learn a language, practise an instrument',
+                      habitType: 'skill',
+                    ),
+                  ),
                   // Padding(
                   //   padding: const EdgeInsets.only(bottom: 8.0),
                   //   child: GoalCard(
@@ -197,10 +189,8 @@ class GoalCard extends ConsumerWidget {
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
+        ref.read(habitTypeController.notifier).update((state) => habitType);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    ref
-                    .read(habitTypeController.notifier)
-                    .update((state) => habitType);
           return const SearchView();
         }));
       },

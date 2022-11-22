@@ -29,16 +29,17 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   final Reader _read;
   final String habitType;
   late List<HabitModel> habitList;
-  
+  StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
+
   void query(String q) {
     if (state.value != null) {
       state = AsyncValue.data(habitList
           .where(
               (element) => element.name.toLowerCase().contains(q.toLowerCase()))
           .toList());
-      print(state.value);
+      if (q != '') {
+        state = AsyncValue.data([...state.value!, HabitModel(id: '', name: 'Create custom habit: $q', iconCodePoint: 0xe047, iconFontFamily: 'MaterialIcons', counter: 0)]);
+      }
     }
   }
-
-  StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 }

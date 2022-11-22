@@ -23,7 +23,16 @@ class SearchView extends ConsumerWidget {
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: ((context, index) {
+              // if (index == data.length && query != '') {
+              //   return ListTile(
+              //     title: Text('Create custom habit:' +
+              //         query),
+              //   );
+              // }
               return ListTile(
+                leading: Icon(IconData(data[index].iconCodePoint,
+                  fontFamily: data[index].iconFontFamily,
+                  fontPackage: data[index].iconFontPackage)),
                 title: Text(data[index].name),
               );
             }),
