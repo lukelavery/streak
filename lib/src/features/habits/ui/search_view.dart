@@ -23,17 +23,16 @@ class SearchView extends ConsumerWidget {
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: ((context, index) {
-              // if (index == data.length && query != '') {
-              //   return ListTile(
-              //     title: Text('Create custom habit:' +
-              //         query),
-              //   );
-              // }
               return ListTile(
                 leading: Icon(IconData(data[index].iconCodePoint,
-                  fontFamily: data[index].iconFontFamily,
-                  fontPackage: data[index].iconFontPackage)),
+                    fontFamily: data[index].iconFontFamily,
+                    fontPackage: data[index].iconFontPackage)),
                 title: Text(data[index].name),
+                onTap: () {
+                    ref
+                        .read(habitSearchControllerProvider.notifier)
+                        .selectHabit(data[index]);
+                },
               );
             }),
           );
@@ -46,17 +45,5 @@ class SearchView extends ConsumerWidget {
         },
       ),
     );
-
-    // habitSearchState.when(
-    //   data: ((data) => ListView.builder(
-    //     itemBuilder: (context, index) {
-    //       return ListTile(
-    //         title: Text(data[index].name),
-    //       );
-    //     },
-    //   );
-    //   error: Text('error'),
-    //   loading: Text('loading'),
-    // );
   }
 }

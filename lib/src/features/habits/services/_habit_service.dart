@@ -5,7 +5,9 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class NewHabitService {
   Stream<List<HabitModel>> getHabits({required String habitType});
-  Future<DocumentReference> createHabit({required NewHabitPreset habit, required String name});
+  Future<void> createHabit(
+      {required NewHabitPreset preset, required String name});
+  Future<void> addHabit({required String habitId});
   // Future<void> deleteHabit({required String habitId});
 }
 
@@ -19,8 +21,7 @@ class FirebaseHabitService implements NewHabitService {
 
   CollectionReference habitsRef =
       FirebaseFirestore.instance.collection('habits_new');
-  CollectionReference streaksRef =
-      FirebaseFirestore.instance.collection('streaks');
+  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
 
   @override
   Stream<List<HabitModel>> getHabits({required String habitType}) {
@@ -32,13 +33,31 @@ class FirebaseHabitService implements NewHabitService {
   }
 
   @override
-  Future<DocumentReference> createHabit(
-      {required NewHabitPreset habit, required String name}) {
-    Map data = habit.toMap();
+  Future<void> createHabit(
+      {required NewHabitPreset preset, required String name}) async {
+    Map data = preset.toMap();
     data['name'] = name;
-    data['active'] = true;
     data['uid'] = uid;
-    return habitsRef.add(data);
+    final docRef = await habitsRef.add(data);
+    addHabit(habitId: docRef.id);
+  }
+
+  @override
+  Future<void> addHabit({required String habitId}) {
+    final docRef = usersRef.doc(uid);
+
+    return docRef.get().then((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final habits = data['habit_list'] as List?;
+      if (habits == null) {
+        return docRef.update({
+          'habit_list': [habitId]
+        });
+      } else {
+        habits.add(habitId);
+        return docRef.update({'habit_list': habits});
+      }
+    });
   }
 
   // @override
