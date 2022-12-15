@@ -36,6 +36,7 @@ class Counter {
 }
 
 int? getDifference(DateTime date1, DateTime date2) {
+  // TODO: implement year logic
   var year1 = date1.year;
   var month1 = date1.month;
   var day1 = date1.day;
@@ -48,6 +49,13 @@ int? getDifference(DateTime date1, DateTime date2) {
     if (month1 == month2) {
       return day2 - day1;
     }
-  } 
+    int days = 0;
+    for (int i = month1 + 1; i < month2; i++) {
+      days += DateTime(date1.year, i + 1, 0).day;
+    }
+    days += DateTime(date1.year, date1.month + 1, 0).day - day1;
+    days += day2;
+    return days;
+  }
   return null;
 }

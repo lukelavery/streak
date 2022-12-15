@@ -6,12 +6,13 @@ import 'package:streak/src/features/authenticate/controllers/auth_controller.dar
 abstract class StreakService {
   Stream<Map<String, List<Streak>>> get retrieveStreaks;
   Future<void> addStreak({required String habitId, required DateTime dateTime});
+  Future<void> deleteStreak({required String habitId});
 }
 
 final streakServiceProvider = Provider.autoDispose<FirebaseStreakService>(
     (ref) => FirebaseStreakService(ref.read(authControllerProvider).uid));
 
-class FirebaseStreakService implements StreakService{
+class FirebaseStreakService implements StreakService {
   FirebaseStreakService(this.uid);
 
   final String? uid;
@@ -27,7 +28,7 @@ class FirebaseStreakService implements StreakService{
     return ref.snapshots().map((event) {
       Map<String, List<Streak>> streaks = {};
       for (var doc in event.docs) {
-        Streak streak = Streak.fromMap(doc.data() as Map<String, dynamic>?);
+        Streak streak = Streak.fromMap(doc.id, doc.data() as Map<String, dynamic>?);
 
         var oldList = streaks[streak.habitId];
 
@@ -44,7 +45,8 @@ class FirebaseStreakService implements StreakService{
   }
 
   @override
-  Future<void> addStreak({required String habitId, required DateTime dateTime}) {
+  Future<void> addStreak(
+      {required String habitId, required DateTime dateTime}) {
     Map<String, dynamic> data = {};
 
     data['uid'] = uid;
@@ -52,5 +54,10 @@ class FirebaseStreakService implements StreakService{
     data['timestamp'] = Timestamp.fromDate(dateTime);
 
     return streaksRef.add(data);
+  }
+
+  @override
+  Future<void> deleteStreak({required String habitId}) {
+    return streaksRef.doc(habitId).delete();
   }
 }

@@ -58,7 +58,7 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
               context,
               MaterialPageRoute(
                   builder: ((context) =>
-                      CalendarPage(streaks: widget.streaks))));
+                      CalendarPage(streaks: widget.streaks, habit: widget.habit,))));
         }
     controller.reset();
   }
@@ -115,25 +115,14 @@ class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: MyCounter(
-                counter: widget.counter,
-                habit: widget.habit,
-              ),
-                // Container(
-                //   padding: const EdgeInsets.all(8),
-                //   decoration: const BoxDecoration(
-                //       // borderRadius: BorderRadius.circular(10),
-                //       color: Colors.red,
-                //       shape: BoxShape.circle),
-                //   child: Text(
-                //     widget.counter.toString(),
-                //     style: const TextStyle(color: Colors.white, fontSize: 20),
-                //   ),
-                // ),
-              ),
+              // Positioned(
+              //   top: 0,
+              //   right: 0,
+              //   child: MyCounter(
+              //   counter: widget.counter,
+              //   habit: widget.habit,
+              // ),
+              // ),
             ],
           ),
         ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:streak/src/features/calendar/ui/calendar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
-import 'package:streak/src/features/habits/ui/habit_card.dart';
 
 import '../../streaks/models/counter_model.dart';
 
-class MyGridView extends StatelessWidget {
+class MyGridView extends ConsumerWidget {
   const MyGridView({
     Key? key,
     required this.counters,
@@ -22,60 +22,92 @@ class MyGridView extends StatelessWidget {
   final Map<String, List<Streak>> streaks;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: (MediaQuery.of(context).size.height - 200) / 2,
-        crossAxisCount: crossAxisCount,
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListView.builder(
       itemCount: habits.length,
-      itemBuilder: (context, index) {
-        var habit = habits[index];
-        DateTime now = DateTime.now();
-        var streak = streaks[habit.id];
-        // return HabitCard(
-        //     habit: habit,
-        //     name: habit.name,
-        //     icon: IconData(habit.iconCodePoint,
-        //         fontFamily: habit.iconFontFamily,
-        //         fontPackage: habit.iconFontPackage),
-        //     counter: counters[habit.id]?.count,
-        //     increment: increment);
+      itemBuilder: ((context, index) {
+        HabitModel habit = habits[index];
 
-        if (streak != null) {
-          if (
-            // now.difference(streak[0].dateTime).inDays == 0
-            getDifference(streak[0].dateTime, now) == 0
-            ) {
-          return GestureDetector(
-            onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id]))))),
-            child: SlessHabitCard(
-              habit: habit,
-              name: habit.name,
-              icon: IconData(habit.iconCodePoint,
-                  fontFamily: habit.iconFontFamily,
-                  fontPackage: habit.iconFontPackage),
-              counter: counters[habit.id]?.count,
-            ),
+        return Consumer(builder: (context, ref, child) {
+          final gridState = ref.watch(gridControllerProvider);
+          return gridState.when(
+            data: (grid) {
+              return Card(
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        IconData(habit.iconCodePoint,
+                            fontFamily: habit.iconFontFamily,
+                            fontPackage: habit.iconFontPackage),
+                      ),
+                      Text(habit.name),
+                    ],
+                  ),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                        26,
+                        (parent_index) => Column(
+                              children: List.generate(
+                                  7,
+                                  (index) => Padding(
+                                        padding: const EdgeInsets.all(1.5),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                              color: grid[habit.id]![(181 - (parent_index * 7 + index))].future ? Colors.white : grid[habit.id]![(181 - (parent_index * 7 + index))].streak ? Colors.pink : Colors.grey[200],
+                                              ),
+                                          height: 8,
+                                          width: 8,
+                                        ),
+                                      )),
+                            )),
+                  ),
+                ),
+              );
+            },
+            error: (e, st) =>
+                    const Center(child: CircularProgressIndicator()),
+            loading: (() => const Center(child: CircularProgressIndicator())),
           );
-        }
+        });
 
-
-        }
-        // return GestureDetector(
-        //   onTap: (() => Navigator.push(context, MaterialPageRoute(builder: ((context) => CalendarPage(streaks: streaks[habit.id]))))),
-          return HabitCard(
-            habit: habit,
-            name: habit.name,
-            icon: IconData(habit.iconCodePoint,
-                fontFamily: habit.iconFontFamily,
-                fontPackage: habit.iconFontPackage),
-            counter: counters[habit.id]?.count,
-            increment: increment,
-            streaks: streaks[habit.id],
-          // );
+        Card(
+          child: ListTile(
+            title: Row(
+              children: [
+                Icon(
+                  IconData(habit.iconCodePoint,
+                      fontFamily: habit.iconFontFamily,
+                      fontPackage: habit.iconFontPackage),
+                ),
+                Text(habit.name),
+              ],
+            ),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                  26,
+                  (index) => Column(
+                        children: List.generate(
+                            7,
+                            (index) => Padding(
+                                  padding: const EdgeInsets.all(1.5),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(2),
+                                        color: Colors.grey[300]),
+                                    height: 8,
+                                    width: 8,
+                                  ),
+                                )),
+                      )),
+            ),
+          ),
         );
-      },
+      }),
     );
   }
 }

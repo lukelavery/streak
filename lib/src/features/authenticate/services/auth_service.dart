@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
@@ -18,9 +19,11 @@ abstract class AuthService {
 
 final authRepositoryProvider =
     Provider<FirebaseAuthService>((ref) => FirebaseAuthService());
-    
+
 class FirebaseAuthService implements AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
 
   @override
   Stream<UserModel> get authStateChanges {
@@ -73,6 +76,7 @@ class FirebaseAuthService implements AuthService {
     try {
       var credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      _addUserDoc(credential.user!.uid);
       await credential.user!.updateDisplayName(displayName);
     } on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
@@ -82,5 +86,9 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> _addUserDoc(String uid) async {
+    await usersRef.doc(uid).set({'uid: uid'});
   }
 }

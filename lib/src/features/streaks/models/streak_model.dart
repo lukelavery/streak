@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Streak {
   const Streak({
+    required this.streakId,
     required this.habitId,
     required this.dateTime,
   });
 
+  final String streakId;
   final String habitId;
   final DateTime dateTime;
 
-  factory Streak.fromMap(Map<String, dynamic>? data) {
+  factory Streak.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
       throw StateError('missing data');
     }
@@ -18,6 +20,6 @@ class Streak {
 
     var habitId = data['habitId'] as String;
 
-    return Streak(habitId: habitId, dateTime: dateTime);
+    return Streak(streakId: id, habitId: habitId, dateTime: dateTime);
   }
 }

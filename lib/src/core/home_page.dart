@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
+import 'package:streak/src/features/habits/ui/create_habit.dart';
 import 'package:streak/src/features/habits/ui/grid_view.dart';
-import 'package:streak/src/features/habits/ui/search_delegate.dart';
+// import 'package:streak/src/features/habits/ui/search_delegate.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/streaks/controllers/counter_controller.dart';
 import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
@@ -21,7 +22,9 @@ class MyHomePage extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                ref.read(habitViewController.notifier).update((state) => !state);
+                ref
+                    .read(habitViewController.notifier)
+                    .update((state) => !state);
               },
               icon: const Icon(
                 Icons.edit,
@@ -66,31 +69,39 @@ class MyHomePage extends ConsumerWidget {
         final habitsState = ref.watch(habitControllerProvider);
         final streaksState = ref.watch(streakControllerProvider);
         return habitsState.when(
-          data: (habits) {
-            return streaksState.when(data: (data) => MyGridView(
-              counters: ref.watch(counterControllerProvider).value!,
-              habits: ref.watch(habitControllerProvider).value!,
-              crossAxisCount: ref.watch(habitControllerProvider.notifier).getCrossAxisCount(),
-              increment: ref.read(habitControllerProvider.notifier).addStreak,
-              streaks: ref.watch(streakControllerProvider).value!,
-            ), 
-            loading:() => const Center(child: CircularProgressIndicator()),
-            error: (e, st) => const Center(child: CircularProgressIndicator()),
-          );   
-        },
-        loading: (() => const Center(child: CircularProgressIndicator())),
-        error: (e, st) => const Center(child: CircularProgressIndicator())
-        );
+            data: (habits) {
+              return streaksState.when(
+                data: (data) => MyGridView(
+                  counters: ref.watch(counterControllerProvider).value!,
+                  habits: ref.watch(habitControllerProvider).value!,
+                  crossAxisCount: ref
+                      .watch(habitControllerProvider.notifier)
+                      .getCrossAxisCount(),
+                  increment:
+                      ref.read(habitControllerProvider.notifier).addStreak,
+                  streaks: ref.watch(streakControllerProvider).value!,
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, st) =>
+                    const Center(child: CircularProgressIndicator()),
+              );
+            },
+            loading: (() => const Center(child: CircularProgressIndicator())),
+            error: (e, st) => const Center(child: CircularProgressIndicator()));
       }),
       // child: MyCircularProgressIndicator()),
       floatingActionButton: Consumer(
         builder: (context, ref, child) => FloatingActionButton(
           onPressed: () {
-            showSearch(
-              context: context,
-              delegate: CustomSearchDelegate(
-                  addHabit: ref.read(habitControllerProvider.notifier).createHabit),
-            );
+            // showSearch(
+            //   context: context,
+            //   delegate: CustomSearchDelegate(
+            //       addHabit: ref.read(habitControllerProvider.notifier).createHabit),
+            // );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CreateHabitPage()));
           },
           child: const Icon(Icons.add),
         ),
