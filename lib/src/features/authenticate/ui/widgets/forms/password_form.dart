@@ -7,10 +7,12 @@ class PasswordForm extends StatefulWidget {
   const PasswordForm({
     required this.login,
     required this.email,
+    required this.cancel,
     super.key,
   });
   final String email;
   final void Function(String email, String password) login;
+    final void Function() cancel;
   @override
   State<PasswordForm> createState() => _PasswordFormState();
 }
@@ -31,16 +33,19 @@ class _PasswordFormState extends State<PasswordForm> {
     return Column(
       children: [
         const Header('Sign in'),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
+        SizedBox(
+          height: 15,
+        ),
+        Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextFormField(
+                TextFormField(
+                  style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                ),
                     controller: _emailController,
                     decoration: const InputDecoration(
                       hintText: 'Enter your email',
@@ -52,10 +57,12 @@ class _PasswordFormState extends State<PasswordForm> {
                       return null;
                     },
                   ),
+                
+                TextFormField(
+                  style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(
                       hintText: 'Password',
@@ -68,12 +75,16 @@ class _PasswordFormState extends State<PasswordForm> {
                       return null;
                     },
                   ),
-                ),
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                    TextButton(
+                      onPressed: widget.cancel,
+                      child: const Text('CANCEL'),
+                    ),
                       const SizedBox(width: 16),
                       StyledButton(
                         onPressed: () {
@@ -86,14 +97,14 @@ class _PasswordFormState extends State<PasswordForm> {
                         },
                         child: const Text('SIGN IN'),
                       ),
-                      const SizedBox(width: 30),
+                      // const SizedBox(width: 30),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-        ),
+        
       ],
     );
   }

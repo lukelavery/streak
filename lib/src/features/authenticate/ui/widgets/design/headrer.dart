@@ -5,11 +5,13 @@ class Header extends StatelessWidget {
   final String heading;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          heading,
-          style: const TextStyle(fontSize: 24),
+  Widget build(BuildContext context) => Text(
+        heading,
+        style: const TextStyle(
+          fontSize: 20,
+          color: Colors.black,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w400,
         ),
       );
 }

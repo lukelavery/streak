@@ -7,7 +7,7 @@ final loginControllerProvider =
         (ref) => LoginController(ref.read));
 
 class LoginController extends StateNotifier<LoginStateModel> {
-  LoginController(this._read) : super(LoginStateModel.loggedOut);
+  LoginController(this._read) : super(LoginStateModel.emailAddress);
 
   final Reader _read;
 
