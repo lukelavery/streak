@@ -1,21 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HabitModel {
-  const HabitModel({
-    required this.id,
-    required this.name,
-    required this.iconCodePoint,
-    required this.iconFontFamily,
-    this.iconFontPackage,
-    required this.counter,
-  });
+  const HabitModel(
+      {required this.id,
+      required this.name,
+      required this.iconCodePoint,
+      required this.iconFontFamily,
+      this.iconFontPackage,
+      required this.type});
 
   final String id;
   final String name;
   final int iconCodePoint;
   final String iconFontFamily;
   final String? iconFontPackage;
-  final int counter;
+  final String type;
 
   factory HabitModel.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
@@ -28,7 +27,7 @@ class HabitModel {
       iconCodePoint: data['iconCodePoint'],
       iconFontFamily: data['iconFontFamily'],
       iconFontPackage: data['iconFontPackage'],
-      counter: 0,
+      type: data['type'],
     );
   }
 
@@ -38,6 +37,7 @@ class HabitModel {
       'iconCodePoint': iconCodePoint,
       'iconFontFamily': iconFontFamily,
       'iconFontPackage': iconFontPackage,
+      'type': type,
     };
   }
 }
@@ -189,14 +189,11 @@ class NewHabitPreset {
   final String? iconFontPackage;
 
   Map<String, dynamic> toMap() {
-    var now = Timestamp.now();
     return {
       'type': type,
       'iconCodePoint': iconCodePoint,
       'iconFontFamily': iconFontFamily,
       'iconFontPackage': iconFontPackage,
-      'timestamp': now,
-      // 'streak': now,
     };
   }
 }

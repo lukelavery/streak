@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/services/habit_service.dart';
+import 'package:streak/src/features/habits/services/_habit_service.dart';
 
 final habitControllerProvider =
     StateNotifierProvider.autoDispose<HabitController, AsyncValue<List<HabitModel>>>(
@@ -11,7 +11,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   HabitController(this._read) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
-        _read(habitServiceProvider).retrieveHabits.listen((habits) {
+        _read(newHabitServiceProvider).getUserHabits().listen((habits) {
       state = AsyncValue.data(habits);
     });
   }
@@ -27,16 +27,16 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
-  Future<void> createHabit(HabitPreset habit) async {
-    await _read(habitServiceProvider).createHabit(habit: habit);
-  }
+  // Future<void> createHabit(HabitPreset habit) async {
+  //   await _read(newHabitServiceProvider).createHabit(habit: habit);
+  // }
 
-  Future<void> deleteHabit(String habitId) async {
-    await _read(habitServiceProvider).deleteHabit(habitId: habitId);
+  Future<void> removeHabit(String habitId) async {
+    await _read(newHabitServiceProvider).removeHabit(habitId: habitId);
   }
 
   Future<void> addStreak(String habitId, DateTime dateTime) async {
-    await _read(habitServiceProvider).addStreak(habitId, dateTime);
+    // await _read(newHabitServiceProvider).addStreak(habitId, dateTime);
   }
 
   int getCrossAxisCount() {

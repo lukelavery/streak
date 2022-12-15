@@ -18,7 +18,7 @@ class MyCounter extends ConsumerWidget {
     if (edit) {
       return GestureDetector(
         onTap: (() {
-          habits.deleteHabit(habit.id);
+          habits.removeHabit(habit.id);
           ref.read(habitViewController.notifier).update((state) => !state);
         }),
         child: Container(

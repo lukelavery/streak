@@ -47,7 +47,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
               name: 'Create custom habit: $q',
               iconCodePoint: 0xe047,
               iconFontFamily: 'MaterialIcons',
-              counter: 0)
+              type: habitType)
         ]);
       }
     }
@@ -68,6 +68,6 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   }
 
   void addHabit({required HabitModel habit}) async {
-    await _read(newHabitServiceProvider).addHabit(habitId: habit.id);
+    await _read(newHabitServiceProvider).addHabit(habit: habit);
   }
 }
