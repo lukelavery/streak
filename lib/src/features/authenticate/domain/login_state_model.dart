@@ -1,7 +1,6 @@
 enum LoginStateModel {
-  loggedOut,
+  welcome,
   emailAddress,
   register,
   password,
-  loggedIn
 }

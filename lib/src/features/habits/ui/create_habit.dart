@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/habits/controllers/habit_controller.dart';
-import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
 import 'package:streak/src/features/habits/controllers/habit_type_controller.dart';
-import 'package:streak/src/features/habits/ui/search_delegate.dart';
 import 'package:streak/src/features/habits/ui/search_view.dart';
 
 const TextStyle h1 = TextStyle(

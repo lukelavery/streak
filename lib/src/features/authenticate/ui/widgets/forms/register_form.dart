@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../design/headrer.dart';
+import '../design/text.dart';
 import '../design/styled_button.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -34,8 +34,8 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Header('Create account'),
-        SizedBox(
+        const Header3('Create account'),
+        const SizedBox(
           height: 15,
         ),
         Form(

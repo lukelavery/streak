@@ -1,51 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/forms/welcome_form.dart';
 import '../../domain/login_state_model.dart';
 import '../widgets/forms/email_form.dart';
 import '../widgets/forms/password_form.dart';
 import '../widgets/forms/register_form.dart';
-import '../widgets/design/styled_button.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends ConsumerWidget {
   const LogInPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        // floatingActionButton: FloatingActionButton(onPressed: (() {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authControllerProvider);
+    final authStateNotifier = ref.watch(authControllerProvider.notifier);
+    final loginState = ref.watch(loginControllerProvider);
+    final loginStateNotifier = ref.read(loginControllerProvider.notifier);
 
-        // })),
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Center(
-            child: Consumer(
-              builder: ((context, ref, child) => LoggedOut(
-                    loginState: ref.watch(loginControllerProvider),
-                    email: ref.read(authControllerProvider).email,
-                    startLoginFlow: ref
-                        .read(loginControllerProvider.notifier)
-                        .startLoginFlow,
-                    verifyEmail:
-                        ref.read(loginControllerProvider.notifier).verifyEmail,
-                    setEmail:
-                        ref.read(authControllerProvider.notifier).setEmail,
-                    signInWithEmailAndPassword: ref
-                        .read(authControllerProvider.notifier)
-                        .signInWithEmailAndPassword,
-                    cancelRegistration: ref
-                        .read(loginControllerProvider.notifier)
-                        .cancelRegistration,
-                    registerAccount: ref
-                        .read(authControllerProvider.notifier)
-                        .registerAccount,
-                  )),
-            ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+          icon: loginState == LoginStateModel.welcome ? null : Icon(Icons.arrow_forward),
+          label: Row(
+            children: const [
+              Text(
+                'Get started',
+              ),
+              Icon(Icons.arrow_forward)
+            ],
           ),
-        ));
+          isExtended: loginState == LoginStateModel.welcome ? true : false,
+          backgroundColor: Colors.black,
+          onPressed: (() {
+            loginStateNotifier.startLoginFlow();
+          })),
+      // resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Center(
+            child: LoggedOut(
+          loginState: loginState,
+          email: authState.email,
+          verifyEmail: loginStateNotifier.verifyEmail,
+          setEmail: authStateNotifier.setEmail,
+          signInWithEmailAndPassword:
+              authStateNotifier.signInWithEmailAndPassword,
+          cancelRegistration: loginStateNotifier.cancelRegistration,
+          registerAccount: authStateNotifier.registerAccount,
+        )),
+      ),
+    );
   }
 }
 
@@ -54,7 +58,6 @@ class LoggedOut extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.startLoginFlow,
     required this.verifyEmail,
     required this.setEmail,
     required this.signInWithEmailAndPassword,
@@ -64,7 +67,6 @@ class LoggedOut extends StatelessWidget {
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function() startLoginFlow;
   final void Function(
     String email,
   ) verifyEmail;
@@ -86,7 +88,7 @@ class LoggedOut extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           Column(
             children: const [
               FaIcon(
@@ -108,17 +110,18 @@ class LoggedOut extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(flex: 2,),
+          const Spacer(
+            flex: 2,
+          ),
           LoginEntryForm(
               loginState: loginState,
               email: email,
-              startLoginFlow: startLoginFlow,
               verifyEmail: verifyEmail,
               setEmail: setEmail,
               signInWithEmailAndPassword: signInWithEmailAndPassword,
               cancelRegistration: cancelRegistration,
               registerAccount: registerAccount),
-          Spacer(
+          const Spacer(
             flex: 10,
           )
         ],
@@ -132,7 +135,6 @@ class LoginEntryForm extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.startLoginFlow,
     required this.verifyEmail,
     required this.setEmail,
     required this.signInWithEmailAndPassword,
@@ -142,7 +144,6 @@ class LoginEntryForm extends StatelessWidget {
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function() startLoginFlow;
   final void Function(
     String email,
   ) verifyEmail;
@@ -161,20 +162,8 @@ class LoginEntryForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (loginState) {
-      case LoginStateModel.loggedOut:
-        return Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
-                onPressed: () {
-                  startLoginFlow();
-                },
-                child: const Text('RSVP'),
-              ),
-            ),
-          ],
-        );
+      case LoginStateModel.welcome:
+        return const WelcomeForm();
       case LoginStateModel.emailAddress:
         return EmailForm(callback: (email) {
           verifyEmail(

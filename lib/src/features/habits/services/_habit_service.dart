@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';

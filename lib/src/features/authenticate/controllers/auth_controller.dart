@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
 import 'package:streak/src/features/authenticate/services/auth_service.dart';
 
-final authControllerProvider =
-    StateNotifierProvider<AuthController, UserModel>(
-        (ref) => AuthController(ref.read));
+final authControllerProvider = StateNotifierProvider<AuthController, UserModel>(
+    (ref) => AuthController(ref.read));
 
 class AuthController extends StateNotifier<UserModel> {
   AuthController(this._read) : super(const UserModel(uid: null, email: null)) {
@@ -24,6 +23,11 @@ class AuthController extends StateNotifier<UserModel> {
 
   final Reader _read;
   StreamSubscription<UserModel?>? _authStateChangesSubscription;
+
+  Future<bool> verifyEmail(String email) async {
+    var result = await _read(authRepositoryProvider).verifyEmail(email);
+    return result;
+  }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     await _read(authRepositoryProvider)

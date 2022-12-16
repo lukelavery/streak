@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../design/headrer.dart';
+import '../design/text.dart';
 import '../design/styled_button.dart';
 
 class EmailForm extends StatefulWidget {
@@ -18,8 +18,8 @@ class _EmailFormState extends State<EmailForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Header('Enter your email to begin.'),
-        SizedBox(
+        const Header3('Enter your email to begin.'),
+        const SizedBox(
           height: 15,
         ),
         Form(

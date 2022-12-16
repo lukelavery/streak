@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../design/headrer.dart';
+import '../design/text.dart';
 import '../design/styled_button.dart';
 
 class PasswordForm extends StatefulWidget {
@@ -32,8 +32,8 @@ class _PasswordFormState extends State<PasswordForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Header('Sign in'),
-        SizedBox(
+        const Header3('Sign in'),
+        const SizedBox(
           height: 15,
         ),
         Form(
