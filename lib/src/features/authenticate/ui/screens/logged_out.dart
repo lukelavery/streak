@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/welcome_form.dart';
@@ -19,6 +20,23 @@ class LogInPage extends ConsumerWidget {
     final loginState = ref.watch(loginControllerProvider);
     final loginStateNotifier = ref.read(loginControllerProvider.notifier);
 
+    ref.listen<CustomException?>(
+      customExceptionProvider,
+      (prev, next) {
+        if (next != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.red[800],
+              content: Text(
+                next.message!,
+              ),
+            ),
+          );
+        }
+      },
+    );
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
           icon: loginState == LoginStateModel.welcome ? null : Icon(Icons.arrow_forward),
@@ -33,20 +51,16 @@ class LogInPage extends ConsumerWidget {
           isExtended: loginState == LoginStateModel.welcome ? true : false,
           backgroundColor: Colors.black,
           onPressed: (() {
-            loginStateNotifier.startLoginFlow();
+            loginStateNotifier.floatingActionButtonClick();
           })),
       // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
             child: LoggedOut(
           loginState: loginState,
-          email: authState.email,
-          verifyEmail: loginStateNotifier.verifyEmail,
+          email: loginStateNotifier.email,
           setEmail: authStateNotifier.setEmail,
-          signInWithEmailAndPassword:
-              authStateNotifier.signInWithEmailAndPassword,
           cancelRegistration: loginStateNotifier.cancelRegistration,
-          registerAccount: authStateNotifier.registerAccount,
         )),
       ),
     );
@@ -58,29 +72,14 @@ class LoggedOut extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.verifyEmail,
     required this.setEmail,
-    required this.signInWithEmailAndPassword,
     required this.cancelRegistration,
-    required this.registerAccount,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(
-    String email,
-  ) verifyEmail;
   final void Function(String) setEmail;
-  final void Function(
-    String email,
-    String password,
-  ) signInWithEmailAndPassword;
   final void Function() cancelRegistration;
-  final void Function(
-    String email,
-    String displayName,
-    String password,
-  ) registerAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +115,9 @@ class LoggedOut extends StatelessWidget {
           LoginEntryForm(
               loginState: loginState,
               email: email,
-              verifyEmail: verifyEmail,
               setEmail: setEmail,
-              signInWithEmailAndPassword: signInWithEmailAndPassword,
               cancelRegistration: cancelRegistration,
-              registerAccount: registerAccount),
+            ),
           const Spacer(
             flex: 10,
           )
@@ -135,29 +132,14 @@ class LoginEntryForm extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.verifyEmail,
     required this.setEmail,
-    required this.signInWithEmailAndPassword,
     required this.cancelRegistration,
-    required this.registerAccount,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(
-    String email,
-  ) verifyEmail;
   final void Function(String) setEmail;
-  final void Function(
-    String email,
-    String password,
-  ) signInWithEmailAndPassword;
   final void Function() cancelRegistration;
-  final void Function(
-    String email,
-    String displayName,
-    String password,
-  ) registerAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -166,42 +148,12 @@ class LoginEntryForm extends StatelessWidget {
         return const WelcomeForm();
       case LoginStateModel.emailAddress:
         return EmailForm(callback: (email) {
-          verifyEmail(
-            email,
-            // (e) => showErrorDialog(context, 'Invalid email', e)
-          );
           setEmail(email);
         });
       case LoginStateModel.password:
-        return PasswordForm(
-          email: email!,
-          cancel: () {
-            cancelRegistration();
-          },
-          login: (email, password) {
-            signInWithEmailAndPassword(
-              email, password,
-              // (e) => showErrorDialog(context, 'Failed to sign in', e)
-            );
-          },
-        );
+        return const PasswordForm();
       case LoginStateModel.register:
-        return RegisterForm(
-          email: email!,
-          cancel: () {
-            cancelRegistration();
-          },
-          registerAccount: (
-            email,
-            displayName,
-            password,
-          ) {
-            registerAccount(
-              email, displayName, password,
-              // (e) => showErrorDialog(context, 'Failed to create account', e),
-            );
-          },
-        );
+        return const RegisterForm();
       default:
         return Row(
           children: const [

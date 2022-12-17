@@ -13,6 +13,7 @@ class Header3 extends StatelessWidget {
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
         ),
+        textAlign: TextAlign.center,
       );
 }
 

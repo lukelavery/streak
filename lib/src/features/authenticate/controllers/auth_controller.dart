@@ -24,25 +24,6 @@ class AuthController extends StateNotifier<UserModel> {
   final Reader _read;
   StreamSubscription<UserModel?>? _authStateChangesSubscription;
 
-  Future<bool> verifyEmail(String email) async {
-    var result = await _read(authRepositoryProvider).verifyEmail(email);
-    return result;
-  }
-
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
-    await _read(authRepositoryProvider)
-        .signInWithEmailAndPassword(email, password);
-  }
-
-  Future<void> registerAccount(
-    String email,
-    String displayName,
-    String password,
-  ) async {
-    await _read(authRepositoryProvider)
-        .registerAccount(email, displayName, password);
-  }
-
   Future<void> signOut() async {
     await _read(authRepositoryProvider).signOut();
   }

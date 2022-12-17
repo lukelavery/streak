@@ -1,125 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/design/text_field.dart';
 
 import '../design/text.dart';
 import '../design/styled_button.dart';
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({
-    required this.registerAccount,
-    required this.cancel,
-    required this.email,
-    super.key,
-  });
-  final String email;
-  final void Function(String email, String displayName, String password)
-      registerAccount;
-  final void Function() cancel;
-  @override
-  State<RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_RegisterFormState');
-  final _emailController = TextEditingController();
-  final _displayNameController = TextEditingController();
-  final _passwordController = TextEditingController();
+class RegisterForm extends ConsumerWidget {
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    super.initState();
-    _emailController.text = widget.email;
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginStateNotifier = ref.read(loginControllerProvider.notifier);
 
-  @override
-  Widget build(BuildContext context) {
     return Column(
       children: [
-        const Header3('Create account'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+                        IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                loginStateNotifier.startLoginFlow();
+              },
+              splashRadius: 20,
+            ),
+            const Header3('Create account'),
+            const IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.transparent,
+              ),
+              onPressed: null,
+              splashRadius: 20,
+            ),
+          ],
+        ),
         const SizedBox(
           height: 15,
         ),
-        Form(
-          key: _formKey,
-          child: Column(
+        Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Montserrat',
-                ),
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your email',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Enter your email address to continue';
-                    }
-                    return null;
-                  },
-                ),
-              TextFormField(
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Montserrat',
-                ),
-                controller: _displayNameController,
-                decoration: const InputDecoration(
-                  hintText: 'First & last name',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter your account name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Montserrat',
-                ),
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter your password';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: widget.cancel,
-                      child: const Text('CANCEL'),
-                    ),
-                    const SizedBox(width: 16),
-                    StyledButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          widget.registerAccount(
-                            _emailController.text,
-                            _displayNameController.text,
-                            _passwordController.text,
-                          );
-                        }
-                      },
-                      child: const Text('SAVE'),
-                    ),
-                  ],
-                ),
-              ),
+              CustomTextField(
+              initialValue: loginStateNotifier.email,
+              enabled: false,
+              obscureText: false,
+            ),
+            CustomTextField(
+              hintText: 'Password',
+              setText: loginStateNotifier.setPassword,
+              obscureText: true,
+            ),
+            CustomTextField(
+              hintText: 'Confirm password',
+              setText: loginStateNotifier.setConfirmationPassword,
+              obscureText: true,
+            ),
             ],
           ),
-        ),
       ],
     );
   }

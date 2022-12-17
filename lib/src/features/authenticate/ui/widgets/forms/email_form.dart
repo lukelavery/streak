@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/design/text_field.dart';
 
 import '../design/text.dart';
 import '../design/styled_button.dart';
@@ -22,46 +25,15 @@ class _EmailFormState extends State<EmailForm> {
         const SizedBox(
           height: 15,
         ),
-        Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Montserrat',
-                ),
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Enter your email address to continue';
-                  }
-                  return null;
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16.0),
-                    child: StyledButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          widget.callback(_controller.text);
-                        }
-                      },
-                      child: const Text('NEXT'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        Consumer(
+          builder: ((context, ref, child) {
+            return CustomTextField(
+              initialValue: ref.read(loginControllerProvider.notifier).email,
+              hintText: 'Email',
+              setText: ref.read(loginControllerProvider.notifier).setEmail,
+              obscureText: false,
+            );
+          }),
         ),
       ],
     );
