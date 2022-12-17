@@ -26,7 +26,6 @@ class GridController
 
         if (streaks != null) {
           if (streaks![habit.id] != null) {
-            print('streaks list not null');
             for (var streak in streaks![habit.id]!) {
               DateTime streakYMD = DateTime(streak.dateTime.year,
                   streak.dateTime.month, streak.dateTime.day);
@@ -34,7 +33,6 @@ class GridController
             }
           }
         } else {
-          print('streaks null');
         }
         gridState[habit.id] = List.generate(182, (index) {
           if (index <= offset) {
@@ -48,9 +46,6 @@ class GridController
         });
       }
       state = AsyncValue.data(gridState);
-      for (var key in gridState.keys) {
-        // print(gridState[key]);
-      }
     }
   }
 

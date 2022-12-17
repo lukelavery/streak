@@ -48,7 +48,7 @@ class MyGridView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                         26,
-                        (parent_index) => Column(
+                        (parentIndex) => Column(
                               children: List.generate(
                                   7,
                                   (index) => Padding(
@@ -57,7 +57,7 @@ class MyGridView extends ConsumerWidget {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(2),
-                                              color: grid[habit.id]![(181 - (parent_index * 7 + index))].future ? Colors.white : grid[habit.id]![(181 - (parent_index * 7 + index))].streak ? Colors.pink : Colors.grey[200],
+                                              color: grid[habit.id]![(181 - (parentIndex * 7 + index))].future ? Colors.white : grid[habit.id]![(181 - (parentIndex * 7 + index))].streak ? Colors.pink : Colors.grey[200],
                                               ),
                                           height: 8,
                                           width: 8,
@@ -73,40 +73,6 @@ class MyGridView extends ConsumerWidget {
             loading: (() => const Center(child: CircularProgressIndicator())),
           );
         });
-
-        Card(
-          child: ListTile(
-            title: Row(
-              children: [
-                Icon(
-                  IconData(habit.iconCodePoint,
-                      fontFamily: habit.iconFontFamily,
-                      fontPackage: habit.iconFontPackage),
-                ),
-                Text(habit.name),
-              ],
-            ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                  26,
-                  (index) => Column(
-                        children: List.generate(
-                            7,
-                            (index) => Padding(
-                                  padding: const EdgeInsets.all(1.5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(2),
-                                        color: Colors.grey[300]),
-                                    height: 8,
-                                    width: 8,
-                                  ),
-                                )),
-                      )),
-            ),
-          ),
-        );
       }),
     );
   }

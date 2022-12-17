@@ -199,12 +199,12 @@ class NewHabitPreset {
 }
 
 Map<String, NewHabitPreset> habitPresets = {
-  'exercise': NewHabitPreset(
+  'exercise': const NewHabitPreset(
       type: 'exercise',
       iconCodePoint: 0xf44b,
       iconFontFamily: 'FontAwesomeSolid',
       iconFontPackage: 'font_awesome_flutter'),
-  'skill': NewHabitPreset(
+  'skill': const NewHabitPreset(
       type: 'skill',
       iconCodePoint: 0xf02d,
       iconFontFamily: 'FontAwesomeSolid',

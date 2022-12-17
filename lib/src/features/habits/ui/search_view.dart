@@ -13,7 +13,6 @@ class SearchView extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         title: TextField(onChanged: (value) {
-          print(value);
           ref.read(habitSearchControllerProvider.notifier).query(value);
         }),
         backgroundColor: Colors.grey[50],
@@ -41,7 +40,7 @@ class SearchView extends ConsumerWidget {
           return Text(error.toString());
         },
         loading: () {
-          return Text('loading');
+          return const Text('loading');
         },
       ),
     );

@@ -13,7 +13,7 @@ abstract class AuthService {
     String password,
   );
   Future<void> registerAccount(
-      String email, String displayName, String password);
+      String email, String password);
   void signOut();
 }
 
@@ -70,14 +70,13 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> registerAccount(
     String email,
-    String displayName,
     String password,
   ) async {
     try {
       var credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       _addUserDoc(credential.user!.uid);
-      await credential.user!.updateDisplayName(displayName);
+      // await credential.user!.updateDisplayName(displayName);
     } on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -89,6 +88,6 @@ class FirebaseAuthService implements AuthService {
   }
 
   Future<void> _addUserDoc(String uid) async {
-    await usersRef.doc(uid).set({'uid: uid'});
+    await usersRef.doc(uid).set({'uid': uid});
   }
 }

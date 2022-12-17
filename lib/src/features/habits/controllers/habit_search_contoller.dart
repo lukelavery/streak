@@ -30,10 +30,10 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   final String habitType;
   late List<HabitModel> habitList;
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
-  String query_text = '';
+  String queryText = '';
 
   void query(String q) {
-    query_text = q;
+    queryText = q;
     if (state.value != null) {
       state = AsyncValue.data(habitList
           .where(
@@ -64,7 +64,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   void createHabit() async {
     NewHabitPreset preset = habitPresets[habitType]!;
     await _read(newHabitServiceProvider)
-        .createHabit(preset: preset, name: query_text);
+        .createHabit(preset: preset, name: queryText);
   }
 
   void addHabit({required HabitModel habit}) async {

@@ -22,4 +22,11 @@ class Streak {
 
     return Streak(streakId: id, habitId: habitId, dateTime: dateTime);
   }
+
+  factory Streak.fromJSON(Map<String, dynamic> json, String habitId) {
+    return Streak(
+        streakId: json["id"],
+        habitId: habitId,
+        dateTime: DateTime.parse(json["created_at"]));
+  }
 }
