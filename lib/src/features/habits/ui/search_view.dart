@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
@@ -47,6 +48,8 @@ class SearchView extends ConsumerWidget {
                 title: Text(data[index].name),
                 onTap: () {
                   habitSearchStateNotifier.selectHabit(data[index]);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               );
             }),
