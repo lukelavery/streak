@@ -56,10 +56,11 @@ class GridController
   }
 
   Future<void> deleteStreak({required String habitId}) async {
-    await _read(streakServiceProvider).deleteStreak(habitId: habitId, dateTime: DateTime.now());
+    await _read(streakServiceProvider)
+        .deleteStreak(habitId: habitId, dateTime: DateTime.now());
   }
 
   Map<String, List<Streak>>? streaks;
   List<HabitModel>? habits;
-  Reader _read;
+  final Reader _read;
 }

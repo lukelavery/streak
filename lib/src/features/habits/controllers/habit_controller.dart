@@ -27,10 +27,6 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
-  // Future<void> createHabit(HabitPreset habit) async {
-  //   await _read(newHabitServiceProvider).createHabit(habit: habit);
-  // }
-
   Future<void> removeHabit(String habitId) async {
     await _read(newHabitServiceProvider).removeHabit(habitId: habitId);
   }

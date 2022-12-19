@@ -24,9 +24,9 @@ class MyHomePage extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                ref
-                    .read(habitViewController.notifier)
-                    .update((state) => !state);
+                ref.read(habitViewController.notifier).update((state) {
+                  return !state;
+                });
               },
               icon: const Icon(
                 Icons.edit,
