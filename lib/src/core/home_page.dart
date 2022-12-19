@@ -92,12 +92,8 @@ class MyHomePage extends ConsumerWidget {
       // child: MyCircularProgressIndicator()),
       floatingActionButton: Consumer(
         builder: (context, ref, child) => FloatingActionButton(
+          backgroundColor: Colors.black,
           onPressed: () {
-            // showSearch(
-            //   context: context,
-            //   delegate: CustomSearchDelegate(
-            //       addHabit: ref.read(habitControllerProvider.notifier).createHabit),
-            // );
             Navigator.push(
                 context,
                 MaterialPageRoute(

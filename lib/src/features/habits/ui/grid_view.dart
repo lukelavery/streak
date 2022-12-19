@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
@@ -23,6 +24,8 @@ class MyGridView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gridStateNotifier = ref.read(gridControllerProvider.notifier);
+
     return ListView.builder(
       itemCount: habits.length,
       itemBuilder: ((context, index) {
@@ -40,8 +43,31 @@ class MyGridView extends ConsumerWidget {
                         IconData(habit.iconCodePoint,
                             fontFamily: habit.iconFontFamily,
                             fontPackage: habit.iconFontPackage),
+                        color: Colors.black,
                       ),
                       Text(habit.name),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            gridStateNotifier.deleteStreak(habitId: habit.id);
+                          },
+                          icon: Icon(Icons.undo)),
+                      GestureDetector(
+                        onTap: () {
+                          gridStateNotifier.addStreak(habitId: habit.id);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              color: Colors.pink.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: const Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   subtitle: Row(
@@ -55,10 +81,21 @@ class MyGridView extends ConsumerWidget {
                                         padding: const EdgeInsets.all(1.5),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                              color: grid[habit.id]![(181 - (parentIndex * 7 + index))].future ? Colors.white : grid[habit.id]![(181 - (parentIndex * 7 + index))].streak ? Colors.pink : Colors.grey[200],
-                                              ),
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            color: grid[habit.id]![(181 -
+                                                        (parentIndex * 7 +
+                                                            index))]
+                                                    .future
+                                                ? Colors.white
+                                                : grid[habit.id]![(181 -
+                                                            (parentIndex * 7 +
+                                                                index))]
+                                                        .streak
+                                                    ? Colors.pink
+                                                    : Colors.pink
+                                                        .withOpacity(0.1),
+                                          ),
                                           height: 8,
                                           width: 8,
                                         ),
@@ -68,8 +105,7 @@ class MyGridView extends ConsumerWidget {
                 ),
               );
             },
-            error: (e, st) =>
-                    const Center(child: CircularProgressIndicator()),
+            error: (e, st) => const Center(child: CircularProgressIndicator()),
             loading: (() => const Center(child: CircularProgressIndicator())),
           );
         });

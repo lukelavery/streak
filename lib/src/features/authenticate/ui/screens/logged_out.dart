@@ -59,7 +59,6 @@ class LogInPage extends ConsumerWidget {
             child: LoggedOut(
           loginState: loginState,
           email: loginStateNotifier.email,
-          setEmail: authStateNotifier.setEmail,
           cancelRegistration: loginStateNotifier.cancelRegistration,
         )),
       ),
@@ -72,13 +71,11 @@ class LoggedOut extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.setEmail,
     required this.cancelRegistration,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(String) setEmail;
   final void Function() cancelRegistration;
 
   @override
@@ -115,7 +112,6 @@ class LoggedOut extends StatelessWidget {
           LoginEntryForm(
               loginState: loginState,
               email: email,
-              setEmail: setEmail,
               cancelRegistration: cancelRegistration,
             ),
           const Spacer(
@@ -132,13 +128,11 @@ class LoginEntryForm extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.setEmail,
     required this.cancelRegistration,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(String) setEmail;
   final void Function() cancelRegistration;
 
   @override
@@ -147,9 +141,7 @@ class LoginEntryForm extends StatelessWidget {
       case LoginStateModel.welcome:
         return const WelcomeForm();
       case LoginStateModel.emailAddress:
-        return EmailForm(callback: (email) {
-          setEmail(email);
-        });
+        return EmailForm();
       case LoginStateModel.password:
         return const PasswordForm();
       case LoginStateModel.register:

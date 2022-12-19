@@ -7,8 +7,7 @@ import '../design/text.dart';
 import '../design/styled_button.dart';
 
 class EmailForm extends StatefulWidget {
-  const EmailForm({required this.callback, super.key});
-  final void Function(String email) callback;
+  const EmailForm({super.key});
   @override
   State<EmailForm> createState() => _EmailFormState();
 }
