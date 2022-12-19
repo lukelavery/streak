@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
@@ -36,14 +35,19 @@ class MyGridView extends ConsumerWidget {
           return gridState.when(
             data: (grid) {
               return Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                elevation: 0.5,
                 child: ListTile(
                   title: Row(
                     children: [
-                      Icon(
-                        IconData(habit.iconCodePoint,
-                            fontFamily: habit.iconFontFamily,
-                            fontPackage: habit.iconFontPackage),
-                        color: Colors.black,
+                      CircleAvatar(
+                        backgroundColor: Colors.pink.shade200,
+                        child: Icon(
+                          IconData(habit.iconCodePoint,
+                              fontFamily: habit.iconFontFamily,
+                              fontPackage: habit.iconFontPackage),
+                          color: Colors.white,
+                        ),
                       ),
                       Text(habit.name),
                       const Spacer(),

@@ -67,6 +67,10 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
         .createHabit(preset: preset, name: queryText);
   }
 
+  void deleteHabit({required String habitId}) async {
+    await _read(newHabitServiceProvider).deleteHabit(habitId: habitId);
+  }
+
   void addHabit({required HabitModel habit}) async {
     await _read(newHabitServiceProvider).addHabit(habit: habit);
   }

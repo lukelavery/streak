@@ -8,6 +8,8 @@ class SearchView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final habitSearchState = ref.watch(habitSearchControllerProvider);
+    final habitSearchStateNotifier =
+        ref.read(habitSearchControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,14 +25,28 @@ class SearchView extends ConsumerWidget {
             itemCount: data.length,
             itemBuilder: ((context, index) {
               return ListTile(
-                leading: Icon(IconData(data[index].iconCodePoint,
-                    fontFamily: data[index].iconFontFamily,
-                    fontPackage: data[index].iconFontPackage)),
+                trailing: data[index].uid == null
+                    ? const IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.transparent,
+                        ),
+                        onPressed: null)
+                    : IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: (() {
+                          habitSearchStateNotifier.deleteHabit(
+                              habitId: data[index].id);
+                        }),
+                      ),
+                leading: Icon(
+                  IconData(data[index].iconCodePoint,
+                      fontFamily: data[index].iconFontFamily,
+                      fontPackage: data[index].iconFontPackage),
+                ),
                 title: Text(data[index].name),
                 onTap: () {
-                    ref
-                        .read(habitSearchControllerProvider.notifier)
-                        .selectHabit(data[index]);
+                  habitSearchStateNotifier.selectHabit(data[index]);
                 },
               );
             }),

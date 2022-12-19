@@ -199,9 +199,9 @@ showAlertDialog(BuildContext context, HabitModel habit, WidgetRef ref) {
 
   Widget undoButton = TextButton(
       onPressed: () {
-        ref
-            .read(streakControllerProvider.notifier)
-            .deleteStreak(habitId: habit.id);
+        // ref
+        //     .read(streakControllerProvider.notifier)
+        //     .deleteStreak(habitId: habit.id);
         Navigator.pop(context);
       },
       child: const Text('Undo'));

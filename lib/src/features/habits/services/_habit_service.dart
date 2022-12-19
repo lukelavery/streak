@@ -10,7 +10,7 @@ abstract class NewHabitService {
       {required NewHabitPreset preset, required String name});
   Future<void> addHabit({required HabitModel habit});
   Future<void> removeHabit({required String habitId});
-  // Future<void> deleteHabit({required String habitId});
+  Future<void> deleteHabit({required String habitId});
 }
 
 final newHabitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
@@ -53,6 +53,11 @@ class FirebaseHabitService implements NewHabitService {
   }
 
   @override
+  Future<void> deleteHabit({required String habitId}) async {
+    return habitsRef.doc(habitId).delete();
+  }
+
+  @override
   Future<void> removeHabit({required String habitId}) {
     final userHabitsRef = usersRef.doc(uid).collection('habits');
 
@@ -68,24 +73,5 @@ class FirebaseHabitService implements NewHabitService {
         return userHabitsRef.doc(habit.id).set(habit.toMap());
       }
     });
-
-    // return docRef.get().then((doc) {
-    //   final data = doc.data() as Map<String, dynamic>;
-    //   final habits = data['habit_list'] as List?;
-    //   if (habits == null) {
-    //     return docRef.update({
-    //       'habit_list': [habitId]
-    //     });
-    //   } else {
-    //     habits.add(habitId);
-    //     return docRef.update({'habit_list': habits});
-    //   }
-    // });
   }
-
-  // @override
-  // Future<void> deleteHabit({required String habitId}) {
-  //   return habitsRef.doc(habitId).delete();
-  // }
-
 }
