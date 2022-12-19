@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/services/_habit_service.dart';
+import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final habitControllerProvider =
     StateNotifierProvider.autoDispose<HabitController, AsyncValue<List<HabitModel>>>(
