@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/habits/ui/habit_card.dart';
 import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
@@ -27,6 +27,7 @@ class MyGridView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gridStateNotifier = ref.read(gridControllerProvider.notifier);
+    final habitStateNotifier = ref.read(habitControllerProvider.notifier);
 
     return ListView.builder(
       padding: const EdgeInsets.all(8),
@@ -38,105 +39,13 @@ class MyGridView extends ConsumerWidget {
           final gridState = ref.watch(gridControllerProvider);
           return gridState.when(
             data: (grid) {
-              return Stack(children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  elevation: 0.5,
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.pink.shade200,
-                          child: Icon(
-                            IconData(habit.iconCodePoint,
-                                fontFamily: habit.iconFontFamily,
-                                fontPackage: habit.iconFontPackage),
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(habit.name),
-                        const Spacer(),
-                        IconButton(
-                            onPressed: () {
-                              gridStateNotifier.deleteStreak(habitId: habit.id);
-                            },
-                            icon: Icon(Icons.undo)),
-                        GestureDetector(
-                          onTap: () {
-                            gridStateNotifier.addStreak(habitId: habit.id);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                color: Colors.pink.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Icon(
-                              Icons.check_circle_outline,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                          26,
-                          (parentIndex) => Column(
-                                children: List.generate(
-                                    7,
-                                    (index) => Padding(
-                                          padding: const EdgeInsets.all(1.5),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                              color: grid[habit.id]![(181 -
-                                                          (parentIndex * 7 +
-                                                              index))]
-                                                      .future
-                                                  ? Colors.white
-                                                  : grid[habit.id]![(181 -
-                                                              (parentIndex * 7 +
-                                                                  index))]
-                                                          .streak
-                                                      ? Colors.pink
-                                                      : Colors.pink
-                                                          .withOpacity(0.1),
-                                            ),
-                                            height: 8,
-                                            width: 8,
-                                          ),
-                                        )),
-                              )),
-                    ),
-                  ),
-                ),
-                ref.watch(habitViewController) == true
-                    ? GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(habitControllerProvider.notifier)
-                              .removeHabit(habits[index].id);
-                        },
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20),
-                          elevation: 1,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.grey.shade700,
-                              size: 15,
-                            ),
-                            radius: 10,
-                          ),
-                        ),
-                      )
-                    : Container(),
-              ]);
+              return HabitCard(
+                  habit: habits[index],
+                  tiles: grid[habit.id]!,
+                  edit: ref.watch(habitViewController),
+                  deleteStreak: gridStateNotifier.deleteStreak,
+                  addStreak: gridStateNotifier.addStreak,
+                  removeHabit: habitStateNotifier.removeHabit);
             },
             error: (e, st) => const Center(child: CircularProgressIndicator()),
             loading: (() => const Center(child: CircularProgressIndicator())),

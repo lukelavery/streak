@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/calendar/controllers/calendar_controller.dart';
 import 'package:streak/src/features/calendar/domain/calendar_model.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
 class CalendarPage extends ConsumerWidget {
