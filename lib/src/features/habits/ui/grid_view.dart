@@ -41,10 +41,10 @@ class MyGridView extends ConsumerWidget {
             data: (grid) {
               return HabitCard(
                   habit: habits[index],
-                  tiles: grid[habit.id]!,
+                  tiles: grid.gridModels[habit.id]!.gridTiles,
+                  today: grid.gridModels[habit.id]!.today,
                   edit: ref.watch(habitViewController),
-                  deleteStreak: gridStateNotifier.deleteStreak,
-                  addStreak: gridStateNotifier.addStreak,
+                  handleButtonClick: gridStateNotifier.handleButtonClick,
                   removeHabit: habitStateNotifier.removeHabit);
             },
             error: (e, st) => const Center(child: CircularProgressIndicator()),
