@@ -6,7 +6,7 @@ import 'package:streak/src/features/authenticate/controllers/auth_controller.dar
 abstract class StreakService {
   Stream<Map<String, List<Streak>>> get retrieveStreaks;
   Future<void> addStreak({required String habitId, required DateTime dateTime});
-  Future<void> deleteStreak({required String habitId});
+  Future<void> deleteStreak({required String habitId, required DateTime dateTime});
 }
 
 final streakServiceProvider = Provider.autoDispose<FirebaseStreakService>(
@@ -28,7 +28,8 @@ class FirebaseStreakService implements StreakService {
     return ref.snapshots().map((event) {
       Map<String, List<Streak>> streaks = {};
       for (var doc in event.docs) {
-        Streak streak = Streak.fromMap(doc.id, doc.data() as Map<String, dynamic>?);
+        Streak streak =
+            Streak.fromMap(doc.id, doc.data() as Map<String, dynamic>?);
 
         var oldList = streaks[streak.habitId];
 
@@ -57,7 +58,23 @@ class FirebaseStreakService implements StreakService {
   }
 
   @override
-  Future<void> deleteStreak({required String habitId}) {
-    return streaksRef.doc(habitId).delete();
+  Future<void> deleteStreak({required String habitId, required DateTime dateTime}) {
+    return streaksRef
+        .where('uid', isEqualTo: uid)
+        .where('habitId', isEqualTo: habitId)
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
+      var doc = value.docs.first;
+      var data = doc.data() as Map<String, dynamic>;
+      Timestamp timestamp = data['timestamp'];
+      var streakDateTime = timestamp.toDate();
+
+      if (DateTime(dateTime.year, dateTime.month, dateTime.day) ==
+          DateTime(streakDateTime.year, streakDateTime.month, streakDateTime.day)) {
+        streaksRef.doc(doc.id).delete();
+      }
+    });
   }
 }

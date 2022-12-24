@@ -37,7 +37,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
     if (_email != '') {
       try {
         var result =
-            await await _read(authRepositoryProvider).verifyEmail(email);
+            await _read(authRepositoryProvider).verifyEmail(email);
         if (result == true) {
           state = LoginStateModel.password;
         } else {
@@ -47,7 +47,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
         _handleException(e);
       }
     } else {
-      _handleException(CustomException(message: 'Email address is empty.'));
+      _handleException(const CustomException(message: 'Email address is empty.'));
     }
   }
 

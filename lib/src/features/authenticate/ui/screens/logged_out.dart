@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/welcome_form.dart';
 import '../../domain/login_state_model.dart';
@@ -15,8 +14,6 @@ class LogInPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authControllerProvider);
-    final authStateNotifier = ref.watch(authControllerProvider.notifier);
     final loginState = ref.watch(loginControllerProvider);
     final loginStateNotifier = ref.read(loginControllerProvider.notifier);
 
@@ -26,7 +23,7 @@ class LogInPage extends ConsumerWidget {
         if (next != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
               backgroundColor: Colors.red[800],
               content: Text(
                 next.message!,
@@ -39,7 +36,7 @@ class LogInPage extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-          icon: loginState == LoginStateModel.welcome ? null : Icon(Icons.arrow_forward),
+          icon: loginState == LoginStateModel.welcome ? null : const Icon(Icons.arrow_forward),
           label: Row(
             children: const [
               Text(
@@ -59,7 +56,6 @@ class LogInPage extends ConsumerWidget {
             child: LoggedOut(
           loginState: loginState,
           email: loginStateNotifier.email,
-          setEmail: authStateNotifier.setEmail,
           cancelRegistration: loginStateNotifier.cancelRegistration,
         )),
       ),
@@ -72,13 +68,11 @@ class LoggedOut extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.setEmail,
     required this.cancelRegistration,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(String) setEmail;
   final void Function() cancelRegistration;
 
   @override
@@ -115,7 +109,6 @@ class LoggedOut extends StatelessWidget {
           LoginEntryForm(
               loginState: loginState,
               email: email,
-              setEmail: setEmail,
               cancelRegistration: cancelRegistration,
             ),
           const Spacer(
@@ -132,13 +125,11 @@ class LoginEntryForm extends StatelessWidget {
     Key? key,
     required this.loginState,
     required this.email,
-    required this.setEmail,
     required this.cancelRegistration,
   }) : super(key: key);
 
   final LoginStateModel loginState;
   final String? email;
-  final void Function(String) setEmail;
   final void Function() cancelRegistration;
 
   @override
@@ -147,9 +138,7 @@ class LoginEntryForm extends StatelessWidget {
       case LoginStateModel.welcome:
         return const WelcomeForm();
       case LoginStateModel.emailAddress:
-        return EmailForm(callback: (email) {
-          setEmail(email);
-        });
+        return const EmailForm();
       case LoginStateModel.password:
         return const PasswordForm();
       case LoginStateModel.register:

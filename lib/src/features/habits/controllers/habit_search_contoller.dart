@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/controllers/habit_type_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/services/_habit_service.dart';
+import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final habitSearchControllerProvider = StateNotifierProvider.autoDispose<
         HabitController, AsyncValue<List<HabitModel>>>(
@@ -65,6 +65,10 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     NewHabitPreset preset = habitPresets[habitType]!;
     await _read(newHabitServiceProvider)
         .createHabit(preset: preset, name: queryText);
+  }
+
+  void deleteHabit({required String habitId}) async {
+    await _read(newHabitServiceProvider).deleteHabit(habitId: habitId);
   }
 
   void addHabit({required HabitModel habit}) async {

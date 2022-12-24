@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
+import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/habits/ui/habit_card.dart';
 import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
@@ -23,7 +26,11 @@ class MyGridView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gridStateNotifier = ref.read(gridControllerProvider.notifier);
+    final habitStateNotifier = ref.read(habitControllerProvider.notifier);
+
     return ListView.builder(
+      padding: const EdgeInsets.all(8),
       itemCount: habits.length,
       itemBuilder: ((context, index) {
         HabitModel habit = habits[index];
@@ -32,44 +39,16 @@ class MyGridView extends ConsumerWidget {
           final gridState = ref.watch(gridControllerProvider);
           return gridState.when(
             data: (grid) {
-              return Card(
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Icon(
-                        IconData(habit.iconCodePoint,
-                            fontFamily: habit.iconFontFamily,
-                            fontPackage: habit.iconFontPackage),
-                      ),
-                      Text(habit.name),
-                    ],
-                  ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                        26,
-                        (parentIndex) => Column(
-                              children: List.generate(
-                                  7,
-                                  (index) => Padding(
-                                        padding: const EdgeInsets.all(1.5),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                              color: grid[habit.id]![(181 - (parentIndex * 7 + index))].future ? Colors.white : grid[habit.id]![(181 - (parentIndex * 7 + index))].streak ? Colors.pink : Colors.grey[200],
-                                              ),
-                                          height: 8,
-                                          width: 8,
-                                        ),
-                                      )),
-                            )),
-                  ),
-                ),
-              );
+              return HabitCard(
+                  counter: counters[habit.id]!.count,
+                  habit: habits[index],
+                  tiles: grid.gridModels[habit.id]!.gridTiles,
+                  today: grid.gridModels[habit.id]!.today,
+                  edit: ref.watch(habitViewController),
+                  handleButtonClick: gridStateNotifier.handleButtonClick,
+                  removeHabit: habitStateNotifier.removeHabit);
             },
-            error: (e, st) =>
-                    const Center(child: CircularProgressIndicator()),
+            error: (e, st) => const Center(child: CircularProgressIndicator()),
             loading: (() => const Center(child: CircularProgressIndicator())),
           );
         });

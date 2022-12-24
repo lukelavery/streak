@@ -1,199 +1,202 @@
 import 'package:flutter/material.dart';
-import 'package:streak/src/features/calendar/ui/calendar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/streaks/models/streak_model.dart';
-import 'package:streak/src/features/streaks/ui/counter.dart';
-import 'package:vibration/vibration.dart';
+import 'package:streak/src/features/habits/ui/activity_grid.dart';
+import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
-class HabitCard extends StatefulWidget {
-  const HabitCard({
-    Key? key,
-    required this.habit,
-    required this.name,
-    required this.icon,
-    required this.counter,
-    required this.increment,
-    required this.streaks,
-  }) : super(key: key);
+class HabitCard extends StatelessWidget {
+  const HabitCard(
+      {Key? key,
+      required this.habit,
+      required this.tiles,
+      required this.edit,
+      required this.handleButtonClick,
+      required this.removeHabit,
+      required this.today,
+      required this.counter})
+      : super(key: key);
 
   final HabitModel habit;
-  final String name;
-  final IconData icon;
-  final int? counter;
-  final Future<void> Function(String, DateTime) increment;
-  final List<Streak>? streaks;
-
-  @override
-  State<HabitCard> createState() => _HabitCardState();
-}
-
-class _HabitCardState extends State<HabitCard> with TickerProviderStateMixin {
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    )..addListener(() {
-        setState(() {});
-        if (controller.value == 1) {
-          DateTime dateTime = DateTime.now();
-          widget.increment(widget.habit.id, dateTime);
-          // HapticFeedback.heavyImpact();
-          Vibration.vibrate(duration: 500);
-          controller.reset();
-        }
-      });
-    super.initState();
-  }
-
-  void startAnimation() {
-    controller.forward();
-  }
-
-  void endAnimation() {
-            if (controller.value < 0.1) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) =>
-                      CalendarPage(streaks: widget.streaks, habit: widget.habit,))));
-        }
-    controller.reset();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  final bool edit;
+  final bool today;
+  final List<GridTileModel> tiles;
+  final Future<void> Function({required String habitId}) handleButtonClick;
+  final Future<void> Function({required String habitId}) removeHabit;
+  final int counter;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTapDown: (details) => startAnimation(),
-          onTapUp: (details) => endAnimation(),
-          onTapCancel: () => endAnimation(),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                height: 110,
-                width: 110,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: CircularProgressIndicator(
-                    color: Colors.grey[300],
-                    value: 1,
-                    strokeWidth: 10,
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          elevation: 0.5,
+          child: ListTile(
+            title: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.pink.shade200,
+                    child: Icon(
+                      IconData(habit.iconCodePoint,
+                          fontFamily: habit.iconFontFamily,
+                          fontPackage: habit.iconFontPackage),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 110,
-                width: 110,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: CircularProgressIndicator(
-                    color: const Color.fromARGB(255, 255, 197, 23),
-                    value: controller.value,
-                    strokeWidth: 10,
+                  const SizedBox(
+                    width: 10,
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: CircleAvatar(
-                  radius: 40,
-                  child: Icon(
-                    widget.icon,
-                    size: 25,
+                  Text(
+                    habit.name,
+                    style: const TextStyle(
+                        fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
                   ),
-                ),
+                  const Spacer(),
+                  StreakCounter(
+                    today: today,
+                    counter: counter,
+                  ),
+                  CompleteButton(
+                    today: today,
+                    handleButtonClick: handleButtonClick,
+                    habit: habit,
+                  ),
+                ],
               ),
-              // Positioned(
-              //   top: 0,
-              //   right: 0,
-              //   child: MyCounter(
-              //   counter: widget.counter,
-              //   habit: widget.habit,
-              // ),
-              // ),
-            ],
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: ActivityGrid(tiles: tiles),
+            ),
           ),
         ),
-        Text(widget.name,
-            style: const TextStyle(
-                fontFamily: 'Montserrat', fontWeight: FontWeight.w700)),
-      ],
+      ),
+      edit == true
+          ? GestureDetector(
+              onTap: () {
+                removeHabit(habitId: habit.id);
+              },
+              child: Material(
+                borderRadius: BorderRadius.circular(20),
+                elevation: 1,
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 10,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.grey.shade700,
+                    size: 15,
+                  ),
+                ),
+              ),
+            )
+          : Container(),
+    ]);
+  }
+}
+
+class CompleteButton extends StatelessWidget {
+  const CompleteButton(
+      {Key? key,
+      required this.today,
+      required this.handleButtonClick,
+      required this.habit})
+      : super(key: key);
+
+  final bool today;
+  final Future<void> Function({required String habitId}) handleButtonClick;
+  final HabitModel habit;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(7),
+      onLongPress: (() {
+        handleButtonClick(habitId: habit.id);
+      }),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+            color: today
+                ? Colors.pink.withOpacity(0.8)
+                : Colors.pink.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(7)),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Text(
+                'complete',
+                style: TextStyle(
+                  color: today ? Colors.white : Colors.grey,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.check_circle_outline,
+              color: today ? Colors.white : Colors.grey,
+              size: 17,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class SlessHabitCard extends StatelessWidget {
-  const SlessHabitCard({
-    Key? key,
-    required this.habit,
-    required this.name,
-    required this.icon,
-    required this.counter,
-  }) : super(key: key);
+class StreakCounter extends StatelessWidget {
+  const StreakCounter({Key? key, required this.today, required this.counter})
+      : super(key: key);
 
-  final HabitModel habit;
-  final String name;
-  final IconData icon;
-  final int? counter;
+  final bool today;
+  final int counter;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          alignment: Alignment.center,
+    final activeStreak = counter > 0 ? true : false;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 7.0),
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: today
+                  ? Colors.pink.withOpacity(0.8)
+                  : Colors.pink.withOpacity(0.2),
+            ),
+            borderRadius: BorderRadius.circular(7)),
+        child: Row(
+          textBaseline: TextBaseline.ideographic,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
           children: [
-            SizedBox(
-              height: 110,
-              width: 110,
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: CircularProgressIndicator(
-                  color: Colors.grey[50],
-                  value: 1,
-                  strokeWidth: 10,
-                ),
-              ),
+            FaIcon(
+              FontAwesomeIcons.fireFlameCurved,
+              size: 17,
+              color: activeStreak ? Colors.black : Colors.grey,
             ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: CircleAvatar(
-                backgroundColor: const Color.fromARGB(255, 255, 197, 23),
-                radius: 40,
-                child: Icon(
-                  color: const Color.fromARGB(255, 217, 143, 15),
-                  icon,
-                  size: 25,
-                ),
-              ),
+            const SizedBox(
+              width: 4,
             ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: MyCounter(
-                counter: counter,
-                habit: habit,
+            Text(
+              counter.toString(),
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                color: activeStreak ? Colors.black : Colors.grey,
               ),
             ),
           ],
         ),
-        Text(name,
-            style: const TextStyle(
-                fontFamily: 'Montserrat', fontWeight: FontWeight.w700)),
-      ],
+      ),
     );
   }
 }

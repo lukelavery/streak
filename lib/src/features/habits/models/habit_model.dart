@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HabitModel {
   const HabitModel(
-      {required this.id,
+      {
+      required this.id,
       required this.name,
       required this.iconCodePoint,
       required this.iconFontFamily,
       this.iconFontPackage,
-      required this.type});
+      required this.type,
+      this.uid,
+    });
 
   final String id;
   final String name;
@@ -15,6 +18,7 @@ class HabitModel {
   final String iconFontFamily;
   final String? iconFontPackage;
   final String type;
+  final String? uid;
 
   factory HabitModel.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
@@ -28,6 +32,7 @@ class HabitModel {
       iconFontFamily: data['iconFontFamily'],
       iconFontPackage: data['iconFontPackage'],
       type: data['type'],
+      uid: data['uid'],
     );
   }
 
@@ -38,6 +43,7 @@ class HabitModel {
       'iconFontFamily': iconFontFamily,
       'iconFontPackage': iconFontPackage,
       'type': type,
+      'uid': uid,
     };
   }
 }

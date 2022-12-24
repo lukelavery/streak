@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
 import 'package:streak/src/features/habits/ui/create_habit.dart';
 import 'package:streak/src/features/habits/ui/grid_view.dart';
@@ -16,15 +17,16 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: backgroundColour,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey[50],
+        backgroundColor: backgroundColour,
         actions: [
           IconButton(
               onPressed: () {
-                ref
-                    .read(habitViewController.notifier)
-                    .update((state) => !state);
+                ref.read(habitViewController.notifier).update((state) {
+                  return !state;
+                });
               },
               icon: const Icon(
                 Icons.edit,
@@ -92,12 +94,8 @@ class MyHomePage extends ConsumerWidget {
       // child: MyCircularProgressIndicator()),
       floatingActionButton: Consumer(
         builder: (context, ref, child) => FloatingActionButton(
+          backgroundColor: Colors.black,
           onPressed: () {
-            // showSearch(
-            //   context: context,
-            //   delegate: CustomSearchDelegate(
-            //       addHabit: ref.read(habitControllerProvider.notifier).createHabit),
-            // );
             Navigator.push(
                 context,
                 MaterialPageRoute(

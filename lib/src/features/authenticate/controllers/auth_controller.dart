@@ -7,7 +7,7 @@ final authControllerProvider = StateNotifierProvider<AuthController, UserModel>(
     (ref) => AuthController(ref.read));
 
 class AuthController extends StateNotifier<UserModel> {
-  AuthController(this._read) : super(const UserModel(uid: null, email: null)) {
+  AuthController(this._read) : super(const UserModel(uid: null, email: null, isVerified: false)) {
     _authStateChangesSubscription?.cancel();
     _authStateChangesSubscription =
         _read(authRepositoryProvider).authStateChanges.listen((user) {
@@ -26,9 +26,5 @@ class AuthController extends StateNotifier<UserModel> {
 
   Future<void> signOut() async {
     await _read(authRepositoryProvider).signOut();
-  }
-
-  void setEmail(String email) {
-    state = UserModel(uid: state.uid, email: email);
   }
 }

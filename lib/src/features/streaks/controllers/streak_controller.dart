@@ -35,7 +35,7 @@ class StreakController
         .addStreak(habitId: habitId, dateTime: dateTime);
   }
 
-  Future<void> deleteStreak({required String habitId}) async {
-    await _read(streakServiceProvider).deleteStreak(habitId: habitId);
-  }
+  // Future<void> deleteStreak({required String habitId}) async {
+  //   await _read(streakServiceProvider).deleteStreak(habitId: habitId);
+  // }
 }
