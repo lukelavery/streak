@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/habits/controllers/habit_controller.dart';
-import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/ui/habit_card.dart';
+import 'package:streak/src/features/activities/controllers/habit_controller.dart';
+import 'package:streak/src/features/activities/controllers/habit_view_controller.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/activities/ui/habit_card.dart';
 import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 

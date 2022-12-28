@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/ui/activity_grid.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/activities/ui/activity_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class HabitCard extends StatelessWidget {

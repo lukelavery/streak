@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/habits/controllers/habit_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/activities/controllers/habit_controller.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
 import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';

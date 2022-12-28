@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/goals/ui/pages/create_goal_page.dart';
-import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
+import 'package:streak/src/features/activities/controllers/habit_search_contoller.dart';
+import 'package:streak/src/features/habits/ui/pages/create_goal_page.dart';
 
 class SearchView extends ConsumerWidget {
   const SearchView({Key? key}) : super(key: key);

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/goals/controllers/create_habit_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 
 class CreateGoalPage extends ConsumerWidget {
   const CreateGoalPage({Key? key, required this.habit}) : super(key: key);
@@ -56,11 +56,11 @@ class CreateGoalPage extends ConsumerWidget {
         child: Column(
           children: [
             Text(habit.name),
-            Text('Description'),
+            const Text('Description'),
             TextField(
               onChanged: (value) => createHabitStateNotifier.setDescription(value),
             ),
-            Text('Color'),
+            const Text('Color'),
             Expanded(
               child: GridView.builder(
                 itemCount: colors.length,

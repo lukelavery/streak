@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
 class Counter {

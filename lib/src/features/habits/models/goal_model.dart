@@ -1,4 +1,6 @@
-import 'package:streak/src/features/habits/models/habit_model.dart';
+
+
+import 'package:streak/src/features/activities/models/habit_model.dart';
 
 class GoalModel {
   const GoalModel(

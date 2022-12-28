@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/habits/controllers/habit_controller.dart';
-import 'package:streak/src/features/habits/controllers/habit_view_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/activities/controllers/habit_controller.dart';
+import 'package:streak/src/features/activities/controllers/habit_view_controller.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
 
 class MyCounter extends ConsumerWidget {
   const MyCounter({Key? key, required this.counter, required this.habit}) : super(key: key);

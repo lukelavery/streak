@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/activities/models/habit_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class HabitService {
   Stream<List<HabitModel>> getHabits({required String habitType});
