@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/goals/ui/pages/create_goal_page.dart';
 import 'package:streak/src/features/habits/controllers/habit_search_contoller.dart';
 
 class SearchView extends ConsumerWidget {
@@ -46,9 +47,14 @@ class SearchView extends ConsumerWidget {
                 ),
                 title: Text(data[index].name),
                 onTap: () {
-                  habitSearchStateNotifier.selectHabit(data[index]);
+                  // habitSearchStateNotifier.selectHabit(data[index]);
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CreateGoalPage(habit: data[index])));
                 },
               );
             }),

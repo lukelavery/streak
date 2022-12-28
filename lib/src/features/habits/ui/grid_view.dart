@@ -40,6 +40,7 @@ class MyGridView extends ConsumerWidget {
           return gridState.when(
             data: (grid) {
               return HabitCard(
+                color: Colors.teal,
                   counter: counters[habit.id]!.count,
                   habit: habits[index],
                   tiles: grid.gridModels[habit.id]!.gridTiles,

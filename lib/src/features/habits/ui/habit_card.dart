@@ -5,16 +5,17 @@ import 'package:streak/src/features/habits/ui/activity_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class HabitCard extends StatelessWidget {
-  const HabitCard(
-      {Key? key,
-      required this.habit,
-      required this.tiles,
-      required this.edit,
-      required this.handleButtonClick,
-      required this.removeHabit,
-      required this.today,
-      required this.counter})
-      : super(key: key);
+  const HabitCard({
+    Key? key,
+    required this.habit,
+    required this.tiles,
+    required this.edit,
+    required this.handleButtonClick,
+    required this.removeHabit,
+    required this.today,
+    required this.counter,
+    required this.color,
+  }) : super(key: key);
 
   final HabitModel habit;
   final bool edit;
@@ -23,6 +24,7 @@ class HabitCard extends StatelessWidget {
   final Future<void> Function({required String habitId}) handleButtonClick;
   final Future<void> Function({required String habitId}) removeHabit;
   final int counter;
+  final MaterialColor color;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,8 @@ class HabitCard extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.pink.shade200,
+                    // backgroundColor: Colors.pink.shade200,
+                    backgroundColor: color[200],
                     child: Icon(
                       IconData(habit.iconCodePoint,
                           fontFamily: habit.iconFontFamily,
@@ -59,18 +62,20 @@ class HabitCard extends StatelessWidget {
                   StreakCounter(
                     today: today,
                     counter: counter,
+                    color: color,
                   ),
                   CompleteButton(
                     today: today,
                     handleButtonClick: handleButtonClick,
                     habit: habit,
+                    color: color,
                   ),
                 ],
               ),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: ActivityGrid(tiles: tiles),
+              child: ActivityGrid(tiles: tiles, color: color,),
             ),
           ),
         ),
@@ -100,16 +105,18 @@ class HabitCard extends StatelessWidget {
 }
 
 class CompleteButton extends StatelessWidget {
-  const CompleteButton(
-      {Key? key,
-      required this.today,
-      required this.handleButtonClick,
-      required this.habit})
-      : super(key: key);
+  const CompleteButton({
+    Key? key,
+    required this.today,
+    required this.handleButtonClick,
+    required this.habit,
+    required this.color,
+  }) : super(key: key);
 
   final bool today;
   final Future<void> Function({required String habitId}) handleButtonClick;
   final HabitModel habit;
+  final MaterialColor color;
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +128,7 @@ class CompleteButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-            color: today
-                ? Colors.pink.withOpacity(0.8)
-                : Colors.pink.withOpacity(0.2),
+            color: today ? color.withOpacity(0.8) : color.withOpacity(0.2),
             borderRadius: BorderRadius.circular(7)),
         child: Row(
           children: [
@@ -152,11 +157,12 @@ class CompleteButton extends StatelessWidget {
 }
 
 class StreakCounter extends StatelessWidget {
-  const StreakCounter({Key? key, required this.today, required this.counter})
+  const StreakCounter({Key? key, required this.today, required this.counter, required this.color})
       : super(key: key);
 
   final bool today;
   final int counter;
+  final MaterialColor color;
 
   @override
   Widget build(BuildContext context) {
@@ -164,13 +170,13 @@ class StreakCounter extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7.0),
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
         decoration: BoxDecoration(
             border: Border.all(
               width: 1,
               color: today
-                  ? Colors.pink.withOpacity(0.8)
-                  : Colors.pink.withOpacity(0.2),
+                  ? color.withOpacity(0.8)
+                  : color.withOpacity(0.2),
             ),
             borderRadius: BorderRadius.circular(7)),
         child: Row(

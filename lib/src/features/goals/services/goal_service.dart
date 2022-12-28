@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/goals/models/goal_model.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class GoalService {
   Stream<List<GoalModel>> getGoals();
-  Future<void> addGoal({required GoalModel goal});
+   Future<void> addGoal(
+      {required HabitModel habit, required int color, required String description});
   Future<void> removeGoal({required String goalId});
 }
 
-final newHabitServiceProvider = Provider.autoDispose<FirebaseGoalService>(
+final goalServiceProvider = Provider.autoDispose<FirebaseGoalService>(
     (ref) => FirebaseGoalService(ref.read(authControllerProvider).uid));
 
 class FirebaseGoalService implements GoalService {
@@ -24,17 +26,19 @@ class FirebaseGoalService implements GoalService {
   @override
   Stream<List<GoalModel>> getGoals() {
     return goalsRef.snapshots().map((event) => event.docs
-        .map((doc) => GoalModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
+        .map((doc) =>
+            GoalModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
         .toList());
   }
 
   @override
-  Future<void> addGoal({required GoalModel goal}) async {
-
-    goalsRef.doc(goal.id).get().then((doc) {
-      if (!doc.exists) {
-        return goalsRef.doc(goal.id).set(goal.toMap());
-      }
+  Future<void> addGoal(
+      {required HabitModel habit, required int color, required String description}) async {
+    await goalsRef.add({
+      'color': color,
+      'description': description,
+      'habitId': habit.id,
+      'uid': uid,
     });
   }
 

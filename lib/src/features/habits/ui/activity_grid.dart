@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class ActivityGrid extends StatelessWidget {
-  const ActivityGrid({Key? key, required this.tiles}) : super(key: key);
+  const ActivityGrid({Key? key, required this.tiles, required this.color})
+      : super(key: key);
 
   final List<GridTileModel> tiles;
+  final MaterialColor color;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,8 @@ class ActivityGrid extends StatelessWidget {
                   color: tiles[(181 - (parentIndex * 7 + index))].future
                       ? Colors.white
                       : tiles[(181 - (parentIndex * 7 + index))].streak
-                          ? Colors.pink
-                          : Colors.pink.withOpacity(0.1),
+                          ? color
+                          : color.withOpacity(0.1),
                 ),
                 height: 8,
                 width: 8,

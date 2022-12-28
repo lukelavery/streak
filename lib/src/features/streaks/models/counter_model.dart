@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
 class Counter {
@@ -21,13 +22,15 @@ class Counter {
       int count = 1;
 
       for (var i = 1; i < streaks.length; i++) {
-        int difference3 =
-            streaks[i - 1].dateTime.difference(streaks[i].dateTime).inDays;
+        int? difference3 =
+            getDifference(streaks[i].dateTime, streaks[i - 1].dateTime);
 
-        if (difference3 > 1) {
-          return Counter(count: count);
-        } else {
-          count++;
+        if (difference3 != null) {
+          if (difference3 > 1) {
+            return Counter(count: count);
+          } else {
+            count++;
+          }
         }
       }
       return Counter(count: count);
