@@ -4,11 +4,11 @@ import 'package:streak/src/features/activities/models/habit_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 
 abstract class HabitService {
-  Stream<List<HabitModel>> getHabits({required String habitType});
-  Stream<List<HabitModel>> getUserHabits();
+  Stream<List<ActivityModel>> getHabits({required String habitType});
+  Stream<List<ActivityModel>> getUserHabits();
   Future<void> createHabit(
       {required NewHabitPreset preset, required String name});
-  Future<void> addHabit({required HabitModel habit});
+  Future<void> addHabit({required ActivityModel habit});
   Future<void> removeHabit({required String habitId});
   Future<void> deleteHabit({required String habitId});
 }
@@ -26,19 +26,19 @@ class FirebaseHabitService implements HabitService {
   CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
 
   @override
-  Stream<List<HabitModel>> getHabits({required String habitType}) {
+  Stream<List<ActivityModel>> getHabits({required String habitType}) {
     final ref = habitsRef.where('type', isEqualTo: habitType);
     return ref.snapshots().map((event) => event.docs
         .map((doc) =>
-            HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
+            ActivityModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
         .toList());
   }
 
   @override
-  Stream<List<HabitModel>> getUserHabits() {
+  Stream<List<ActivityModel>> getUserHabits() {
     final ref = usersRef.doc(uid).collection('habits');
     return ref.snapshots().map((event) => event.docs
-        .map((doc) => HabitModel.fromMap(doc.id, doc.data()))
+        .map((doc) => ActivityModel.fromMap(doc.id, doc.data()))
         .toList());
   }
 
@@ -49,7 +49,7 @@ class FirebaseHabitService implements HabitService {
     data['name'] = name;
     data['uid'] = uid;
     final docRef = await habitsRef.add(data);
-    addHabit(habit: HabitModel.fromMap(docRef.id, data));
+    addHabit(habit: ActivityModel.fromMap(docRef.id, data));
   }
 
   @override
@@ -65,7 +65,7 @@ class FirebaseHabitService implements HabitService {
   }
 
   @override
-  Future<void> addHabit({required HabitModel habit}) async {
+  Future<void> addHabit({required ActivityModel habit}) async {
     final userHabitsRef = usersRef.doc(uid).collection('habits');
 
     userHabitsRef.doc(habit.id).get().then((doc) {

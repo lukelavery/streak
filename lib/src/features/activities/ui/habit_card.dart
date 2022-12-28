@@ -17,7 +17,7 @@ class HabitCard extends StatelessWidget {
     required this.color,
   }) : super(key: key);
 
-  final HabitModel habit;
+  final ActivityModel habit;
   final bool edit;
   final bool today;
   final List<GridTileModel> tiles;
@@ -115,7 +115,7 @@ class CompleteButton extends StatelessWidget {
 
   final bool today;
   final Future<void> Function({required String habitId}) handleButtonClick;
-  final HabitModel habit;
+  final ActivityModel habit;
   final MaterialColor color;
 
   @override

@@ -8,7 +8,7 @@ import 'package:streak/src/features/habits/controllers/create_habit_controller.d
 class CreateGoalPage extends ConsumerWidget {
   const CreateGoalPage({Key? key, required this.habit}) : super(key: key);
 
-  final HabitModel habit;
+  final ActivityModel habit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

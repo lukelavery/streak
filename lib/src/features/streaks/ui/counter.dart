@@ -8,7 +8,7 @@ class MyCounter extends ConsumerWidget {
   const MyCounter({Key? key, required this.counter, required this.habit}) : super(key: key);
 
   final int? counter;
-  final HabitModel habit;
+  final ActivityModel habit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

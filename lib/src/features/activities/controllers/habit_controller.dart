@@ -8,9 +8,9 @@ import 'package:streak/src/features/activities/services/habit_service.dart';
 
 final habitControllerProvider = StateNotifierProvider.autoDispose<
     HabitController,
-    AsyncValue<List<HabitModel>>>((ref) => HabitController(ref.read));
+    AsyncValue<List<ActivityModel>>>((ref) => HabitController(ref.read));
 
-class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
+class HabitController extends StateNotifier<AsyncValue<List<ActivityModel>>> {
   HabitController(this._read) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
@@ -26,9 +26,9 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   }
 
   final Reader _read;
-  AsyncValue<List<HabitModel>>? previousState;
+  AsyncValue<List<ActivityModel>>? previousState;
 
-  StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
+  StreamSubscription<List<ActivityModel>>? _habitStreamSubscription;
 
   Future<void> removeHabit({required String habitId}) async {
     await _read(newHabitServiceProvider).removeHabit(habitId: habitId);

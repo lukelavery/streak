@@ -27,7 +27,7 @@ class CounterController
 
   // final Reader _read;
   Map<String, List<Streak>>? streaks;
-  List<HabitModel>? habits;
+  List<ActivityModel>? habits;
   Map<String, Counter> counters = {};
   Map<String, Counter> baseCounters = {};
 }

@@ -5,10 +5,10 @@ import 'package:streak/src/features/activities/models/habit_model.dart';
 import 'package:streak/src/features/activities/services/habit_service.dart';
 
 final habitSearchControllerProvider = StateNotifierProvider.autoDispose<
-        HabitController, AsyncValue<List<HabitModel>>>(
+        HabitController, AsyncValue<List<ActivityModel>>>(
     (ref) => HabitController(ref.read, ref.watch(habitTypeController)));
 
-class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
+class HabitController extends StateNotifier<AsyncValue<List<ActivityModel>>> {
   HabitController(this._read, this.habitType)
       : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
@@ -28,8 +28,8 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   final Reader _read;
   final String habitType;
-  late List<HabitModel> habitList;
-  StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
+  late List<ActivityModel> habitList;
+  StreamSubscription<List<ActivityModel>>? _habitStreamSubscription;
   String queryText = '';
 
   void query(String q) {
@@ -42,7 +42,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
       if (q != '') {
         state = AsyncValue.data([
           ...state.value!,
-          HabitModel(
+          ActivityModel(
               id: '',
               name: 'Create custom habit: $q',
               iconCodePoint: 0xe047,
@@ -53,7 +53,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     }
   }
 
-  void selectHabit(HabitModel habit) {
+  void selectHabit(ActivityModel habit) {
     if (habit.id == '') {
       createHabit();
     } else {
@@ -71,7 +71,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     await _read(newHabitServiceProvider).deleteHabit(habitId: habitId);
   }
 
-  void addHabit({required HabitModel habit}) async {
+  void addHabit({required ActivityModel habit}) async {
     await _read(newHabitServiceProvider).addHabit(habit: habit);
   }
 }

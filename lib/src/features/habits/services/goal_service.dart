@@ -7,7 +7,7 @@ import 'package:streak/src/features/habits/models/goal_model.dart';
 abstract class GoalService {
   Stream<List<GoalModel>> getGoals();
    Future<void> addGoal(
-      {required HabitModel habit, required int color, required String description});
+      {required ActivityModel habit, required int color, required String description});
   Future<void> removeGoal({required String goalId});
 }
 
@@ -33,7 +33,7 @@ class FirebaseGoalService implements GoalService {
 
   @override
   Future<void> addGoal(
-      {required HabitModel habit, required int color, required String description}) async {
+      {required ActivityModel habit, required int color, required String description}) async {
     await goalsRef.add({
       'color': color,
       'description': description,

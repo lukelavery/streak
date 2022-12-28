@@ -13,7 +13,7 @@ class GoalModel {
 
   final String? id;
   final String uid;
-  final HabitModel habit;
+  final ActivityModel habit;
   final String color;
   final String description;
 

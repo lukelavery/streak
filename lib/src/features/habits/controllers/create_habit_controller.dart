@@ -24,7 +24,7 @@ class CreateHabitController extends StateNotifier<int?> {
     state = color;
   }
 
-  Future<void> addHabit(HabitModel habit) async {
+  Future<void> addHabit(ActivityModel habit) async {
     if (_description == '') {
       _handleException(
           const CustomException(message: 'Please enter a description.'));

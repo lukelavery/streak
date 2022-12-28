@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HabitModel {
-  const HabitModel(
+class ActivityModel {
+  const ActivityModel(
       {
       required this.id,
       required this.name,
@@ -20,12 +20,12 @@ class HabitModel {
   final String type;
   final String? uid;
 
-  factory HabitModel.fromMap(String id, Map<String, dynamic>? data) {
+  factory ActivityModel.fromMap(String id, Map<String, dynamic>? data) {
     if (data == null) {
       throw StateError('missing data');
     }
 
-    return HabitModel(
+    return ActivityModel(
       id: id,
       name: data['name'],
       iconCodePoint: data['iconCodePoint'],

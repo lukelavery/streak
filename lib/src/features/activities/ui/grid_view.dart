@@ -19,7 +19,7 @@ class MyGridView extends ConsumerWidget {
     required this.streaks,
   }) : super(key: key);
   final Map<String, Counter> counters;
-  final List<HabitModel> habits;
+  final List<ActivityModel> habits;
   final int crossAxisCount;
   final Future<void> Function(String, DateTime) increment;
   final Map<String, List<Streak>> streaks;
@@ -33,7 +33,7 @@ class MyGridView extends ConsumerWidget {
       padding: const EdgeInsets.all(8),
       itemCount: habits.length,
       itemBuilder: ((context, index) {
-        HabitModel habit = habits[index];
+        ActivityModel habit = habits[index];
 
         return Consumer(builder: (context, ref, child) {
           final gridState = ref.watch(gridControllerProvider);

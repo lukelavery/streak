@@ -47,7 +47,7 @@ class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   }
 
   Map<String, List<Streak>>? streaks;
-  List<HabitModel>? habits;
+  List<ActivityModel>? habits;
   final Reader _read;
 }
 
@@ -57,7 +57,7 @@ class GridViewModel {
   final Map<String, GridModel> gridModels;
 
   factory GridViewModel.fromStreaks(
-      Map<String, List<Streak>>? streaks, List<HabitModel> habits) {
+      Map<String, List<Streak>>? streaks, List<ActivityModel> habits) {
     DateTime now = DateTime.now();
     DateTime nowYMD = DateTime(now.year, now.month, now.day);
     int offset = 7 - now.weekday;

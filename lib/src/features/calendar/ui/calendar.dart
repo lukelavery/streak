@@ -10,7 +10,7 @@ class CalendarPage extends ConsumerWidget {
       : super(key: key);
 
   final List<Streak>? streaks;
-  final HabitModel habit;
+  final ActivityModel habit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -189,7 +189,7 @@ class CalendarPage extends ConsumerWidget {
   }
 }
 
-showAlertDialog(BuildContext context, HabitModel habit, WidgetRef ref) {
+showAlertDialog(BuildContext context, ActivityModel habit, WidgetRef ref) {
   Widget okButton = TextButton(
       onPressed: () {
         Navigator.pop(context);
