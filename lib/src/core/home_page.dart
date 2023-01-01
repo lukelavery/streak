@@ -15,56 +15,37 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final editHabitState = ref.read(editHabitController.notifier);
+
     return Scaffold(
       backgroundColor: backgroundColour,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: backgroundColour,
         actions: [
-          IconButton(
-              onPressed: () {
-                ref.read(habitViewController.notifier).update((state) {
+          AppBarActionButton(
+            icon: Icons.edit,
+            onPressed: () {
+              editHabitState.update(
+                (state) {
                   return !state;
-                });
-              },
-              icon: const Icon(
-                Icons.edit,
-                color: Colors.grey,
-              )),
-          IconButton(
-            color: Colors.grey,
+                },
+              );
+            },
+          ),
+          AppBarActionButton(
+            icon: Icons.account_circle,
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const UserProfilePage()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserProfilePage(),
+                ),
+              );
             },
-            icon: const Icon(Icons.account_circle),
-          )
+          ),
         ],
-        title: Stack(
-          alignment: Alignment.centerLeft,
-          clipBehavior: Clip.none,
-          // alignment: Alignment.centerLeft,
-          children: const [
-            Positioned(
-                left: 23,
-                child: Text(
-                  'streak',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25,
-                  ),
-                )),
-            FaIcon(
-              FontAwesomeIcons.bolt,
-              color: Colors.black,
-              size: 22,
-            ),
-          ],
-        ),
+        title: const LogoBanner(),
       ),
       body: Consumer(builder: (context, ref, child) {
         final habitsState = ref.watch(habitControllerProvider);
@@ -91,22 +72,64 @@ class MyHomePage extends ConsumerWidget {
             error: (e, st) => const Center(child: CircularProgressIndicator()));
       }),
       // child: MyCircularProgressIndicator()),
-      floatingActionButton: Consumer(
-        builder: (context, ref, child) => FloatingActionButton(
-          backgroundColor: Colors.black,
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const CreateHabitPage()));
-          },
-          child: const Icon(Icons.add),
-        ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const CreateHabitPage()));
+        },
+        child: const Icon(Icons.add),
       ),
-      // bottomNavigationBar: BottomNavigationBar(items: const [
-      //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-      //   BottomNavigationBarItem(icon: Icon(Icons.timeline), label: 'streaks')
-      // ]),
+    );
+  }
+}
+
+class AppBarActionButton extends StatelessWidget {
+  const AppBarActionButton(
+      {super.key, required this.icon, required this.onPressed});
+
+  final IconData icon;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        color: Colors.grey,
+      ),
+    );
+  }
+}
+
+class LogoBanner extends StatelessWidget {
+  const LogoBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.centerLeft,
+      clipBehavior: Clip.none,
+      // alignment: Alignment.centerLeft,
+      children: const [
+        Positioned(
+            left: 23,
+            child: Text(
+              'streak',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            )),
+        FaIcon(
+          FontAwesomeIcons.bolt,
+          color: Colors.black,
+          size: 22,
+        ),
+      ],
     );
   }
 }

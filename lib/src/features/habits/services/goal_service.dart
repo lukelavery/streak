@@ -21,7 +21,6 @@ class FirebaseGoalService implements GoalService {
 
   final CollectionReference goalsRef =
       FirebaseFirestore.instance.collection('goals');
-  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
 
   @override
   Stream<List<GoalModel>> getGoals() {

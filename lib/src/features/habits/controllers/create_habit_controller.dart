@@ -24,22 +24,23 @@ class CreateHabitController extends StateNotifier<int?> {
     state = color;
   }
 
-  Future<void> addHabit(ActivityModel habit) async {
+  Future<void> handleButtonClick(
+      ActivityModel activity, BuildContext context) async {
+    try {
+      await _addHabit(activity);
+    } on CustomException catch (e) {
+      _handleException(e);
+    }
+  }
+
+  Future<void> _addHabit(ActivityModel habit) async {
     if (_description == '') {
-      _handleException(
-          const CustomException(message: 'Please enter a description.'));
+      throw const CustomException(message: 'Please enter a description.');
     } else if (state == null) {
-      _handleException(
-          const CustomException(message: 'Please select a color.'));
+      throw const CustomException(message: 'Please select a color.');
     } else {
-      try {
-        await _read(goalServiceProvider).addGoal(
-            habit: habit,
-            color: state!,
-            description: description);
-      } on CustomException catch (e) {
-        _handleException(e);
-      }
+      await _read(goalServiceProvider)
+          .addGoal(habit: habit, color: state!, description: description);
     }
   }
 

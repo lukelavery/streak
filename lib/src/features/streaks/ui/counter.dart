@@ -12,14 +12,14 @@ class MyCounter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final edit = ref.watch(habitViewController);
+    final edit = ref.watch(editHabitController);
     final habits = ref.read(habitControllerProvider.notifier);
 
     if (edit) {
       return GestureDetector(
         onTap: (() {
           habits.removeHabit(habitId: habit.id);
-          ref.read(habitViewController.notifier).update((state) => !state);
+          ref.read(editHabitController.notifier).update((state) => !state);
         }),
         child: Container(
             padding: const EdgeInsets.all(2),

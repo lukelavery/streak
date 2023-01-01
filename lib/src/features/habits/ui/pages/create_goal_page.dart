@@ -13,7 +13,8 @@ class CreateGoalPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedColor = ref.watch(createHabitControllerProvider);
-    final createHabitStateNotifier = ref.read(createHabitControllerProvider.notifier);
+    final createHabitStateNotifier =
+        ref.read(createHabitControllerProvider.notifier);
 
     ref.listen<CustomException?>(
       customExceptionProvider,
@@ -36,8 +37,7 @@ class CreateGoalPage extends ConsumerWidget {
       backgroundColor: backgroundColour,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          createHabitStateNotifier.addHabit(habit);
-          Navigator.pop(context);
+          createHabitStateNotifier.handleButtonClick(habit, context);
         },
       ),
       appBar: AppBar(
@@ -58,7 +58,8 @@ class CreateGoalPage extends ConsumerWidget {
             Text(habit.name),
             const Text('Description'),
             TextField(
-              onChanged: (value) => createHabitStateNotifier.setDescription(value),
+              onChanged: (value) =>
+                  createHabitStateNotifier.setDescription(value),
             ),
             const Text('Color'),
             Expanded(
@@ -68,7 +69,9 @@ class CreateGoalPage extends ConsumerWidget {
                     crossAxisCount: 5),
                 itemBuilder: ((context, index) {
                   return GestureDetector(
-                    onTap: () {createHabitStateNotifier.setColor(index);},
+                    onTap: () {
+                      createHabitStateNotifier.setColor(index);
+                    },
                     child: ColorCard(
                       color: colors[index],
                       selected: index == selectedColor ? true : false,
@@ -100,10 +103,10 @@ class ColorCard extends StatelessWidget {
         // margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: selected ? Border.all(color: color) : null,
-            ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: selected ? Border.all(color: color) : null,
+        ),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20), color: color),

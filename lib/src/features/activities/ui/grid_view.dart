@@ -45,7 +45,7 @@ class MyGridView extends ConsumerWidget {
                   habit: habits[index],
                   tiles: grid.gridModels[habit.id]!.gridTiles,
                   today: grid.gridModels[habit.id]!.today,
-                  edit: ref.watch(habitViewController),
+                  edit: ref.watch(editHabitController),
                   handleButtonClick: gridStateNotifier.handleButtonClick,
                   removeHabit: habitStateNotifier.removeHabit);
             },

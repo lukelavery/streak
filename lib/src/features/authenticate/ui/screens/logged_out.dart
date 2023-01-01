@@ -36,21 +36,23 @@ class LogInPage extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-          icon: loginState == LoginStateModel.welcome ? null : const Icon(Icons.arrow_forward),
-          label: Row(
-            children: const [
-              Text(
-                'Get started',
-              ),
-              Icon(Icons.arrow_forward)
-            ],
-          ),
-          isExtended: loginState == LoginStateModel.welcome ? true : false,
-          backgroundColor: Colors.black,
-          onPressed: (() {
-            loginStateNotifier.floatingActionButtonClick();
-          })),
-      // resizeToAvoidBottomInset: false,
+        icon: loginState == LoginStateModel.welcome
+            ? null
+            : const Icon(Icons.arrow_forward),
+        label: Row(
+          children: const [
+            Text(
+              'Get started',
+            ),
+            Icon(Icons.arrow_forward)
+          ],
+        ),
+        isExtended: loginState == LoginStateModel.welcome ? true : false,
+        backgroundColor: Colors.black,
+        onPressed: () {
+          loginStateNotifier.floatingActionButtonClick();
+        },
+      ),
       body: SafeArea(
         child: Center(
             child: LoggedOut(
@@ -107,10 +109,10 @@ class LoggedOut extends StatelessWidget {
             flex: 2,
           ),
           LoginEntryForm(
-              loginState: loginState,
-              email: email,
-              cancelRegistration: cancelRegistration,
-            ),
+            loginState: loginState,
+            email: email,
+            cancelRegistration: cancelRegistration,
+          ),
           const Spacer(
             flex: 10,
           )
