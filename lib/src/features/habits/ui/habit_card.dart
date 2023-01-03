@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/src/features/activities/models/habit_model.dart';
-import 'package:streak/src/features/activities/ui/activity_grid.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/streaks/ui/streak_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class HabitCard extends StatelessWidget {
   const HabitCard({
     Key? key,
-    required this.habit,
+    required this.activity,
     required this.tiles,
     required this.edit,
     required this.handleButtonClick,
@@ -17,14 +17,14 @@ class HabitCard extends StatelessWidget {
     required this.color,
   }) : super(key: key);
 
-  final ActivityModel habit;
+  final ActivityModel activity;
   final bool edit;
   final bool today;
   final List<GridTileModel> tiles;
-  final Future<void> Function({required String habitId}) handleButtonClick;
-  final Future<void> Function({required String habitId}) removeHabit;
+  final Future<void> Function({required String activityId}) handleButtonClick;
+  final Future<void> Function({required String goalId}) removeHabit;
   final int counter;
-  final MaterialColor color;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,11 @@ class HabitCard extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    // backgroundColor: Colors.pink.shade200,
-                    backgroundColor: color[200],
+                    backgroundColor: color.withOpacity(0.6),
                     child: Icon(
-                      IconData(habit.iconCodePoint,
-                          fontFamily: habit.iconFontFamily,
-                          fontPackage: habit.iconFontPackage),
+                      IconData(activity.iconCodePoint,
+                          fontFamily: activity.iconFontFamily,
+                          fontPackage: activity.iconFontPackage),
                       color: Colors.white,
                     ),
                   ),
@@ -54,7 +53,7 @@ class HabitCard extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    habit.name,
+                    activity.name,
                     style: const TextStyle(
                         fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
                   ),
@@ -67,7 +66,7 @@ class HabitCard extends StatelessWidget {
                   CompleteButton(
                     today: today,
                     handleButtonClick: handleButtonClick,
-                    habit: habit,
+                    activity: activity,
                     color: color,
                   ),
                 ],
@@ -75,7 +74,7 @@ class HabitCard extends StatelessWidget {
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: ActivityGrid(tiles: tiles, color: color,),
+              child: StreakGrid(tiles: tiles, color: color,),
             ),
           ),
         ),
@@ -83,7 +82,7 @@ class HabitCard extends StatelessWidget {
       edit == true
           ? GestureDetector(
               onTap: () {
-                removeHabit(habitId: habit.id);
+                removeHabit(goalId: activity.id);
               },
               child: Material(
                 borderRadius: BorderRadius.circular(20),
@@ -109,21 +108,21 @@ class CompleteButton extends StatelessWidget {
     Key? key,
     required this.today,
     required this.handleButtonClick,
-    required this.habit,
+    required this.activity,
     required this.color,
   }) : super(key: key);
 
   final bool today;
-  final Future<void> Function({required String habitId}) handleButtonClick;
-  final ActivityModel habit;
-  final MaterialColor color;
+  final Future<void> Function({required String activityId}) handleButtonClick;
+  final ActivityModel activity;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(7),
       onLongPress: (() {
-        handleButtonClick(habitId: habit.id);
+        handleButtonClick(activityId: activity.id);
       }),
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -163,7 +162,7 @@ class StreakCounter extends StatelessWidget {
 
   final bool today;
   final int counter;
-  final MaterialColor color;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

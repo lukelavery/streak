@@ -5,7 +5,7 @@ class Counter {
 
   final int count;
 
-  factory Counter.fromStreaks(List<Streak>? streaks) {
+  factory Counter.fromStreaks(List<StreakModel>? streaks) {
     DateTime now = DateTime.now();
 
     if (streaks == null) {
@@ -23,11 +23,11 @@ class Counter {
         int? difference3 =
             getDifferenceInDays(streaks[i].dateTime, streaks[i - 1].dateTime);
 
-          if (difference3 > 1) {
-            return Counter(count: count);
-          } else {
-            count++;
-          }
+        if (difference3 > 1) {
+          return Counter(count: count);
+        } else {
+          count++;
+        }
       }
       return Counter(count: count);
     }
@@ -35,10 +35,10 @@ class Counter {
 }
 
 int getDifferenceInDays(DateTime start, DateTime end) {
-  var difference = end.difference(start).inDays;
+  Duration difference = end.difference(start);
   // If the difference is not a whole number of days, round up to the nearest day
-  if (difference != end.difference(start).inDays.toInt()) {
-    difference += 1;
+  if (difference != Duration(days: difference.inDays)) {
+    difference += const Duration(days: 1);
   }
-  return difference;
+  return difference.inDays;
 }

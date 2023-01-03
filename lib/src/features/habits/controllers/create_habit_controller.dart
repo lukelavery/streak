@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/activities/models/habit_model.dart';
-import 'package:streak/src/features/habits/services/goal_service.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final createHabitControllerProvider =
     StateNotifierProvider.autoDispose<CreateHabitController, int?>(
@@ -25,7 +25,7 @@ class CreateHabitController extends StateNotifier<int?> {
   }
 
   Future<void> handleButtonClick(
-      ActivityModel activity, BuildContext context) async {
+      {required ActivityModel activity, required BuildContext context}) async {
     try {
       await _addHabit(activity);
     } on CustomException catch (e) {
@@ -33,14 +33,16 @@ class CreateHabitController extends StateNotifier<int?> {
     }
   }
 
-  Future<void> _addHabit(ActivityModel habit) async {
+  Future<void> _addHabit(ActivityModel activity) async {
     if (_description == '') {
       throw const CustomException(message: 'Please enter a description.');
     } else if (state == null) {
       throw const CustomException(message: 'Please select a color.');
     } else {
-      await _read(goalServiceProvider)
-          .addGoal(habit: habit, color: state!, description: description);
+      await _read(habitServiceProvider).addGoal(
+          activity: activity,
+          color: colors[state!].value,
+          description: description);
     }
   }
 

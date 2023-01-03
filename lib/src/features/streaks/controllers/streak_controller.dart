@@ -6,10 +6,10 @@ import 'package:streak/src/features/streaks/services/streak_service.dart';
 
 final streakControllerProvider = StateNotifierProvider.autoDispose<
     StreakController,
-    AsyncValue<Map<String, List<Streak>>>>((ref) => StreakController(ref.read));
+    AsyncValue<Map<String, List<StreakModel>>>>((ref) => StreakController(ref.read));
 
 class StreakController
-    extends StateNotifier<AsyncValue<Map<String, List<Streak>>>> {
+    extends StateNotifier<AsyncValue<Map<String, List<StreakModel>>>> {
   StreakController(this._read) : super(const AsyncValue.loading()) {
     _streakStreamSubscription?.cancel();
     _streakStreamSubscription =
@@ -25,17 +25,12 @@ class StreakController
   }
 
   final Reader _read;
-  // AsyncValue<Map<String, List<Streak>>>? previousState;
 
-  StreamSubscription<Map<String, List<Streak>>>? _streakStreamSubscription;
+  StreamSubscription<Map<String, List<StreakModel>>>? _streakStreamSubscription;
 
   Future<void> addStreak(
-      {required String habitId, required DateTime dateTime}) async {
+      {required String activityId, required DateTime dateTime}) async {
     await _read(streakServiceProvider)
-        .addStreak(habitId: habitId, dateTime: dateTime);
+        .addStreak(activityId: activityId, dateTime: dateTime);
   }
-
-  // Future<void> deleteStreak({required String habitId}) async {
-  //   await _read(streakServiceProvider).deleteStreak(habitId: habitId);
-  // }
 }

@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/activities/controllers/habit_search_contoller.dart';
-import 'package:streak/src/features/habits/ui/pages/create_goal_page.dart';
+import 'package:streak/src/features/activities/controllers/activity_search_contoller.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/habits/ui/pages/create_habit_page.dart';
 
 class SearchView extends ConsumerWidget {
   const SearchView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final habitSearchState = ref.watch(habitSearchControllerProvider);
-    final habitSearchStateNotifier =
-        ref.read(habitSearchControllerProvider.notifier);
+    final activitySearchState = ref.watch(activitySearchControllerProvider);
+    final activitySearchStateNotifier =
+        ref.read(activitySearchControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: TextField(onChanged: (value) {
-          ref.read(habitSearchControllerProvider.notifier).query(value);
+          ref.read(activitySearchControllerProvider.notifier).query(value);
         }),
         backgroundColor: Colors.grey[50],
       ),
-      body: habitSearchState.when(
-        data: (data) {
+      body: activitySearchState.when(
+        data: (activitiesList) {
           return ListView.builder(
-            itemCount: data.length,
+            itemCount: activitiesList.length,
             itemBuilder: ((context, index) {
+              final ActivityModel activity = activitiesList[index];
               return ListTile(
-                trailing: data[index].uid == null
+                trailing: activity.uid == null
                     ? const IconButton(
                         icon: Icon(
                           Icons.close,
@@ -36,25 +38,25 @@ class SearchView extends ConsumerWidget {
                     : IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: (() {
-                          habitSearchStateNotifier.deleteHabit(
-                              habitId: data[index].id);
+                          activitySearchStateNotifier.deleteHabit(
+                              activityId: activity.id);
                         }),
                       ),
                 leading: Icon(
-                  IconData(data[index].iconCodePoint,
-                      fontFamily: data[index].iconFontFamily,
-                      fontPackage: data[index].iconFontPackage),
+                  IconData(activity.iconCodePoint,
+                      fontFamily: activity.iconFontFamily,
+                      fontPackage: activity.iconFontPackage),
                 ),
-                title: Text(data[index].name),
+                title: Text(activity.name),
                 onTap: () {
-                  // habitSearchStateNotifier.selectHabit(data[index]);
+                  // activitySearchStateNotifier.selectHabit(activity);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              CreateGoalPage(habit: data[index])));
+                              CreateHabitPage(activity: activity)));
                 },
               );
             }),
@@ -64,7 +66,7 @@ class SearchView extends ConsumerWidget {
           return Text(error.toString());
         },
         loading: () {
-          return const Text('loading');
+          return const CircularProgressIndicator();
         },
       ),
     );

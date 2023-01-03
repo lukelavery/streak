@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 
-abstract class HabitService {
+abstract class ActivityService {
   Stream<List<ActivityModel>> getHabits({required String habitType});
   Stream<List<ActivityModel>> getUserHabits();
   Future<void> createHabit(
-      {required NewHabitPreset preset, required String name});
+      {required ActivityPreset preset, required String name});
   Future<void> addHabit({required ActivityModel habit});
-  Future<void> removeHabit({required String habitId});
-  Future<void> deleteHabit({required String habitId});
+  Future<void> removeHabit({required String activityId});
+  Future<void> deleteHabit({required String activityId});
 }
 
-final newHabitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
-    (ref) => FirebaseHabitService(ref.read(authControllerProvider).uid));
+final activityServiceProvider = Provider.autoDispose<FirebaseActivityService>(
+    (ref) => FirebaseActivityService(ref.read(authControllerProvider).uid));
 
-class FirebaseHabitService implements HabitService {
-  FirebaseHabitService(this.uid);
+class FirebaseActivityService implements ActivityService {
+  FirebaseActivityService(this.uid);
 
   final String? uid;
 
@@ -44,7 +44,7 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Future<void> createHabit(
-      {required NewHabitPreset preset, required String name}) async {
+      {required ActivityPreset preset, required String name}) async {
     Map<String, dynamic> data = preset.toMap();
     data['name'] = name;
     data['uid'] = uid;
@@ -53,15 +53,15 @@ class FirebaseHabitService implements HabitService {
   }
 
   @override
-  Future<void> deleteHabit({required String habitId}) async {
-    return habitsRef.doc(habitId).delete();
+  Future<void> deleteHabit({required String activityId}) async {
+    return habitsRef.doc(activityId).delete();
   }
 
   @override
-  Future<void> removeHabit({required String habitId}) {
+  Future<void> removeHabit({required String activityId}) {
     final userHabitsRef = usersRef.doc(uid).collection('habits');
 
-    return userHabitsRef.doc(habitId).delete();
+    return userHabitsRef.doc(activityId).delete();
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/activities/controllers/habit_type_controller.dart';
+import 'package:streak/src/features/activities/controllers/activity_type_controller.dart';
 import 'package:streak/src/features/activities/ui/search_view.dart';
 
 const TextStyle h1 = TextStyle(
@@ -17,8 +17,8 @@ const TextStyle cardSubtitle = TextStyle(
     fontFamily: 'Montserrat',
     fontWeight: FontWeight.w400);
 
-class CreateHabitPage extends ConsumerWidget {
-  const CreateHabitPage({Key? key}) : super(key: key);
+class SelectActivityPage extends ConsumerWidget {
+  const SelectActivityPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -186,7 +186,7 @@ class GoalCard extends ConsumerWidget {
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        ref.read(habitTypeController.notifier).update((state) => habitType);
+        ref.read(activityTypeController.notifier).update((state) => habitType);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return const SearchView();
         }));

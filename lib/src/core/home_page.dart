@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/core/constants.dart';
-import 'package:streak/src/features/activities/controllers/habit_controller.dart';
-import 'package:streak/src/features/activities/controllers/habit_view_controller.dart';
-import 'package:streak/src/features/activities/ui/create_habit.dart';
-import 'package:streak/src/features/activities/ui/grid_view.dart';
+import 'package:streak/src/features/habits/controllers/edit_habit_controller.dart';
+import 'package:streak/src/features/activities/ui/pages/select_activity_page.dart';
+import 'package:streak/src/features/habits/ui/habit_list_view.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/streaks/controllers/counter_controller.dart';
 import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
-import 'package:streak/src/features/authenticate/ui/screens/user_profile_page.dart';
+import 'package:streak/src/features/authenticate/ui/pages/user_profile_page.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -53,14 +53,9 @@ class MyHomePage extends ConsumerWidget {
         return habitsState.when(
             data: (habits) {
               return streaksState.when(
-                data: (data) => MyGridView(
+                data: (data) => HabitListView(
                   counters: ref.watch(counterControllerProvider).value!,
                   habits: ref.watch(habitControllerProvider).value!,
-                  crossAxisCount: ref
-                      .watch(habitControllerProvider.notifier)
-                      .getCrossAxisCount(),
-                  increment:
-                      ref.read(habitControllerProvider.notifier).addStreak,
                   streaks: ref.watch(streakControllerProvider).value!,
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -76,7 +71,7 @@ class MyHomePage extends ConsumerWidget {
         backgroundColor: Colors.black,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CreateHabitPage()));
+              MaterialPageRoute(builder: (context) => const SelectActivityPage()));
         },
         child: const Icon(Icons.add),
       ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
-class ActivityGrid extends StatelessWidget {
-  const ActivityGrid({Key? key, required this.tiles, required this.color})
+class StreakGrid extends StatelessWidget {
+  const StreakGrid({Key? key, required this.tiles, required this.color})
       : super(key: key);
 
   final List<GridTileModel> tiles;
-  final MaterialColor color;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

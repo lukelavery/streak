@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/activities/controllers/habit_controller.dart';
-import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
@@ -14,40 +14,36 @@ final gridControllerProvider = StateNotifierProvider.autoDispose<GridController,
 class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   GridController(this.streaks, this.habits, this._read)
       : super(const AsyncValue.loading()) {
-    // DateTime now = DateTime.now();
-    // DateTime nowYMD = DateTime(now.year, now.month, now.day);
-    // int offset = 7 - now.weekday;
-
     if (habits != null) {
       state = AsyncValue.data(GridViewModel.fromStreaks(streaks, habits!));
     }
   }
 
-  Future<void> _addStreak({required String habitId}) async {
+  Future<void> _addStreak({required String activityId}) async {
     await _read(streakServiceProvider)
-        .addStreak(habitId: habitId, dateTime: DateTime.now());
+        .addStreak(activityId: activityId, dateTime: DateTime.now());
   }
 
-  Future<void> _deleteStreak({required String habitId}) async {
+  Future<void> _deleteStreak({required String activityId}) async {
     await _read(streakServiceProvider)
-        .deleteStreak(habitId: habitId, dateTime: DateTime.now());
+        .deleteStreak(activityId: activityId, dateTime: DateTime.now());
   }
 
-  Future<void> handleButtonClick({required String habitId}) async {
+  Future<void> handleButtonClick({required String activityId}) async {
     var value = state.value;
     if (value != null) {
-      if (value.gridModels[habitId] != null) {
-        if (value.gridModels[habitId]!.today) {
-          _deleteStreak(habitId: habitId);
+      if (value.gridModels[activityId] != null) {
+        if (value.gridModels[activityId]!.today) {
+          _deleteStreak(activityId: activityId);
         } else {
-          _addStreak(habitId: habitId);
+          _addStreak(activityId: activityId);
         }
       }
     }
   }
 
-  Map<String, List<Streak>>? streaks;
-  List<ActivityModel>? habits;
+  Map<String, List<StreakModel>>? streaks;
+  List<HabitModel>? habits;
   final Reader _read;
 }
 
@@ -57,7 +53,7 @@ class GridViewModel {
   final Map<String, GridModel> gridModels;
 
   factory GridViewModel.fromStreaks(
-      Map<String, List<Streak>>? streaks, List<ActivityModel> habits) {
+      Map<String, List<StreakModel>>? streaks, List<HabitModel> habits) {
     DateTime now = DateTime.now();
     DateTime nowYMD = DateTime(now.year, now.month, now.day);
     int offset = 7 - now.weekday;
@@ -69,15 +65,15 @@ class GridViewModel {
       List streakDateList = [];
 
       if (streaks != null) {
-        if (streaks[habit.id] != null) {
-          for (var streak in streaks[habit.id]!) {
+        if (streaks[habit.activity.id] != null) {
+          for (var streak in streaks[habit.activity.id]!) {
             DateTime streakYMD = DateTime(streak.dateTime.year,
                 streak.dateTime.month, streak.dateTime.day);
             streakDateList.add(streakYMD);
           }
         }
       }
-      gridState[habit.id] = GridModel(
+      gridState[habit.activity.id] = GridModel(
         gridTiles: List.generate(182, (index) {
           if (index < offset) {
             return GridTileModel(streak: false, future: true);

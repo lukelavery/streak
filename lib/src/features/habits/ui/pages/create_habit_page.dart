@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/activities/models/habit_model.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 
-class CreateGoalPage extends ConsumerWidget {
-  const CreateGoalPage({Key? key, required this.habit}) : super(key: key);
+class CreateHabitPage extends ConsumerWidget {
+  const CreateHabitPage({Key? key, required this.activity}) : super(key: key);
 
-  final ActivityModel habit;
+  final ActivityModel activity;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +37,7 @@ class CreateGoalPage extends ConsumerWidget {
       backgroundColor: backgroundColour,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          createHabitStateNotifier.handleButtonClick(habit, context);
+          createHabitStateNotifier.handleButtonClick(activity: activity, context: context);
         },
       ),
       appBar: AppBar(
@@ -55,7 +55,7 @@ class CreateGoalPage extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Text(habit.name),
+            Text(activity.name),
             const Text('Description'),
             TextField(
               onChanged: (value) =>
@@ -100,7 +100,6 @@ class ColorCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 0.5,
       child: Container(
-        // margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
