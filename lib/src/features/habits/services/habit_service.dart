@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class HabitService {
-  Stream<List<HabitModel>> getHabits({required String habitType});
-  Stream<List<HabitModel>> getUserHabits();
-  Future<void> createHabit(
-      {required NewHabitPreset preset, required String name});
-  Future<void> addHabit({required HabitModel habit});
-  Future<void> removeHabit({required String habitId});
-  Future<void> deleteHabit({required String habitId});
+  Stream<List<HabitModel>> getGoals();
+   Future<void> addGoal(
+      {required ActivityModel activity, required int color, required String description});
+  Future<void> removeGoal({required String goalId});
 }
 
-final newHabitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
+final habitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
     (ref) => FirebaseHabitService(ref.read(authControllerProvider).uid));
 
 class FirebaseHabitService implements HabitService {
@@ -21,57 +19,35 @@ class FirebaseHabitService implements HabitService {
 
   final String? uid;
 
-  CollectionReference habitsRef =
-      FirebaseFirestore.instance.collection('habits_new');
-  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+  final CollectionReference goalsRef =
+      FirebaseFirestore.instance.collection('goals');
 
   @override
-  Stream<List<HabitModel>> getHabits({required String habitType}) {
-    final ref = habitsRef.where('type', isEqualTo: habitType);
-    return ref.snapshots().map((event) => event.docs
+  Stream<List<HabitModel>> getGoals() {
+    return goalsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
         .toList());
   }
 
   @override
-  Stream<List<HabitModel>> getUserHabits() {
-    final ref = usersRef.doc(uid).collection('habits');
-    return ref.snapshots().map((event) => event.docs
-        .map((doc) => HabitModel.fromMap(doc.id, doc.data()))
-        .toList());
-  }
-
-  @override
-  Future<void> createHabit(
-      {required NewHabitPreset preset, required String name}) async {
-    Map<String, dynamic> data = preset.toMap();
-    data['name'] = name;
-    data['uid'] = uid;
-    final docRef = await habitsRef.add(data);
-    addHabit(habit: HabitModel.fromMap(docRef.id, data));
-  }
-
-  @override
-  Future<void> deleteHabit({required String habitId}) async {
-    return habitsRef.doc(habitId).delete();
-  }
-
-  @override
-  Future<void> removeHabit({required String habitId}) {
-    final userHabitsRef = usersRef.doc(uid).collection('habits');
-
-    return userHabitsRef.doc(habitId).delete();
-  }
-
-  @override
-  Future<void> addHabit({required HabitModel habit}) async {
-    final userHabitsRef = usersRef.doc(uid).collection('habits');
-
-    userHabitsRef.doc(habit.id).get().then((doc) {
-      if (!doc.exists) {
-        return userHabitsRef.doc(habit.id).set(habit.toMap());
-      }
+  Future<void> addGoal(
+      {required ActivityModel activity, required int color, required String description}) async {
+    await goalsRef.add({
+      'color': color,
+      'description': description,
+      'activityId': activity.id,
+      'uid': uid,
+      'type': activity.type,
+      'iconCodePoint': activity.iconCodePoint,
+      'iconFontFamily':activity. iconFontFamily,
+      'iconFontPackage': activity.iconFontPackage,
+      'name': activity.name
     });
+  }
+
+  @override
+  Future<void> removeGoal({required String goalId}) {
+    return goalsRef.doc(goalId).delete();
   }
 }

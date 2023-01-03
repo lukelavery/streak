@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/ui/activity_grid.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/streaks/ui/streak_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class HabitCard extends StatelessWidget {
-  const HabitCard(
-      {Key? key,
-      required this.habit,
-      required this.tiles,
-      required this.edit,
-      required this.handleButtonClick,
-      required this.removeHabit,
-      required this.today,
-      required this.counter})
-      : super(key: key);
+  const HabitCard({
+    Key? key,
+    required this.activity,
+    required this.tiles,
+    required this.edit,
+    required this.handleButtonClick,
+    required this.removeHabit,
+    required this.today,
+    required this.counter,
+    required this.color,
+  }) : super(key: key);
 
-  final HabitModel habit;
+  final ActivityModel activity;
   final bool edit;
   final bool today;
   final List<GridTileModel> tiles;
-  final Future<void> Function({required String habitId}) handleButtonClick;
-  final Future<void> Function({required String habitId}) removeHabit;
+  final Future<void> Function({required String activityId}) handleButtonClick;
+  final Future<void> Function({required String goalId}) removeHabit;
   final int counter;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +41,11 @@ class HabitCard extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.pink.shade200,
+                    backgroundColor: color.withOpacity(0.6),
                     child: Icon(
-                      IconData(habit.iconCodePoint,
-                          fontFamily: habit.iconFontFamily,
-                          fontPackage: habit.iconFontPackage),
+                      IconData(activity.iconCodePoint,
+                          fontFamily: activity.iconFontFamily,
+                          fontPackage: activity.iconFontPackage),
                       color: Colors.white,
                     ),
                   ),
@@ -51,7 +53,7 @@ class HabitCard extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    habit.name,
+                    activity.name,
                     style: const TextStyle(
                         fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
                   ),
@@ -59,18 +61,20 @@ class HabitCard extends StatelessWidget {
                   StreakCounter(
                     today: today,
                     counter: counter,
+                    color: color,
                   ),
                   CompleteButton(
                     today: today,
                     handleButtonClick: handleButtonClick,
-                    habit: habit,
+                    activity: activity,
+                    color: color,
                   ),
                 ],
               ),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: ActivityGrid(tiles: tiles),
+              child: StreakGrid(tiles: tiles, color: color,),
             ),
           ),
         ),
@@ -78,7 +82,7 @@ class HabitCard extends StatelessWidget {
       edit == true
           ? GestureDetector(
               onTap: () {
-                removeHabit(habitId: habit.id);
+                removeHabit(goalId: activity.id);
               },
               child: Material(
                 borderRadius: BorderRadius.circular(20),
@@ -100,30 +104,30 @@ class HabitCard extends StatelessWidget {
 }
 
 class CompleteButton extends StatelessWidget {
-  const CompleteButton(
-      {Key? key,
-      required this.today,
-      required this.handleButtonClick,
-      required this.habit})
-      : super(key: key);
+  const CompleteButton({
+    Key? key,
+    required this.today,
+    required this.handleButtonClick,
+    required this.activity,
+    required this.color,
+  }) : super(key: key);
 
   final bool today;
-  final Future<void> Function({required String habitId}) handleButtonClick;
-  final HabitModel habit;
+  final Future<void> Function({required String activityId}) handleButtonClick;
+  final ActivityModel activity;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(7),
       onLongPress: (() {
-        handleButtonClick(habitId: habit.id);
+        handleButtonClick(activityId: activity.id);
       }),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-            color: today
-                ? Colors.pink.withOpacity(0.8)
-                : Colors.pink.withOpacity(0.2),
+            color: today ? color.withOpacity(0.8) : color.withOpacity(0.2),
             borderRadius: BorderRadius.circular(7)),
         child: Row(
           children: [
@@ -140,7 +144,8 @@ class CompleteButton extends StatelessWidget {
               ),
             ),
             Icon(
-              Icons.check_circle_outline,
+              // Icons.check_circle_outline,
+              Icons.task_alt,
               color: today ? Colors.white : Colors.grey,
               size: 17,
             ),
@@ -152,11 +157,12 @@ class CompleteButton extends StatelessWidget {
 }
 
 class StreakCounter extends StatelessWidget {
-  const StreakCounter({Key? key, required this.today, required this.counter})
+  const StreakCounter({Key? key, required this.today, required this.counter, required this.color})
       : super(key: key);
 
   final bool today;
   final int counter;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -164,13 +170,13 @@ class StreakCounter extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7.0),
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
         decoration: BoxDecoration(
             border: Border.all(
               width: 1,
               color: today
-                  ? Colors.pink.withOpacity(0.8)
-                  : Colors.pink.withOpacity(0.2),
+                  ? color.withOpacity(0.8)
+                  : color.withOpacity(0.2),
             ),
             borderRadius: BorderRadius.circular(7)),
         child: Row(

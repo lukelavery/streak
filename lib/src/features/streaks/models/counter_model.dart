@@ -5,15 +5,14 @@ class Counter {
 
   final int count;
 
-  factory Counter.fromStreaks(List<Streak>? streaks) {
+  factory Counter.fromStreaks(List<StreakModel>? streaks) {
     DateTime now = DateTime.now();
 
     if (streaks == null) {
       return const Counter(count: 0);
     }
 
-    // int difference = now.difference(streaks[0].dateTime).inDays;
-    int difference = getDifference(streaks[0].dateTime, now)!;
+    int difference = getDifferenceInDays(streaks[0].dateTime, now);
 
     if (difference > 1) {
       return const Counter(count: 0);
@@ -21,8 +20,8 @@ class Counter {
       int count = 1;
 
       for (var i = 1; i < streaks.length; i++) {
-        int difference3 =
-            streaks[i - 1].dateTime.difference(streaks[i].dateTime).inDays;
+        int? difference3 =
+            getDifferenceInDays(streaks[i].dateTime, streaks[i - 1].dateTime);
 
         if (difference3 > 1) {
           return Counter(count: count);
@@ -35,27 +34,11 @@ class Counter {
   }
 }
 
-int? getDifference(DateTime date1, DateTime date2) {
-  // TODO: implement year logic
-  var year1 = date1.year;
-  var month1 = date1.month;
-  var day1 = date1.day;
-
-  var year2 = date2.year;
-  var month2 = date2.month;
-  var day2 = date2.day;
-
-  if (year1 == year2) {
-    if (month1 == month2) {
-      return day2 - day1;
-    }
-    int days = 0;
-    for (int i = month1 + 1; i < month2; i++) {
-      days += DateTime(date1.year, i + 1, 0).day;
-    }
-    days += DateTime(date1.year, date1.month + 1, 0).day - day1;
-    days += day2;
-    return days;
+int getDifferenceInDays(DateTime start, DateTime end) {
+  Duration difference = end.difference(start);
+  // If the difference is not a whole number of days, round up to the nearest day
+  if (difference != Duration(days: difference.inDays)) {
+    difference += const Duration(days: 1);
   }
-  return null;
+  return difference.inDays;
 }

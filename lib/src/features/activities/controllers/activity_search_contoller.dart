@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/habits/controllers/habit_type_controller.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/services/habit_service.dart';
+import 'package:streak/src/features/activities/controllers/activity_type_controller.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/activities/services/activity_service.dart';
 
-final habitSearchControllerProvider = StateNotifierProvider.autoDispose<
-        HabitController, AsyncValue<List<HabitModel>>>(
-    (ref) => HabitController(ref.read, ref.watch(habitTypeController)));
+final activitySearchControllerProvider = StateNotifierProvider.autoDispose<
+        ActivitySearchController, AsyncValue<List<ActivityModel>>>(
+    (ref) => ActivitySearchController(ref.read, ref.watch(activityTypeController)));
 
-class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
-  HabitController(this._read, this.habitType)
+class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityModel>>> {
+  ActivitySearchController(this._read, this.habitType)
       : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
-    _habitStreamSubscription = _read(newHabitServiceProvider)
+    _habitStreamSubscription = _read(activityServiceProvider)
         .getHabits(habitType: habitType)
         .listen((habits) {
       habitList = habits;
@@ -28,8 +28,8 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   final Reader _read;
   final String habitType;
-  late List<HabitModel> habitList;
-  StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
+  late List<ActivityModel> habitList;
+  StreamSubscription<List<ActivityModel>>? _habitStreamSubscription;
   String queryText = '';
 
   void query(String q) {
@@ -42,7 +42,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
       if (q != '') {
         state = AsyncValue.data([
           ...state.value!,
-          HabitModel(
+          ActivityModel(
               id: '',
               name: 'Create custom habit: $q',
               iconCodePoint: 0xe047,
@@ -53,7 +53,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     }
   }
 
-  void selectHabit(HabitModel habit) {
+  void selectHabit(ActivityModel habit) {
     if (habit.id == '') {
       createHabit();
     } else {
@@ -62,16 +62,16 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   }
 
   void createHabit() async {
-    NewHabitPreset preset = habitPresets[habitType]!;
-    await _read(newHabitServiceProvider)
+    ActivityPreset preset = activityPresets[habitType]!;
+    await _read(activityServiceProvider)
         .createHabit(preset: preset, name: queryText);
   }
 
-  void deleteHabit({required String habitId}) async {
-    await _read(newHabitServiceProvider).deleteHabit(habitId: habitId);
+  void deleteHabit({required String activityId}) async {
+    await _read(activityServiceProvider).deleteHabit(activityId: activityId);
   }
 
-  void addHabit({required HabitModel habit}) async {
-    await _read(newHabitServiceProvider).addHabit(habit: habit);
+  void addHabit({required ActivityModel habit}) async {
+    await _read(activityServiceProvider).addHabit(habit: habit);
   }
 }

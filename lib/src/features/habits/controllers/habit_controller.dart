@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
@@ -11,7 +12,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   HabitController(this._read) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
-        _read(newHabitServiceProvider).getUserHabits().listen((habits) {
+        _read(habitServiceProvider).getGoals().listen((habits) {
       state = AsyncValue.data(habits);
     });
   }
@@ -27,18 +28,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
-  Future<void> removeHabit({required String habitId}) async {
-    await _read(newHabitServiceProvider).removeHabit(habitId: habitId);
-  }
-
-  Future<void> addStreak(String habitId, DateTime dateTime) async {
-    // await _read(newHabitServiceProvider).addStreak(habitId, dateTime);
-  }
-
-  int getCrossAxisCount() {
-    if (state.value!.length < 3) {
-      return 1;
-    }
-    return 2;
+  Future<void> removeHabit({required String goalId}) async {
+    await _read(habitServiceProvider).removeGoal(goalId: goalId);
   }
 }

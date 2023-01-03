@@ -4,9 +4,9 @@ import 'package:streak/src/features/streaks/models/streak_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 
 abstract class StreakService {
-  Stream<Map<String, List<Streak>>> get retrieveStreaks;
-  Future<void> addStreak({required String habitId, required DateTime dateTime});
-  Future<void> deleteStreak({required String habitId, required DateTime dateTime});
+  Stream<Map<String, List<StreakModel>>> get retrieveStreaks;
+  Future<void> addStreak({required String activityId, required DateTime dateTime});
+  Future<void> deleteStreak({required String activityId, required DateTime dateTime});
 }
 
 final streakServiceProvider = Provider.autoDispose<FirebaseStreakService>(
@@ -21,24 +21,24 @@ class FirebaseStreakService implements StreakService {
       FirebaseFirestore.instance.collection('streaks');
 
   @override
-  Stream<Map<String, List<Streak>>> get retrieveStreaks {
+  Stream<Map<String, List<StreakModel>>> get retrieveStreaks {
     final ref = streaksRef
         .where('uid', isEqualTo: uid)
         .orderBy('timestamp', descending: true);
     return ref.snapshots().map((event) {
-      Map<String, List<Streak>> streaks = {};
+      Map<String, List<StreakModel>> streaks = {};
       for (var doc in event.docs) {
-        Streak streak =
-            Streak.fromMap(doc.id, doc.data() as Map<String, dynamic>?);
+        StreakModel streak =
+            StreakModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?);
 
-        var oldList = streaks[streak.habitId];
+        var oldList = streaks[streak.activityId];
 
         if (oldList != null) {
-          List<Streak> newList = oldList;
+          List<StreakModel> newList = oldList;
           newList.add(streak);
-          streaks[streak.habitId] = newList;
+          streaks[streak.activityId] = newList;
         } else {
-          streaks[streak.habitId] = [streak];
+          streaks[streak.activityId] = [streak];
         }
       }
       return streaks;
@@ -47,21 +47,21 @@ class FirebaseStreakService implements StreakService {
 
   @override
   Future<void> addStreak(
-      {required String habitId, required DateTime dateTime}) {
+      {required String activityId, required DateTime dateTime}) {
     Map<String, dynamic> data = {};
 
     data['uid'] = uid;
-    data['habitId'] = habitId;
+    data['habitId'] = activityId;
     data['timestamp'] = Timestamp.fromDate(dateTime);
 
     return streaksRef.add(data);
   }
 
   @override
-  Future<void> deleteStreak({required String habitId, required DateTime dateTime}) {
+  Future<void> deleteStreak({required String activityId, required DateTime dateTime}) {
     return streaksRef
         .where('uid', isEqualTo: uid)
-        .where('habitId', isEqualTo: habitId)
+        .where('habitId', isEqualTo: activityId)
         .orderBy('timestamp', descending: true)
         .limit(1)
         .get()

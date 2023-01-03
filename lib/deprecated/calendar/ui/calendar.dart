@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/calendar/controllers/calendar_controller.dart';
-import 'package:streak/src/features/calendar/domain/calendar_model.dart';
-import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/deprecated/calendar/controllers/calendar_controller.dart';
+import 'package:streak/deprecated/calendar/domain/calendar_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
 class CalendarPage extends ConsumerWidget {
   const CalendarPage({Key? key, this.streaks, required this.habit})
       : super(key: key);
 
-  final List<Streak>? streaks;
-  final HabitModel habit;
+  final List<StreakModel>? streaks;
+  final ActivityModel habit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -189,7 +189,7 @@ class CalendarPage extends ConsumerWidget {
   }
 }
 
-showAlertDialog(BuildContext context, HabitModel habit, WidgetRef ref) {
+showAlertDialog(BuildContext context, ActivityModel habit, WidgetRef ref) {
   Widget okButton = TextButton(
       onPressed: () {
         Navigator.pop(context);
