@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
 
@@ -12,9 +14,9 @@ abstract class AuthService {
     String email,
     String password,
   );
-  Future<void> registerAccount(
-      String email, String password);
+  Future<void> registerAccount(String email, String password);
   void signOut();
+  Future<void> signInWithGoogle();
 }
 
 final authRepositoryProvider =
@@ -29,7 +31,8 @@ class FirebaseAuthService implements AuthService {
   Stream<UserModel> get authStateChanges {
     return _auth.authStateChanges().map((user) {
       if (user != null) {
-        return UserModel(uid: user.uid, email: user.email, isVerified: user.emailVerified);
+        return UserModel(
+            uid: user.uid, email: user.email, isVerified: user.emailVerified);
       } else {
         return const UserModel(uid: null, email: null, isVerified: false);
       }
@@ -68,6 +71,23 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
+  Future<void> signInWithGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
+
+      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      FirebaseAuth.instance.signInWithCredential(credential);
+    } on Error catch (e) {
+      throw CustomException(message: e.toString());
+    }
+  }
+
+  @override
   Future<void> registerAccount(
     String email,
     String password,
@@ -85,6 +105,7 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
   }
 
   Future<void> _addUserDoc(String uid) async {

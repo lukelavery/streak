@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
 import 'package:streak/src/features/authenticate/services/auth_service.dart';
 
-final authControllerProvider = StateNotifierProvider<AuthController, UserModel>(
+final authControllerProvider = StateNotifierProvider.autoDispose<AuthController, UserModel>(
     (ref) => AuthController(ref.read));
 
 class AuthController extends StateNotifier<UserModel> {

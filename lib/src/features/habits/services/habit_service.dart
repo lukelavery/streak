@@ -6,8 +6,10 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class HabitService {
   Stream<List<HabitModel>> getGoals();
-   Future<void> addGoal(
-      {required ActivityModel activity, required int color, required String description});
+  Future<void> addGoal(
+      {required ActivityModel activity,
+      required int color,
+      required String description});
   Future<void> removeGoal({required String goalId});
 }
 
@@ -24,7 +26,8 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Stream<List<HabitModel>> getGoals() {
-    return goalsRef.snapshots().map((event) => event.docs
+    final userGoalsRef = goalsRef.where('uid', isEqualTo: uid);
+    return userGoalsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
         .toList());
@@ -32,7 +35,9 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Future<void> addGoal(
-      {required ActivityModel activity, required int color, required String description}) async {
+      {required ActivityModel activity,
+      required int color,
+      required String description}) async {
     await goalsRef.add({
       'color': color,
       'description': description,
@@ -40,7 +45,7 @@ class FirebaseHabitService implements HabitService {
       'uid': uid,
       'type': activity.type,
       'iconCodePoint': activity.iconCodePoint,
-      'iconFontFamily':activity. iconFontFamily,
+      'iconFontFamily': activity.iconFontFamily,
       'iconFontPackage': activity.iconFontPackage,
       'name': activity.name
     });

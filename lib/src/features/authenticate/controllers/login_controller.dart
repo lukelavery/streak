@@ -36,8 +36,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
   Future<void> _verifyEmail() async {
     if (_email != '') {
       try {
-        var result =
-            await _read(authRepositoryProvider).verifyEmail(email);
+        var result = await _read(authRepositoryProvider).verifyEmail(email);
         if (result == true) {
           state = LoginStateModel.password;
         } else {
@@ -47,7 +46,8 @@ class LoginController extends StateNotifier<LoginStateModel> {
         _handleException(e);
       }
     } else {
-      _handleException(const CustomException(message: 'Email address is empty.'));
+      _handleException(
+          const CustomException(message: 'Email address is empty.'));
     }
   }
 
@@ -58,6 +58,14 @@ class LoginController extends StateNotifier<LoginStateModel> {
       }
       await _read(authRepositoryProvider)
           .signInWithEmailAndPassword(_email, _password);
+    } on CustomException catch (e) {
+      _handleException(e);
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await _read(authRepositoryProvider).signInWithGoogle();
     } on CustomException catch (e) {
       _handleException(e);
     }
