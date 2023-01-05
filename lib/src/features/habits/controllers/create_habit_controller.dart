@@ -39,7 +39,7 @@ class CreateHabitController extends StateNotifier<int?> {
     } else if (state == null) {
       throw const CustomException(message: 'Please select a color.');
     } else {
-      await _read(habitServiceProvider).addGoal(
+      await _read(habitServiceProvider).addHabit(
           activity: activity,
           color: colors[state!].value,
           description: description);

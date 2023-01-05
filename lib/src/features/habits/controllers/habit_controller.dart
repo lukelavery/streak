@@ -12,7 +12,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   HabitController(this._read) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
-        _read(habitServiceProvider).getGoals().listen((habits) {
+        _read(habitServiceProvider).getHabits().listen((habits) {
       state = AsyncValue.data(habits);
     });
   }
@@ -28,7 +28,7 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
-  Future<void> removeHabit({required String goalId}) async {
-    await _read(habitServiceProvider).removeGoal(goalId: goalId);
+  Future<void> removeHabit({required String habitId}) async {
+    await _read(habitServiceProvider).removeHabit(habitId: habitId);
   }
 }

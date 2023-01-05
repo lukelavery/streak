@@ -5,12 +5,12 @@ import 'package:streak/src/features/authenticate/controllers/auth_controller.dar
 import 'package:streak/src/features/habits/models/habit_model.dart';
 
 abstract class HabitService {
-  Stream<List<HabitModel>> getGoals();
-  Future<void> addGoal(
+  Stream<List<HabitModel>> getHabits();
+  Future<void> addHabit(
       {required ActivityModel activity,
       required int color,
       required String description});
-  Future<void> removeGoal({required String goalId});
+  Future<void> removeHabit({required String habitId});
 }
 
 final habitServiceProvider = Provider.autoDispose<FirebaseHabitService>(
@@ -21,24 +21,24 @@ class FirebaseHabitService implements HabitService {
 
   final String? uid;
 
-  final CollectionReference goalsRef =
+  final CollectionReference habitsRef =
       FirebaseFirestore.instance.collection('goals');
 
   @override
-  Stream<List<HabitModel>> getGoals() {
-    final userGoalsRef = goalsRef.where('uid', isEqualTo: uid);
-    return userGoalsRef.snapshots().map((event) => event.docs
+  Stream<List<HabitModel>> getHabits() {
+    final userHabitsRef = habitsRef.where('uid', isEqualTo: uid);
+    return userHabitsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
         .toList());
   }
 
   @override
-  Future<void> addGoal(
+  Future<void> addHabit(
       {required ActivityModel activity,
       required int color,
       required String description}) async {
-    await goalsRef.add({
+    await habitsRef.add({
       'color': color,
       'description': description,
       'activityId': activity.id,
@@ -52,7 +52,7 @@ class FirebaseHabitService implements HabitService {
   }
 
   @override
-  Future<void> removeGoal({required String goalId}) {
-    return goalsRef.doc(goalId).delete();
+  Future<void> removeHabit({required String habitId}) {
+    return habitsRef.doc(habitId).delete();
   }
 }

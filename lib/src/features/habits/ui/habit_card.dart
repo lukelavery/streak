@@ -22,7 +22,7 @@ class HabitCard extends StatelessWidget {
   final bool today;
   final List<GridTileModel> tiles;
   final Future<void> Function({required String activityId}) handleButtonClick;
-  final Future<void> Function({required String goalId}) removeHabit;
+  final Future<void> Function({required String habitId}) removeHabit;
   final int counter;
   final Color color;
 
@@ -82,7 +82,8 @@ class HabitCard extends StatelessWidget {
       edit == true
           ? GestureDetector(
               onTap: () {
-                removeHabit(goalId: activity.id);
+                // TODO: fix
+                removeHabit(habitId: activity.id);
               },
               child: Material(
                 borderRadius: BorderRadius.circular(20),
