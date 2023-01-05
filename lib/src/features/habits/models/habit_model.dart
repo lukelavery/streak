@@ -9,7 +9,7 @@ class HabitModel {
       required this.uid,
       });
 
-  final String? id;
+  final String id;
   final String uid;
   final ActivityModel activity;
   final int color;

@@ -38,7 +38,7 @@ class HabitListView extends ConsumerWidget {
               return HabitCard(
                 color: Colors.blue,
                 counter: counters[activity.id]!.count,
-                activity: activity,
+                habit: habits[index],
                 tiles: grid.gridModels[activity.id]!.gridTiles,
                 today: grid.gridModels[activity.id]!.today,
                 edit: ref.watch(editHabitController),

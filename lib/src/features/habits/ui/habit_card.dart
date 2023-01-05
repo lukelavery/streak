@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/ui/streak_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class HabitCard extends StatelessWidget {
   const HabitCard({
     Key? key,
-    required this.activity,
+    required this.habit,
     required this.tiles,
     required this.edit,
     required this.handleButtonClick,
@@ -17,7 +18,7 @@ class HabitCard extends StatelessWidget {
     required this.color,
   }) : super(key: key);
 
-  final ActivityModel activity;
+  final HabitModel habit;
   final bool edit;
   final bool today;
   final List<GridTileModel> tiles;
@@ -43,9 +44,9 @@ class HabitCard extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: color.withOpacity(0.6),
                     child: Icon(
-                      IconData(activity.iconCodePoint,
-                          fontFamily: activity.iconFontFamily,
-                          fontPackage: activity.iconFontPackage),
+                      IconData(habit.activity.iconCodePoint,
+                          fontFamily: habit.activity.iconFontFamily,
+                          fontPackage: habit.activity.iconFontPackage),
                       color: Colors.white,
                     ),
                   ),
@@ -53,7 +54,7 @@ class HabitCard extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    activity.name,
+                    habit.activity.name,
                     style: const TextStyle(
                         fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
                   ),
@@ -66,7 +67,7 @@ class HabitCard extends StatelessWidget {
                   CompleteButton(
                     today: today,
                     handleButtonClick: handleButtonClick,
-                    activity: activity,
+                    activity: habit.activity,
                     color: color,
                   ),
                 ],
@@ -74,7 +75,10 @@ class HabitCard extends StatelessWidget {
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: StreakGrid(tiles: tiles, color: color,),
+              child: StreakGrid(
+                tiles: tiles,
+                color: color,
+              ),
             ),
           ),
         ),
@@ -82,8 +86,7 @@ class HabitCard extends StatelessWidget {
       edit == true
           ? GestureDetector(
               onTap: () {
-                // TODO: fix
-                removeHabit(habitId: activity.id);
+                removeHabit(habitId: habit.id);
               },
               child: Material(
                 borderRadius: BorderRadius.circular(20),
@@ -158,7 +161,11 @@ class CompleteButton extends StatelessWidget {
 }
 
 class StreakCounter extends StatelessWidget {
-  const StreakCounter({Key? key, required this.today, required this.counter, required this.color})
+  const StreakCounter(
+      {Key? key,
+      required this.today,
+      required this.counter,
+      required this.color})
       : super(key: key);
 
   final bool today;
@@ -175,9 +182,7 @@ class StreakCounter extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(
               width: 1,
-              color: today
-                  ? color.withOpacity(0.8)
-                  : color.withOpacity(0.2),
+              color: today ? color.withOpacity(0.8) : color.withOpacity(0.2),
             ),
             borderRadius: BorderRadius.circular(7)),
         child: Row(
