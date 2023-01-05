@@ -6,18 +6,15 @@ class Counter {
   final int count;
 
   factory Counter.fromStreaks(List<StreakModel>? streaks) {
-    print('start');
     DateTime now = DateTime.now();
 
     if (streaks == null) {
-      print('end');
       return const Counter(count: 0);
     }
 
     int difference = getDifferenceInDays(streaks[0].dateTime, now);
 
     if (difference > 1) {
-      print('end');
       return const Counter(count: 0);
     } else {
       int count = 1;
@@ -27,13 +24,11 @@ class Counter {
             getDifferenceInDays(streaks[i].dateTime, streaks[i - 1].dateTime);
 
         if (difference3 > 1) {
-          print('end');
           return Counter(count: count);
         } else {
           count++;
         }
       }
-      print('end');
       return Counter(count: count);
     }
   }

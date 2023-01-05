@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/design/text.dart';
 
 class WelcomeForm extends StatelessWidget {
@@ -8,15 +7,15 @@ class WelcomeForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Header1('Track your habits.'),
-          const SizedBox(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Header1('Track your habits.'),
+          SizedBox(
             height: 5,
           ),
-          const Header2('Achieve your goals.'),
+          Header2('Achieve your goals.'),
         ],
       ),
     );

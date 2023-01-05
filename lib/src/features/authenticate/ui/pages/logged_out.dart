@@ -88,8 +88,9 @@ class LoggedOut extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
+          const Spacer(),
           const Padding(
-              padding: EdgeInsets.symmetric(vertical: 50.0),
+              padding: EdgeInsets.only(bottom: 50.0),
               child: WelcomeLogo()),
           LoginEntryForm(
             loginState: loginState,
@@ -100,24 +101,19 @@ class LoggedOut extends StatelessWidget {
             padding: const EdgeInsets.only(top: 50.0, bottom: 20),
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  minimumSize: const Size(double.infinity, 50)),
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))
+                ),
               onPressed: () {
                 signInWithGoogle();
               },
               label: const Text('Sign in with Google.'),
-              icon: const FaIcon(FontAwesomeIcons.google),
+              icon: Image.asset('assets/icons8-google-48.png', scale: 1.5,)
             ),
           ),
-          Text(
-            'Or sign in with email',
-            style: TextStyle(
-              color: Colors.grey,
-              fontFamily: 'Montserrat',
-              decoration: TextDecoration.underline,
-            ),
-          )
+          const Spacer(flex: 2,),
         ],
       ),
     );
