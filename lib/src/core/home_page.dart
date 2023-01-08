@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/features/habits/controllers/edit_habit_controller.dart';
 import 'package:streak/src/features/activities/ui/pages/select_activity_page.dart';
 import 'package:streak/src/features/habits/ui/habit_list_view.dart';
@@ -18,10 +17,8 @@ class MyHomePage extends ConsumerWidget {
     final editHabitState = ref.read(editHabitController.notifier);
 
     return Scaffold(
-      backgroundColor: backgroundColour,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: backgroundColour,
         actions: [
           AppBarActionButton(
             icon: Icons.edit,
@@ -53,11 +50,24 @@ class MyHomePage extends ConsumerWidget {
         return habitsState.when(
             data: (habits) {
               return streaksState.when(
-                data: (data) => HabitListView(
-                  counters: ref.watch(counterControllerProvider).value!,
-                  habits: ref.watch(habitControllerProvider).value!,
-                  streaks: ref.watch(streakControllerProvider).value!,
-                ),
+                data: (data) {
+                  if (habits.isEmpty) {
+                    return Center(
+                      child: Column(
+                        children: const [
+                          Spacer(),
+                          Text('Create a habit to get started.', style: TextStyle(fontFamily: 'Montserrat'),),
+                          Spacer(flex: 2,),
+                        ],
+                      ),
+                    );
+                  }
+                  return HabitListView(
+                    counters: ref.watch(counterControllerProvider).value!,
+                    habits: ref.watch(habitControllerProvider).value!,
+                    streaks: ref.watch(streakControllerProvider).value!,
+                  );
+                },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, st) =>
                     const Center(child: CircularProgressIndicator()),
@@ -68,12 +78,14 @@ class MyHomePage extends ConsumerWidget {
       }),
       // child: MyCircularProgressIndicator()),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SelectActivityPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SelectActivityPage()));
         },
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.background,),
       ),
     );
   }
@@ -113,7 +125,7 @@ class LogoBanner extends StatelessWidget {
             child: Text(
               'streak',
               style: TextStyle(
-                color: Colors.black,
+                // color: Colors.black,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w600,
                 fontSize: 25,
@@ -121,7 +133,7 @@ class LogoBanner extends StatelessWidget {
             )),
         FaIcon(
           FontAwesomeIcons.bolt,
-          color: Colors.black,
+          // color: Colors.black,
           size: 22,
         ),
       ],

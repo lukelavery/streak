@@ -31,7 +31,7 @@ class FirebaseAuthService implements AuthService {
     return _auth.authStateChanges().map((user) {
       if (user != null) {
         return UserModel(
-            uid: user.uid, email: user.email, isVerified: user.emailVerified);
+            uid: user.uid, email: user.email, isVerified: user.emailVerified, name: user.displayName, photoUrl: user.photoURL);
       } else {
         return const UserModel(uid: null, email: null, isVerified: false);
       }

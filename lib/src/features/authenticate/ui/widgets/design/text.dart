@@ -7,9 +7,9 @@ class Header1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         heading,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 24,
-          color: Colors.black,
+          color: Theme.of(context).colorScheme.onSurface,
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
         ),
@@ -25,7 +25,7 @@ class Header2 extends StatelessWidget {
         heading,
         style: TextStyle(
           fontSize: 20,
-          color: Colors.grey.shade700,
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w300,
         ),

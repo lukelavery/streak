@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/home_page.dart';
+import 'package:streak/src/core/theme.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/ui/pages/logged_out.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'streak',
-      home: Wrapper(),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    var darkMode = ref.watch(darkModeController);
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'streak',
+        home: const Wrapper(),
+        theme: darkMode ? darkTheme : lightTheme);
   }
 }
 
@@ -22,8 +24,7 @@ class Wrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(authControllerProvider).uid !=
-        null) {
+    if (ref.watch(authControllerProvider).uid != null) {
       return const MyHomePage();
     } else {
       return const LogInPage();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../design/styled_button.dart';
+import '../buttons/styled_button.dart';
 
 void showErrorDialog(BuildContext context, String title, Exception e) {
     showDialog<void>(

@@ -19,7 +19,6 @@ class SearchView extends ConsumerWidget {
         title: TextField(onChanged: (value) {
           ref.read(activitySearchControllerProvider.notifier).query(value);
         }),
-        backgroundColor: Colors.grey[50],
       ),
       body: activitySearchState.when(
         data: (activitiesList) {

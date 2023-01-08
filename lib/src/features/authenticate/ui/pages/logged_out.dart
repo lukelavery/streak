@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import 'package:streak/src/features/authenticate/domain/login_state_model.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/buttons/google_sign_in_button.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/design/welcome_logo.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/forms/email_form.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/forms/password_form.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/forms/register_form.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/welcome_form.dart';
-import '../../domain/login_state_model.dart';
-import '../widgets/forms/email_form.dart';
-import '../widgets/forms/password_form.dart';
-import '../widgets/forms/register_form.dart';
 
 class LogInPage extends ConsumerWidget {
   const LogInPage({Key? key}) : super(key: key);
@@ -37,84 +38,32 @@ class LogInPage extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: loginState == LoginStateModel.welcome
           ? null
-          : FloatingActionButton.extended(
-              icon: loginState == LoginStateModel.welcome
-                  ? null
-                  : const Icon(Icons.arrow_forward),
-              label: Row(
-                children: const [
-                  Text(
-                    'Get started',
-                  ),
-                  Icon(Icons.arrow_forward)
-                ],
-              ),
-              isExtended: loginState == LoginStateModel.welcome ? true : false,
+          : FloatingActionButton(
               backgroundColor: Colors.black,
               onPressed: () {
                 loginStateNotifier.floatingActionButtonClick();
               },
+              child: const Icon(Icons.arrow_forward),
             ),
       body: SafeArea(
-        child: Center(
-            child: LoggedOut(
-          loginState: loginState,
-          email: loginStateNotifier.email,
-          cancelRegistration: loginStateNotifier.cancelRegistration,
-          signInWithGoogle: loginStateNotifier.signInWithGoogle,
-        )),
-      ),
-    );
-  }
-}
-
-class LoggedOut extends StatelessWidget {
-  const LoggedOut({
-    Key? key,
-    required this.loginState,
-    required this.email,
-    required this.cancelRegistration,
-    required this.signInWithGoogle,
-  }) : super(key: key);
-
-  final LoginStateModel loginState;
-  final String? email;
-  final void Function() cancelRegistration;
-  final void Function() signInWithGoogle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        children: [
-          const Spacer(),
-          const Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: WelcomeLogo()),
-          LoginEntryForm(
-            loginState: loginState,
-            email: email,
-            cancelRegistration: cancelRegistration,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            children: [
+              const Spacer(),
+              const WelcomeLogo(),
+              const SizedBox(height: 50),
+              LoginEntryForm(
+                loginState: loginState,
+                email: loginStateNotifier.email,
+                cancelRegistration: loginStateNotifier.cancelRegistration,
+              ),
+              const SizedBox(height: 50),
+              GoogleSignInButton(signInWithGoogle: loginStateNotifier.signInWithGoogle,),
+              const Spacer(flex: 2),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, bottom: 20),
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))
-                ),
-              onPressed: () {
-                signInWithGoogle();
-              },
-              label: const Text('Sign in with Google.'),
-              icon: Image.asset('assets/icons8-google-48.png', scale: 1.5,)
-            ),
-          ),
-          const Spacer(flex: 2,),
-        ],
+        ),
       ),
     );
   }
@@ -150,34 +99,5 @@ class LoginEntryForm extends StatelessWidget {
           ],
         );
     }
-  }
-}
-
-class WelcomeLogo extends StatelessWidget {
-  const WelcomeLogo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        FaIcon(
-          FontAwesomeIcons.bolt,
-          color: Colors.black,
-          size: 50,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'streak',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
-        ),
-      ],
-    );
   }
 }

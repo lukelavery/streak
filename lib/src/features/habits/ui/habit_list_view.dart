@@ -36,7 +36,7 @@ class HabitListView extends ConsumerWidget {
           return gridState.when(
             data: (grid) {
               return HabitCard(
-                color: Colors.blue,
+                color: Theme.of(context).colorScheme.primary,
                 counter: counters[activity.id]!.count,
                 habit: habits[index],
                 tiles: grid.gridModels[activity.id]!.gridTiles,

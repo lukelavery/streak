@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/core/constants.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
@@ -34,7 +33,6 @@ class CreateHabitPage extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: backgroundColour,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           createHabitStateNotifier.handleButtonClick(activity: activity, context: context);
@@ -42,7 +40,6 @@ class CreateHabitPage extends ConsumerWidget {
       ),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: backgroundColour,
         title: const Text(
           'Create Habit',
           style: TextStyle(color: Colors.black),

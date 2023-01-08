@@ -192,7 +192,7 @@ class StreakCounter extends StatelessWidget {
             FaIcon(
               FontAwesomeIcons.fireFlameCurved,
               size: 17,
-              color: activeStreak ? Colors.black : Colors.grey,
+              color: activeStreak ? Theme.of(context).colorScheme.onSurface : Colors.grey,
             ),
             const SizedBox(
               width: 4,
@@ -203,7 +203,7 @@ class StreakCounter extends StatelessWidget {
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
-                color: activeStreak ? Colors.black : Colors.grey,
+                color: activeStreak ? Theme.of(context).colorScheme.onSurface : Colors.grey,
               ),
             ),
           ],
