@@ -11,8 +11,8 @@ class UserProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateNotifier = ref.read(authControllerProvider.notifier);
     final UserModel user = ref.read(authControllerProvider);
-    final darkMode = ref.watch(darkModeController);
-    final darkModeState = ref.read(darkModeController.notifier);
+    final themeState = ref.watch(themeController);
+    final themeStateNotifier = ref.read(themeController.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -68,13 +68,12 @@ class UserProfilePage extends ConsumerWidget {
                       title: 'Dark Mode',
                       trailing: Switch(
                         activeColor: Colors.blue,
-                        value: darkMode,
-                        onChanged: (value) => darkModeState.update(
-                          (state) {
-                            return !state;
-                          },
+                        value: themeState.darkMode,
+                        onChanged: (value) {
+                          themeStateNotifier.toggleDarkMode();
+                        }
                         ),
-                      ),
+                      
                     ),
                     const SettingsListTile(
                         title: 'Colour',

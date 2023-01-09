@@ -10,12 +10,12 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var darkMode = ref.watch(darkModeController);
+    var themeState = ref.watch(themeController);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'streak',
         home: const Wrapper(),
-        theme: darkMode ? darkTheme : lightTheme);
+        theme: themeState.darkMode ? darkTheme : lightTheme);
   }
 }
 

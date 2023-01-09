@@ -31,6 +31,15 @@ class MyHomePage extends ConsumerWidget {
             },
           ),
           AppBarActionButton(
+            icon: Icons.add_circle, 
+            onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SelectActivityPage()));
+        },
+          ),
+          AppBarActionButton(
             icon: Icons.account_circle,
             onPressed: () {
               Navigator.push(
@@ -76,17 +85,6 @@ class MyHomePage extends ConsumerWidget {
             loading: (() => const Center(child: CircularProgressIndicator())),
             error: (e, st) => const Center(child: CircularProgressIndicator()));
       }),
-      // child: MyCircularProgressIndicator()),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.onSurface,
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SelectActivityPage()));
-        },
-        child: Icon(Icons.add, color: Theme.of(context).colorScheme.background,),
-      ),
     );
   }
 }

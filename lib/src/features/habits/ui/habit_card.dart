@@ -35,7 +35,7 @@ class HabitCard extends StatelessWidget {
         child: Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          elevation: 0.5,
+          elevation: 0,
           child: ListTile(
             title: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),

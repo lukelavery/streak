@@ -23,7 +23,7 @@ class StreakGrid extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   color: tiles[(181 - (parentIndex * 7 + index))].future
-                      ? Colors.white
+                      ? Theme.of(context).colorScheme.surface
                       : tiles[(181 - (parentIndex * 7 + index))].streak
                           ? color
                           : color.withOpacity(0.1),
