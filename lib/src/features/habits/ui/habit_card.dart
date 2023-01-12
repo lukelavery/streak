@@ -43,7 +43,14 @@ class HabitCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundColor: color.withOpacity(0.6),
-                    child: Icon(
+                    child: habit.activity.iconFontPackage == "font_awesome_flutter" ? 
+                    FaIcon(
+                      IconData(habit.activity.iconCodePoint,
+                          fontFamily: habit.activity.iconFontFamily,
+                          fontPackage: habit.activity.iconFontPackage),
+                      color: Colors.white,
+                    ) : 
+                    Icon(
                       IconData(habit.activity.iconCodePoint,
                           fontFamily: habit.activity.iconFontFamily,
                           fontPackage: habit.activity.iconFontPackage),

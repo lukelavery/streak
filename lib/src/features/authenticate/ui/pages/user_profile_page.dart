@@ -67,17 +67,20 @@ class UserProfilePage extends ConsumerWidget {
                     SettingsListTile(
                       title: 'Dark Mode',
                       trailing: Switch(
-                        activeColor: Colors.blue,
-                        value: themeState.darkMode,
-                        onChanged: (value) {
-                          themeStateNotifier.toggleDarkMode();
-                        }
-                        ),
-                      
+                          activeColor: Colors.blue,
+                          value: themeState.darkMode,
+                          onChanged: (value) {
+                            themeStateNotifier.toggleDarkMode();
+                          }),
                     ),
-                    const SettingsListTile(
-                        title: 'Colour',
-                        trailing: Icon(Icons.arrow_forward_ios))
+                    GestureDetector(
+                      onTap: () => showBottomSheet(context: context, builder: (context) => Container(
+                          color: Colors.red,
+                        )),
+                      child: const SettingsListTile(
+                          title: 'Colour',
+                          trailing: Icon(Icons.arrow_forward_ios),),
+                    )
                   ],
                 ),
               )
@@ -91,19 +94,27 @@ class UserProfilePage extends ConsumerWidget {
 
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile(
-      {super.key, required this.title, required this.trailing});
+      {super.key, required this.title, required this.trailing, this.onTap});
 
   final String title;
   final Widget trailing;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 0,
-      child: ListTile(
-        title: Text(title),
-        trailing: trailing,
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        elevation: 0,
+        child: ListTile(
+          title: Text(title),
+          trailing: trailing,
+        ),
       ),
     );
   }

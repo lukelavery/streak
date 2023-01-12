@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 
 class CreateHabitPage extends ConsumerWidget {
-  const CreateHabitPage({Key? key, required this.activity}) : super(key: key);
+  const CreateHabitPage({Key? key, this.activity, required this.name})
+      : super(key: key);
 
-  final ActivityModel activity;
+  final ActivityModel? activity;
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedColor = ref.watch(createHabitControllerProvider);
     final createHabitStateNotifier =
         ref.read(createHabitControllerProvider.notifier);
+    final createHabitState = ref.watch(createHabitControllerProvider);
+
+    createHabitStateNotifier.setName(name);
 
     ref.listen<CustomException?>(
       customExceptionProvider,
@@ -35,7 +40,8 @@ class CreateHabitPage extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          createHabitStateNotifier.handleButtonClick(activity: activity, context: context);
+          createHabitStateNotifier.handleButtonClick(
+              activity: activity, context: context);
         },
       ),
       appBar: AppBar(
@@ -52,31 +58,41 @@ class CreateHabitPage extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Text(activity.name),
+            activity == null
+                ? Text(name)
+                : Row(
+                    children: [
+                      Icon(IconData(activity!.iconCodePoint,
+                          fontFamily: activity?.iconFontFamily,
+                          fontPackage: activity?.iconFontPackage)),
+                      Text(name)
+                    ],
+                  ),
             const Text('Description'),
             TextField(
               onChanged: (value) =>
                   createHabitStateNotifier.setDescription(value),
             ),
-            const Text('Color'),
-            Expanded(
-              child: GridView.builder(
-                itemCount: colors.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5),
-                itemBuilder: ((context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      createHabitStateNotifier.setColor(index);
-                    },
-                    child: ColorCard(
-                      color: colors[index],
-                      selected: index == selectedColor ? true : false,
+            activity == null
+                ? Expanded(
+                    child: GridView.builder(
+                      itemCount: icons.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5),
+                      itemBuilder: ((context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            createHabitStateNotifier.setIcon(index);
+                          },
+                          child: IconCard(
+                              icon: Icon(icons[index]),
+                              selected: index == createHabitState),
+                        );
+                      }),
                     ),
-                  );
-                }),
-              ),
-            ),
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -84,11 +100,11 @@ class CreateHabitPage extends ConsumerWidget {
   }
 }
 
-class ColorCard extends StatelessWidget {
-  const ColorCard({Key? key, required this.color, required this.selected})
+class IconCard extends StatelessWidget {
+  const IconCard({Key? key, required this.icon, required this.selected})
       : super(key: key);
 
-  final MaterialColor color;
+  final Icon icon;
   final bool selected;
 
   @override
@@ -97,17 +113,14 @@ class ColorCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 0.5,
       child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: selected ? Border.all(color: color) : null,
-        ),
-        child: Container(
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20), color: color),
-        ),
-      ),
+            borderRadius: BorderRadius.circular(20),
+            border: selected
+                ? Border.all(color: Theme.of(context).colorScheme.primary)
+                : null,
+          ),
+          child: icon),
     );
   }
 }

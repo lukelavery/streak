@@ -31,7 +31,10 @@ class SelectActivityPage extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.close)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close)),
                 ),
               ],
             ),
@@ -76,42 +79,33 @@ class SelectActivityPage extends ConsumerWidget {
                       habitType: 'skill',
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 8.0),
-                  //   child: GoalCard(
-                  //     title: 'Family & friends',
-                  //     subtitle: 'Make time for the people who matter most',
-                  //     searchDelegate: CustomSearchDelegate(
-                  //       addHabit: ref
-                  //           .read(habitControllerProvider.notifier)
-                  //           .createHabit,
-                  //     ),
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 8.0),
-                  //   child: GoalCard(
-                  //     title: 'Me time',
-                  //     subtitle: 'Read, meditate, take care of yourself',
-                  //     searchDelegate: CustomSearchDelegate(
-                  //       addHabit: ref
-                  //           .read(habitControllerProvider.notifier)
-                  //           .createHabit,
-                  //     ),
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 8.0),
-                  //   child: GoalCard(
-                  //     title: 'Organise my life',
-                  //     subtitle: 'Stay on tope of things',
-                  //     searchDelegate: CustomSearchDelegate(
-                  //       addHabit: ref
-                  //           .read(habitControllerProvider.notifier)
-                  //           .createHabit,
-                  //     ),
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: GoalCard(
+                      title: 'Organise my life',
+                      subtitle: 'Stay on tope of things',
+                      habitType: 'organise',
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: GoalCard(
+                      title: 'Me time',
+                      subtitle: 'Read, meditate, take care of yourself',
+                      habitType: 'me',
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: GoalCard(
+                      title: 'Family & friends',
+                      subtitle: 'Make time for the people who matter most',
+                      habitType: 'friends',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  )
                 ],
               ),
             )

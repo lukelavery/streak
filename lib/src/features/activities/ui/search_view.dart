@@ -17,47 +17,68 @@ class SearchView extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         title: TextField(onChanged: (value) {
-          ref.read(activitySearchControllerProvider.notifier).query(value);
+          activitySearchStateNotifier.query(value);
         }),
       ),
       body: activitySearchState.when(
         data: (activitiesList) {
           return ListView.builder(
-            itemCount: activitiesList.length,
+            itemCount: activitiesList.length + 1,
             itemBuilder: ((context, index) {
-              final ActivityModel activity = activitiesList[index];
-              return ListTile(
-                trailing: activity.uid == null
-                    ? const IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          color: Colors.transparent,
+              final query = activitySearchStateNotifier.queryText;
+              if (index == activitiesList.length) {
+                if (query != '') {
+                  return ListTile(
+                    leading: const Icon(Icons.add),
+                    title: Text(
+                        'Create custom habit: "${activitySearchStateNotifier.queryText}"',
+                    ),
+                    onTap: () {
+                    // Navigator.pop(context);
+                    // Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CreateHabitPage(name: activitySearchStateNotifier.queryText,)));
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              } else {
+                final ActivityModel activity = activitiesList[index];
+
+                return ListTile(
+                  trailing: activity.uid == null
+                      ? const IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.transparent,
+                          ),
+                          onPressed: null)
+                      : IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: (() {
+                            activitySearchStateNotifier.deleteActivity(
+                                activityId: activity.id);
+                          }),
                         ),
-                        onPressed: null)
-                    : IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: (() {
-                          activitySearchStateNotifier.deleteHabit(
-                              activityId: activity.id);
-                        }),
-                      ),
-                leading: Icon(
-                  IconData(activity.iconCodePoint,
-                      fontFamily: activity.iconFontFamily,
-                      fontPackage: activity.iconFontPackage),
-                ),
-                title: Text(activity.name),
-                onTap: () {
-                  // activitySearchStateNotifier.selectHabit(activity);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CreateHabitPage(activity: activity)));
-                },
-              );
+                  leading: Icon(
+                    IconData(activity.iconCodePoint,
+                        fontFamily: activity.iconFontFamily,
+                        fontPackage: activity.iconFontPackage),
+                  ),
+                  title: Text(activity.name),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CreateHabitPage(activity: activity, name: activity.name,)));
+                  },
+                );
+              }
             }),
           );
         },
@@ -65,7 +86,7 @@ class SearchView extends ConsumerWidget {
           return Text(error.toString());
         },
         loading: () {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

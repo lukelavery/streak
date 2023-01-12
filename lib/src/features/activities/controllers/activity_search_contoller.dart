@@ -13,7 +13,7 @@ class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityMod
       : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription = _read(activityServiceProvider)
-        .getHabits(habitType: habitType)
+        .getActivitiesByType(habitType: habitType)
         .listen((habits) {
       habitList = habits;
       state = AsyncValue.data(habitList);
@@ -39,39 +39,10 @@ class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityMod
           .where(
               (element) => element.name.toLowerCase().contains(q.toLowerCase()))
           .toList());
-      if (q != '') {
-        state = AsyncValue.data([
-          ...state.value!,
-          ActivityModel(
-              id: '',
-              name: 'Create custom habit: $q',
-              iconCodePoint: 0xe047,
-              iconFontFamily: 'MaterialIcons',
-              type: habitType)
-        ]);
-      }
     }
   }
 
-  void selectHabit(ActivityModel habit) {
-    if (habit.id == '') {
-      createHabit();
-    } else {
-      addHabit(habit: habit);
-    }
-  }
-
-  void createHabit() async {
-    ActivityPreset preset = activityPresets[habitType]!;
-    await _read(activityServiceProvider)
-        .createHabit(preset: preset, name: queryText);
-  }
-
-  void deleteHabit({required String activityId}) async {
-    await _read(activityServiceProvider).deleteHabit(activityId: activityId);
-  }
-
-  void addHabit({required ActivityModel habit}) async {
-    await _read(activityServiceProvider).addHabit(habit: habit);
+  void deleteActivity({required String activityId}) async {
+    await _read(activityServiceProvider).deleteActivity(activityId: activityId);
   }
 }
