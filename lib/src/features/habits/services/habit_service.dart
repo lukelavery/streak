@@ -8,7 +8,6 @@ abstract class HabitService {
   Stream<List<HabitModel>> getHabits();
   Future<void> addHabit(
       {required ActivityModel activity,
-      required int color,
       required String description});
   Future<void> removeHabit({required String habitId});
 }
@@ -36,10 +35,8 @@ class FirebaseHabitService implements HabitService {
   @override
   Future<void> addHabit(
       {required ActivityModel activity,
-      required int color,
       required String description}) async {
     await habitsRef.add({
-      'color': color,
       'description': description,
       'activityId': activity.id,
       'uid': uid,

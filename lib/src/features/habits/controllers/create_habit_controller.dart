@@ -60,7 +60,6 @@ class CreateHabitController extends StateNotifier<int?> {
       } else {
         await _read(habitServiceProvider).addHabit(
             activity: activity,
-            color: colors[state!].value,
             description: description);
       }
     }
