@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/home_page.dart';
-import 'package:streak/src/core/theme.dart';
+import 'package:streak/src/features/theme/theme.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/ui/pages/logged_out.dart';
 
@@ -10,12 +10,12 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var themeState = ref.watch(themeController);
+    var themeState = ref.watch(themeDataController);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'streak',
         home: const Wrapper(),
-        theme: themeState.darkMode ? darkTheme : lightTheme);
+        theme: themeState);
   }
 }
 

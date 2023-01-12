@@ -97,5 +97,3 @@ class CreateHabitController extends StateNotifier<int?> {
     _read(customExceptionProvider.notifier).state = e;
   }
 }
-
-List<MaterialColor> colors = Colors.primaries;

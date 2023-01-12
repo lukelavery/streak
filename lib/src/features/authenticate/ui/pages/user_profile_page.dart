@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/core/theme.dart';
+import 'package:streak/src/features/theme/theme.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
+import 'package:streak/src/features/theme/ui/color_picker_view.dart';
 
 class UserProfilePage extends ConsumerWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -73,14 +74,14 @@ class UserProfilePage extends ConsumerWidget {
                             themeStateNotifier.toggleDarkMode();
                           }),
                     ),
-                    GestureDetector(
-                      onTap: () => showBottomSheet(context: context, builder: (context) => Container(
-                          color: Colors.red,
-                        )),
-                      child: const SettingsListTile(
-                          title: 'Colour',
-                          trailing: Icon(Icons.arrow_forward_ios),),
-                    )
+                    SettingsListTile(
+                        title: 'Colour',
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SelectColorView()))
+                      ),
                   ],
                 ),
               )
@@ -98,7 +99,7 @@ class SettingsListTile extends StatelessWidget {
 
   final String title;
   final Widget trailing;
-  final Function? onTap;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
