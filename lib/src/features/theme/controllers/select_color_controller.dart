@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/theme/models/colors.dart';
 
 final selectColorController =
     StateNotifierProvider.autoDispose<SelectColorController, int?>(
@@ -9,7 +8,7 @@ final selectColorController =
 class SelectColorController extends StateNotifier<int?> {
   SelectColorController() : super(null);
 
-  final List<MaterialColor> colorList = colors;
+  final List<MaterialColor> colorList = Colors.primaries;
 
   void setColor(int index) {
     state = index;

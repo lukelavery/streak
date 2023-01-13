@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/theme/controllers/select_color_controller.dart';
-import 'package:streak/src/features/theme/models/colors.dart';
 import 'package:streak/src/features/theme/theme.dart';
 
 class SelectColorView extends ConsumerWidget {
@@ -15,10 +14,10 @@ class SelectColorView extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
+        child: const Icon(Icons.done),
         onPressed: () {
           if (selectedColor != null) {
-            themeStateNotifier.setColor(selectedColor);
+            themeStateNotifier.setColor(selectedColorNotifier.colorList[selectedColor]);
             Navigator.pop(context);
           }
         },
@@ -35,7 +34,7 @@ class SelectColorView extends ConsumerWidget {
           children: [
             Expanded(
               child: GridView.builder(
-                itemCount: colors.length,
+                itemCount: selectedColorNotifier.colorList.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5),
                 itemBuilder: ((context, index) {
@@ -44,7 +43,7 @@ class SelectColorView extends ConsumerWidget {
                       selectedColorNotifier.setColor(index);
                     },
                     child: ColorCard(
-                      color: colors[index],
+                      color: selectedColorNotifier.colorList[index],
                       selected: index == selectedColor ? true : false,
                     ),
                   );

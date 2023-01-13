@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/theme/models/theme_repository.dart';
 
 class ThemeModel {
   final bool darkMode;
   final Color primaryColor;
 
   const ThemeModel({required this.darkMode, required this.primaryColor});
+
+  factory ThemeModel.fromPrimatives(bool darkMode, int color) {
+    return ThemeModel(darkMode: darkMode, primaryColor: Color(color));
+  }
 }
 
 final themeController =
@@ -14,17 +19,32 @@ final themeController =
 
 class ThemeController extends StateNotifier<ThemeModel> {
   ThemeController()
-      : super(const ThemeModel(darkMode: true, primaryColor: Colors.blue));
+      : super(const ThemeModel(darkMode: false, primaryColor: Colors.blue)) {
+    getTheme();
+  }
 
   final List<MaterialColor> colors = Colors.primaries;
 
-  void toggleDarkMode() {
-    state =
-        ThemeModel(darkMode: !state.darkMode, primaryColor: state.primaryColor);
+  void getTheme() async {
+    ThemeModel? theme = UserSimplePreferenes.getTheme();
+    if (theme != null) {
+      state = theme;
+      print('get theme');
+    }
   }
 
-  void setColor(int index) {
-    state = ThemeModel(darkMode: state.darkMode, primaryColor: colors[index]);
+  void toggleDarkMode() {
+    ThemeModel theme =
+        ThemeModel(darkMode: !state.darkMode, primaryColor: state.primaryColor);
+    state = theme;
+    UserSimplePreferenes.setTheme(theme);
+  }
+
+  void setColor(Color color) async {
+    ThemeModel theme =
+        ThemeModel(darkMode: state.darkMode, primaryColor: color);
+    state = theme;
+    UserSimplePreferenes.setTheme(theme);
   }
 }
 
@@ -33,50 +53,49 @@ final themeDataController =
         (ref) => ThemeDataController(ref.watch(themeController)));
 
 class ThemeDataController extends StateNotifier<ThemeData?> {
-  ThemeDataController(this.theme)
-      : super(null) {
-        if (theme.darkMode) {
-          state = ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme(
-                brightness: Brightness.dark,
-                primary: theme.primaryColor,
-                onPrimary: Colors.white,
-                secondary: Colors.white,
-                onSecondary: Colors.black,
-                error: Colors.red,
-                onError: Colors.white,
-                background: Colors.black,
-                onBackground: Colors.white,
-                surface: Colors.grey.shade900,
-                onSurface: Colors.white),
-            scaffoldBackgroundColor: Colors.black,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.black,
-            ),
-          );
-        } else {
-          state = ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme(
-                brightness: Brightness.light,
-                primary: theme.primaryColor,
-                onPrimary: Colors.white,
-                secondary: Colors.black,
-                onSecondary: Colors.white,
-                error: Colors.red,
-                onError: Colors.white,
-                background: Colors.grey.shade100,
-                onBackground: Colors.black,
-                surface: Colors.white,
-                onSurface: Colors.black),
-            scaffoldBackgroundColor: Colors.grey.shade100,
-            appBarTheme: AppBarTheme(
-              backgroundColor: Colors.grey.shade100,
-            ),
-          );
-        }
-      }
+  ThemeDataController(this.theme) : super(null) {
+    if (theme.darkMode) {
+      state = ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme(
+            brightness: Brightness.dark,
+            primary: theme.primaryColor,
+            onPrimary: Colors.white,
+            secondary: Colors.white,
+            onSecondary: Colors.black,
+            error: Colors.red,
+            onError: Colors.white,
+            background: Colors.black,
+            onBackground: Colors.white,
+            surface: Colors.grey.shade900,
+            onSurface: Colors.white),
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+        ),
+      );
+    } else {
+      state = ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme(
+            brightness: Brightness.light,
+            primary: theme.primaryColor,
+            onPrimary: Colors.white,
+            secondary: Colors.black,
+            onSecondary: Colors.white,
+            error: Colors.red,
+            onError: Colors.white,
+            background: Colors.grey.shade100,
+            onBackground: Colors.black,
+            surface: Colors.white,
+            onSurface: Colors.black),
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade100,
+        ),
+      );
+    }
+  }
 
   final ThemeModel theme;
 }
