@@ -31,13 +31,13 @@ class MyHomePage extends ConsumerWidget {
             },
           ),
           AppBarActionButton(
-            icon: Icons.add_circle, 
+            icon: Icons.add_circle,
             onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SelectActivityPage()));
-        },
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SelectActivityPage()));
+            },
           ),
           AppBarActionButton(
             icon: Icons.account_circle,
@@ -65,8 +65,13 @@ class MyHomePage extends ConsumerWidget {
                       child: Column(
                         children: const [
                           Spacer(),
-                          Text('Create a habit to get started.', style: TextStyle(fontFamily: 'Montserrat'),),
-                          Spacer(flex: 2,),
+                          Text(
+                            'Create a habit to get started.',
+                            style: TextStyle(fontFamily: 'Montserrat'),
+                          ),
+                          Spacer(
+                            flex: 2,
+                          ),
                         ],
                       ),
                     );

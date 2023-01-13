@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/theme/models/theme_repository.dart';
 
@@ -19,7 +20,7 @@ final themeController =
 
 class ThemeController extends StateNotifier<ThemeModel> {
   ThemeController()
-      : super(const ThemeModel(darkMode: false, primaryColor: Colors.blue)) {
+      : super(const ThemeModel(darkMode: true, primaryColor: Colors.blue)) {
     getTheme();
   }
 
@@ -37,6 +38,8 @@ class ThemeController extends StateNotifier<ThemeModel> {
     ThemeModel theme =
         ThemeModel(darkMode: !state.darkMode, primaryColor: state.primaryColor);
     state = theme;
+    theme.darkMode ?     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark):
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     UserSimplePreferenes.setTheme(theme);
   }
 
