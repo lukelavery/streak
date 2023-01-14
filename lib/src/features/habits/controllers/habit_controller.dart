@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/core/user_preferences.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 
@@ -13,6 +14,19 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
         _read(habitServiceProvider).getHabits().listen((habits) {
+      final map = UserSimplePreferenes.getHabitOrder();
+      if (map != null) {
+        int maxVal = map.values.length + 1;
+        for (var habit in habits) {
+        }
+        habits.sort((a, b) {
+          int va = map.containsKey(a.id) ? map[a.id]! : maxVal;
+          int vb = map.containsKey(b.id) ? map[b.id]! : maxVal;
+          return va - vb;
+        });
+        for (var habit in habits) {
+        }
+      }
       state = AsyncValue.data(habits);
     });
   }
@@ -31,4 +45,19 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
   Future<void> removeHabit({required String habitId}) async {
     await _read(habitServiceProvider).removeHabit(habitId: habitId);
   }
+
+  void reorderHabits(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex--;
+    }
+    final item = state.value?.removeAt(oldIndex);
+    state.value?.insert(newIndex, item!);
+
+    final habitList = state.value;
+    if (habitList != null) {
+      UserSimplePreferenes.saveHabitOrder(habitList);
+    }
+  }
+
+  void _compareHabits() {}
 }

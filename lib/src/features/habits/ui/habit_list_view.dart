@@ -24,33 +24,58 @@ class HabitListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gridStateNotifier = ref.read(gridControllerProvider.notifier);
     final habitStateNotifier = ref.read(habitControllerProvider.notifier);
+    final gridState = ref.watch(gridControllerProvider);
 
-    return ListView.builder(
-      padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 75),
-      itemCount: habits.length,
-      itemBuilder: ((context, index) {
-        ActivityModel activity = habits[index].activity;
-
-        return Consumer(builder: (context, ref, child) {
-          final gridState = ref.watch(gridControllerProvider);
-          return gridState.when(
-            data: (grid) {
-              return HabitCard(
-                color: Theme.of(context).colorScheme.primary,
-                counter: counters[activity.id]!.count,
-                habit: habits[index],
-                tiles: grid.gridModels[activity.id]!.gridTiles,
-                today: grid.gridModels[activity.id]!.today,
-                edit: ref.watch(editHabitController),
-                handleButtonClick: gridStateNotifier.handleButtonClick,
-                removeHabit: habitStateNotifier.removeHabit,
-              );
-            },
-            error: (e, st) => const Center(child: CircularProgressIndicator()),
-            loading: (() => const Center(child: CircularProgressIndicator())),
-          );
-        });
-      }),
+    return gridState.when(
+      data: (grids) {
+        return ReorderableListView.builder(
+          onReorder: (oldIndex, newIndex) {
+            habitStateNotifier.reorderHabits(oldIndex, newIndex);
+          },
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 75),
+          itemCount: habits.length,
+          itemBuilder: (context, index) {
+            ActivityModel activity = habits[index].activity;
+            return HabitCard(
+              key: ValueKey(habits[index]),
+              color: Theme.of(context).colorScheme.primary,
+              counter: counters[activity.id]!.count,
+              habit: habits[index],
+              tiles: grids.gridModels[activity.id]!.gridTiles,
+              today: grids.gridModels[activity.id]!.today,
+              edit: ref.watch(editHabitController),
+              handleButtonClick: gridStateNotifier.handleButtonClick,
+              removeHabit: habitStateNotifier.removeHabit,
+            );
+          },
+        );
+      },
+      error: (e, st) => const Center(child: CircularProgressIndicator()),
+      loading: (() => const Center(child: CircularProgressIndicator())),
     );
+
+    // return ListView.builder(
+    //   padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 75),
+    //   itemCount: habits.length,
+    //   itemBuilder: ((context, index) {
+    //     ActivityModel activity = habits[index].activity;
+    //     return gridState.when(
+    //       data: (grid) {
+    //         return HabitCard(
+    //           color: Theme.of(context).colorScheme.primary,
+    //           counter: counters[activity.id]!.count,
+    //           habit: habits[index],
+    //           tiles: grid.gridModels[activity.id]!.gridTiles,
+    //           today: grid.gridModels[activity.id]!.today,
+    //           edit: ref.watch(editHabitController),
+    //           handleButtonClick: gridStateNotifier.handleButtonClick,
+    //           removeHabit: habitStateNotifier.removeHabit,
+    //         );
+    //       },
+    //       error: (e, st) => const Center(child: CircularProgressIndicator()),
+    //       loading: (() => const Center(child: CircularProgressIndicator())),
+    //     );
+    //   }),
+    // );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/theme/models/theme_repository.dart';
+import 'package:streak/src/core/user_preferences.dart';
 
 class ThemeModel {
   final bool darkMode;

@@ -4,6 +4,8 @@ import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
+import 'package:streak/src/features/habits/controllers/habit_controller.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 
 class CreateHabitPage extends ConsumerWidget {
   const CreateHabitPage({Key? key, this.activity, required this.name})
@@ -37,9 +39,18 @@ class CreateHabitPage extends ConsumerWidget {
       },
     );
 
+    ref.listen<AsyncValue<List<HabitModel>>>(
+      habitControllerProvider,
+      (prev, next) {
+        if (next.value != prev?.value) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
+      },
+    );
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           createHabitStateNotifier.handleButtonClick(
               activity: activity, context: context);
         },

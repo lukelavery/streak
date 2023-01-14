@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/theme/theme.dart';
 
 class UserSimplePreferenes {
@@ -6,6 +7,7 @@ class UserSimplePreferenes {
 
   static const _keyDarkMode = 'darkMode';
   static const _keyColor = 'color';
+  static const _habitOrder = 'habitOrder';
 
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
@@ -21,6 +23,19 @@ class UserSimplePreferenes {
 
     if ((darkMode != null) & (color != null)) {
       return ThemeModel.fromPrimatives(darkMode!, color!);
+    }
+    return null;
+  }
+
+  static Future saveHabitOrder(List<HabitModel> habits) async {
+    await _preferences.setStringList(
+        _habitOrder, habits.map((e) => e.id).toList());
+  }
+
+  static Map<String, int>? getHabitOrder() {
+    final savedList = _preferences.getStringList(_habitOrder);
+    if (savedList != null) {
+      return {for (var i = 0; i < savedList.length; i++) savedList[i]: i};
     }
     return null;
   }

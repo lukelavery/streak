@@ -7,8 +7,11 @@ import 'package:streak/src/features/habits/models/habit_model.dart';
 abstract class HabitService {
   Stream<List<HabitModel>> getHabits();
   Future<void> addHabit(
-      {required ActivityModel activity,
-      required String description});
+      {
+        required ActivityModel activity,
+        required String description,
+        required int order,
+      });
   Future<void> removeHabit({required String habitId});
 }
 
@@ -25,7 +28,7 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Stream<List<HabitModel>> getHabits() {
-    final userHabitsRef = habitsRef.where('uid', isEqualTo: uid);
+    final userHabitsRef = habitsRef.where('uid', isEqualTo: uid).orderBy('order').orderBy('timestamp');
     return userHabitsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
@@ -34,8 +37,11 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Future<void> addHabit(
-      {required ActivityModel activity,
-      required String description}) async {
+      {
+        required ActivityModel activity,
+        required String description,
+        required int order,
+      }) async {
     await habitsRef.add({
       'description': description,
       'activityId': activity.id,
@@ -44,7 +50,9 @@ class FirebaseHabitService implements HabitService {
       'iconCodePoint': activity.iconCodePoint,
       'iconFontFamily': activity.iconFontFamily,
       'iconFontPackage': activity.iconFontPackage,
-      'name': activity.name
+      'name': activity.name,
+      'timestamp': Timestamp.fromDate(DateTime.now()),
+      'order': order,
     });
   }
 
