@@ -68,19 +68,34 @@ class UserProfilePage extends ConsumerWidget {
                   children: [
                     SettingsListTile(
                       title: 'Dark Mode',
-                      trailing: Switch(
-                          activeColor: Colors.blue,
-                          value: themeState.darkMode,
-                          onChanged: (value) {
-                            themeStateNotifier.toggleDarkMode();
-      SystemChrome.setSystemUIOverlayStyle(ref.read(themeController).darkMode
-        ? SystemUiOverlayStyle(systemNavigationBarColor: Colors.black, systemNavigationBarIconBrightness: Brightness.light)
-        : SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey.shade100, systemNavigationBarIconBrightness: Brightness.dark, statusBarColor: Colors.grey.shade100, statusBarBrightness: Brightness.dark));
-                          }),
+                      trailing: Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: Switch(
+                              activeColor: Colors.blue,
+                              value: themeState.darkMode,
+                              onChanged: (value) {
+                                themeStateNotifier.toggleDarkMode();
+                              SystemChrome.setSystemUIOverlayStyle(ref.read(themeController).darkMode
+                                ? const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black, systemNavigationBarIconBrightness: Brightness.light)
+                                : SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey.shade100, systemNavigationBarIconBrightness: Brightness.dark, statusBarColor: Colors.grey.shade100, statusBarBrightness: Brightness.dark));
+                              }),
+                        ),
+                      ),
                     ),
                     SettingsListTile(
                         title: 'Colour',
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing: 
+                        const Padding(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: Icon(Icons.arrow_forward_ios),
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 15),
+                        //   child: Container(decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(10)), height: 30, width: 30),
+                        // ),
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(

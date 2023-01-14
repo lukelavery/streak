@@ -14,6 +14,7 @@ class SelectColorView extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: selectedColor != null ? selectedColorNotifier.colorList[selectedColor] : null,
         child: const Icon(Icons.done),
         onPressed: () {
           if (selectedColor != null) {
@@ -72,7 +73,7 @@ class ColorCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: selected ? Border.all(color: color) : null,
         ),
