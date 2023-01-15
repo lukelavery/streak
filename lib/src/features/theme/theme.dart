@@ -30,7 +30,6 @@ class ThemeController extends StateNotifier<ThemeModel> {
     ThemeModel? theme = UserSimplePreferenes.getTheme();
     if (theme != null) {
       state = theme;
-      print('get theme');
     }
   }
 

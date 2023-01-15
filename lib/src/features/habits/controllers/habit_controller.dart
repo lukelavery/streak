@@ -17,15 +17,11 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
       final map = UserSimplePreferenes.getHabitOrder();
       if (map != null) {
         int maxVal = map.values.length + 1;
-        for (var habit in habits) {
-        }
         habits.sort((a, b) {
           int va = map.containsKey(a.id) ? map[a.id]! : maxVal;
           int vb = map.containsKey(b.id) ? map[b.id]! : maxVal;
           return va - vb;
         });
-        for (var habit in habits) {
-        }
       }
       state = AsyncValue.data(habits);
     });
@@ -58,6 +54,4 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
       UserSimplePreferenes.saveHabitOrder(habitList);
     }
   }
-
-  void _compareHabits() {}
 }

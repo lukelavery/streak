@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/habits/ui/pages/habit_focus_view.dart';
 import 'package:streak/src/features/streaks/ui/streak_grid.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
@@ -37,26 +38,25 @@ class HabitCard extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 0,
           child: ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HabitFocusView(
+                            habit: habit,
+                            tiles: tiles,
+                          )));
+            },
             title: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: color.withOpacity(0.6),
-                    child: habit.activity.iconFontPackage == "font_awesome_flutter" ? 
-                    FaIcon(
-                      IconData(habit.activity.iconCodePoint,
-                          fontFamily: habit.activity.iconFontFamily,
-                          fontPackage: habit.activity.iconFontPackage),
-                      color: Colors.white,
-                    ) : 
-                    Icon(
-                      IconData(habit.activity.iconCodePoint,
-                          fontFamily: habit.activity.iconFontFamily,
-                          fontPackage: habit.activity.iconFontPackage),
-                      color: Colors.white,
-                    ),
-                  ),
+                      backgroundColor: color.withOpacity(0.6),
+                      child: HabitIcon(
+                        color: Colors.white,
+                        habit: habit,
+                      )),
                   const SizedBox(
                     width: 10,
                   ),
@@ -199,7 +199,9 @@ class StreakCounter extends StatelessWidget {
             FaIcon(
               FontAwesomeIcons.fireFlameCurved,
               size: 17,
-              color: activeStreak ? Theme.of(context).colorScheme.onSurface : Colors.grey,
+              color: activeStreak
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.grey,
             ),
             const SizedBox(
               width: 4,
@@ -210,12 +212,38 @@ class StreakCounter extends StatelessWidget {
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
-                color: activeStreak ? Theme.of(context).colorScheme.onSurface : Colors.grey,
+                color: activeStreak
+                    ? Theme.of(context).colorScheme.onSurface
+                    : Colors.grey,
               ),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class HabitIcon extends StatelessWidget {
+  const HabitIcon({super.key, required this.habit, required this.color});
+
+  final HabitModel habit;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return habit.activity.iconFontPackage == "font_awesome_flutter"
+        ? FaIcon(
+            IconData(habit.activity.iconCodePoint,
+                fontFamily: habit.activity.iconFontFamily,
+                fontPackage: habit.activity.iconFontPackage),
+            color: color,
+          )
+        : Icon(
+            IconData(habit.activity.iconCodePoint,
+                fontFamily: habit.activity.iconFontFamily,
+                fontPackage: habit.activity.iconFontPackage),
+            color: color,
+          );
   }
 }

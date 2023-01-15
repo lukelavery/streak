@@ -76,17 +76,17 @@ class GridViewModel {
       gridState[habit.activity.id] = GridModel(
         gridTiles: List.generate(182, (index) {
           if (index < offset) {
-            return GridTileModel(streak: false, future: true);
+            return GridTileModel(streak: false, future: true, dateTime: nowYMD.add(Duration(days: offset - index)));
           }
           if (streakDateList
               .contains(nowYMD.subtract(Duration(days: index - offset)))) {
-            return GridTileModel(streak: true, future: false);
+            return GridTileModel(streak: true, future: false, dateTime: nowYMD.add(Duration(days: offset - index)));
           }
           if (streakDateList.contains(nowYMD)) {
             today = true;
           }
 
-          return GridTileModel(streak: false, future: false);
+          return GridTileModel(streak: false, future: false, dateTime: nowYMD.add(Duration(days: offset - index)));
         }),
         today: today,
       );

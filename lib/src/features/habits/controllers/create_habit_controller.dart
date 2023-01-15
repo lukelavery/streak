@@ -5,7 +5,6 @@ import 'package:streak/src/features/activities/controllers/activity_type_control
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/activities/services/activity_service.dart';
-import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final createHabitControllerProvider =
@@ -62,8 +61,6 @@ class CreateHabitController extends StateNotifier<int?> {
         await _read(habitServiceProvider).addHabit(
           activity: activity,
           description: description,
-          // TODO: handle null case
-          order: _read(habitControllerProvider).value!.length,
         );
       }
     }

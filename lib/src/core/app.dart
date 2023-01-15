@@ -14,7 +14,7 @@ class MyApp extends ConsumerWidget {
     var themeState = ref.watch(themeDataController);
 
       SystemChrome.setSystemUIOverlayStyle(ref.read(themeController).darkMode
-        ? SystemUiOverlayStyle(systemNavigationBarColor: Colors.black, systemNavigationBarIconBrightness: Brightness.light)
+        ? const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black, systemNavigationBarIconBrightness: Brightness.light)
         : SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey.shade100, systemNavigationBarIconBrightness: Brightness.dark, statusBarColor: Colors.grey.shade100, statusBarBrightness: Brightness.dark));
 
     return MaterialApp(

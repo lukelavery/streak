@@ -10,7 +10,6 @@ abstract class HabitService {
       {
         required ActivityModel activity,
         required String description,
-        required int order,
       });
   Future<void> removeHabit({required String habitId});
 }
@@ -40,7 +39,6 @@ class FirebaseHabitService implements HabitService {
       {
         required ActivityModel activity,
         required String description,
-        required int order,
       }) async {
     await habitsRef.add({
       'description': description,
@@ -52,7 +50,6 @@ class FirebaseHabitService implements HabitService {
       'iconFontPackage': activity.iconFontPackage,
       'name': activity.name,
       'timestamp': Timestamp.fromDate(DateTime.now()),
-      'order': order,
     });
   }
 
