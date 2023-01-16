@@ -47,59 +47,20 @@ class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   final Reader _read;
 }
 
-class GridViewModel {
-  const GridViewModel({required this.gridModels});
+final newGridControllerProvider = StateNotifierProvider.autoDispose<
+        NewGridController, AsyncValue<NewGridViewModel>>(
+    (ref) => NewGridController(ref.watch(streakControllerProvider).value,
+        ref.watch(habitControllerProvider).value));
 
-  final Map<String, GridModel> gridModels;
-
-  factory GridViewModel.fromStreaks(
-      Map<String, List<StreakModel>>? streaks, List<HabitModel> habits) {
-    DateTime now = DateTime.now();
-    DateTime nowYMD = DateTime(now.year, now.month, now.day);
-    int offset = 7 - now.weekday;
-
-    Map<String, GridModel> gridState = {};
-
-    for (var habit in habits) {
-      bool today = false;
-      List streakDateList = [];
-
-      if (streaks != null) {
-        if (streaks[habit.activity.id] != null) {
-          for (var streak in streaks[habit.activity.id]!) {
-            DateTime streakYMD = DateTime(streak.dateTime.year,
-                streak.dateTime.month, streak.dateTime.day);
-            streakDateList.add(streakYMD);
-          }
-        }
-      }
-      gridState[habit.activity.id] = GridModel(
-        gridTiles: List.generate(182, (index) {
-          if (index < offset) {
-            return GridTileModel(streak: false, future: true, dateTime: nowYMD.add(Duration(days: offset - index)));
-          }
-          if (streakDateList
-              .contains(nowYMD.subtract(Duration(days: index - offset)))) {
-            return GridTileModel(streak: true, future: false, dateTime: nowYMD.add(Duration(days: offset - index)));
-          }
-          if (streakDateList.contains(nowYMD)) {
-            today = true;
-          }
-
-          return GridTileModel(streak: false, future: false, dateTime: nowYMD.add(Duration(days: offset - index)));
-        }),
-        today: today,
-      );
+class NewGridController extends StateNotifier<AsyncValue<NewGridViewModel>> {
+  NewGridController(this.streaks, this.habits)
+      : super(const AsyncValue.loading()) {
+    if (habits != null) {
+      state = AsyncValue.data(NewGridViewModel.fromHabits(streaks, habits!));
     }
-    return GridViewModel(
-      gridModels: gridState,
-    );
   }
-}
 
-class GridModel {
-  const GridModel({required this.gridTiles, required this.today});
-
-  final List<GridTileModel> gridTiles;
-  final bool today;
+  Map<String, List<StreakModel>>? streaks;
+  List<HabitModel>? habits;
+  // final Reader _read;
 }
