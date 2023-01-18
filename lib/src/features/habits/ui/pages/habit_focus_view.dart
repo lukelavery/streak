@@ -22,7 +22,7 @@ class HabitFocusView extends StatelessWidget {
           ],
         ),
       ),
-      body: StreakGridFocus(tiles: tiles,),
+      body: NewStreakGridFocus(),
     );
   }
 }
