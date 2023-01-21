@@ -47,20 +47,43 @@ class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   final Reader _read;
 }
 
-final newGridControllerProvider = StateNotifierProvider.autoDispose<
-        NewGridController, AsyncValue<NewGridViewModel>>(
-    (ref) => NewGridController(ref.watch(streakControllerProvider).value,
+// final newGridControllerProvider = StateNotifierProvider.autoDispose<
+//         NewGridController, AsyncValue<NewGridViewModel>>(
+//     (ref) => NewGridController(ref.watch(streakControllerProvider).value,
+//         ref.watch(habitControllerProvider).value));
+
+// class NewGridController extends StateNotifier<AsyncValue<NewGridViewModel>> {
+//   NewGridController(this.streaks, this.habits)
+//       : super(const AsyncValue.loading()) {
+//     if (habits != null) {
+//       state = AsyncValue.data(NewGridViewModel.fromHabits(streaks, habits!));
+//     }
+//   }
+
+//   Map<String, List<StreakModel>>? streaks;
+//   List<HabitModel>? habits;
+//   // final Reader _read;
+// }
+
+final newerGridControllerProvider = StateNotifierProvider.autoDispose<
+        NewerGridController, AsyncValue<NewerGridModel>>(
+    (ref) => NewerGridController(ref.watch(streakControllerProvider).value,
         ref.watch(habitControllerProvider).value));
 
-class NewGridController extends StateNotifier<AsyncValue<NewGridViewModel>> {
-  NewGridController(this.streaks, this.habits)
+class NewerGridController extends StateNotifier<AsyncValue<NewerGridModel>> {
+  NewerGridController(this.streaks, this.habits)
       : super(const AsyncValue.loading()) {
     if (habits != null) {
-      state = AsyncValue.data(NewGridViewModel.fromHabits(streaks, habits!));
+      state = AsyncValue.data(
+          NewerGridModel.fromStreaks(streaks![habits!.first.activity.id]!));
+      List<GridMonthModel> monthList = state.value!.gridMonths;
+      // print('controller: ' + monthList.length.toString());
+      for (var month in monthList) {
+        print(month.dateTime.month);
+      }
     }
   }
 
   Map<String, List<StreakModel>>? streaks;
   List<HabitModel>? habits;
-  // final Reader _read;
 }

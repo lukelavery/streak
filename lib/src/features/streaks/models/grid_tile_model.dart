@@ -1,6 +1,22 @@
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
+List<String> weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+List<String> monthStringList = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 class GridTileModel {
   const GridTileModel(
       {required this.streak, required this.future, required this.dateTime});
@@ -8,6 +24,108 @@ class GridTileModel {
   final bool streak;
   final bool future;
   final DateTime dateTime;
+}
+
+class GridWeekModel {
+  const GridWeekModel({
+    required this.days,
+    required this.dateTime,
+  });
+
+  final List<GridTileModel> days;
+  final DateTime dateTime;
+}
+
+class GridMonthModel {
+  const GridMonthModel({required this.weeks, required this.dateTime});
+
+  final List<GridWeekModel> weeks;
+  final DateTime dateTime;
+}
+
+class NewerGridModel {
+  const NewerGridModel({required this.gridMonths});
+
+  final List<GridMonthModel> gridMonths;
+
+  factory NewerGridModel.fromStreaks(List<StreakModel> streaks) {
+    DateTime now = DateTime.now();
+    DateTime nowYMD = DateTime(now.year, now.month, now.day);
+    int offset = 7 - now.weekday;
+    bool today = false;
+    DateTime startDate = nowYMD.add(Duration(days: offset));
+
+    Set streakSet = Set.from(streaks.map(
+      (e) {
+        DateTime date = e.dateTime;
+        return DateTime(date.year, date.month, date.day);
+      },
+    ));
+
+    List<GridMonthModel> monthList = [];
+    List<GridWeekModel> weekList = [];
+
+    for (int week_index = 0; week_index < 26; week_index++) {
+
+      var week = GridWeekModel(
+        days: List.generate(
+          7,
+          (day_index) {
+            int index = 6 - day_index + week_index * 7;
+
+            if (index < offset) {
+              return GridTileModel(
+                streak: false,
+                future: true,
+                dateTime: nowYMD.add(
+                  Duration(days: offset - index),
+                ),
+              );
+            }
+            if (streakSet.contains(
+              nowYMD.subtract(
+                Duration(days: index - offset),
+              ),
+            )) {
+              return GridTileModel(
+                streak: true,
+                future: false,
+                dateTime: nowYMD.add(
+                  Duration(days: offset - index),
+                ),
+              );
+            }
+            if (streakSet.contains(nowYMD)) {
+              today = true;
+            }
+            return GridTileModel(
+                streak: false,
+                future: false,
+                dateTime: nowYMD.add(Duration(days: offset - index)));
+          },
+          growable: false,
+        ),
+        dateTime: nowYMD.subtract(Duration(days: week_index * 7 - 6 + offset)),
+      );
+      if (weekList.isEmpty) {
+        weekList.insert(0, week);
+      } else {
+        if (week.days.first.dateTime.month == weekList.first.days.first.dateTime.month) {
+          weekList.insert(0, week);
+        } else {
+          monthList.add(GridMonthModel(
+          weeks: weekList, dateTime: weekList.first.dateTime));
+          weekList = [];
+          weekList.insert(0, week);
+        }
+      }
+      if (week_index == 25 && weekList.isNotEmpty) {
+          monthList.add(
+            GridMonthModel(weeks: weekList, dateTime: weekList.first.days.first.dateTime));
+      }
+    }
+    return NewerGridModel(gridMonths: monthList);
+  }
 }
 
 class NewGridModel {
@@ -37,16 +155,25 @@ class NewGridModel {
 
           if (index < offset) {
             return GridTileModel(
-                streak: false,
-                future: true,
-                dateTime: nowYMD.add(Duration(days: offset - index)));
+              streak: false,
+              future: true,
+              dateTime: nowYMD.add(
+                Duration(days: offset - index),
+              ),
+            );
           }
-          if (streakSet
-              .contains(nowYMD.subtract(Duration(days: index - offset)))) {
+          if (streakSet.contains(
+            nowYMD.subtract(
+              Duration(days: index - offset),
+            ),
+          )) {
             return GridTileModel(
-                streak: true,
-                future: false,
-                dateTime: nowYMD.add(Duration(days: offset - index)));
+              streak: true,
+              future: false,
+              dateTime: nowYMD.add(
+                Duration(days: offset - index),
+              ),
+            );
           }
           if (streakSet.contains(nowYMD)) {
             today = true;
@@ -75,7 +202,8 @@ class NewGridViewModel {
     if (streaks != null) {
       for (var habit in habits) {
         if (streaks[habit.activity.id] != null) {
-          gridModels[habit.activity.id] = NewGridModel.fromStreaks(streaks[habit.activity.id]!);
+          gridModels[habit.activity.id] =
+              NewGridModel.fromStreaks(streaks[habit.activity.id]!);
         }
       }
     }

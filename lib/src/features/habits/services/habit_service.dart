@@ -27,7 +27,7 @@ class FirebaseHabitService implements HabitService {
 
   @override
   Stream<List<HabitModel>> getHabits() {
-    final userHabitsRef = habitsRef.where('uid', isEqualTo: uid).orderBy('order').orderBy('timestamp');
+    final userHabitsRef = habitsRef.where('uid', isEqualTo: uid).orderBy('timestamp');
     return userHabitsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             HabitModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
