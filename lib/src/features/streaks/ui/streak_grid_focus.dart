@@ -248,18 +248,13 @@ class GridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: padding),
-      child: GestureDetector(
-        onTap: () {
-          showDialog(
-            barrierColor: null,
-            context: context,
-            builder: (_) => SimpleDialog(
-              title: Text(gridTileModel.dateTime.toString()),
-            ),
-          );
-        },
+    return Tooltip(
+      verticalOffset: tileLength / 2 + 5,
+      preferBelow: false,
+      triggerMode: TooltipTriggerMode.tap,
+      message: gridTileModel.formattedDate,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: padding),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),

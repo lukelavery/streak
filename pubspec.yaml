@@ -44,6 +44,7 @@ dependencies:
   flutter_native_splash: ^2.2.9
   google_sign_in: ^5.4.2
   shared_preferences: ^2.0.16
+  intl: ^0.17.0
 
 flutter_native_splash:
   color: "#ffffff"

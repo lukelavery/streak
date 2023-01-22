@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/streaks/models/streak_model.dart';
 
@@ -24,6 +25,10 @@ class GridTileModel {
   final bool streak;
   final bool future;
   final DateTime dateTime;
+
+   String get formattedDate {
+    return DateFormat('dd MMM yyyy').format(dateTime);
+  }
 }
 
 class GridWeekModel {
