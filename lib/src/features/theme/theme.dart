@@ -58,6 +58,7 @@ class ThemeDataController extends StateNotifier<ThemeData?> {
   ThemeDataController(this.theme) : super(null) {
     if (theme.darkMode) {
       state = ThemeData(
+        fontFamily: 'Montserrat',
         useMaterial3: true,
         colorScheme: ColorScheme(
             brightness: Brightness.dark,
@@ -78,6 +79,7 @@ class ThemeDataController extends StateNotifier<ThemeData?> {
       );
     } else {
       state = ThemeData(
+        fontFamily: 'Montserrat',
         useMaterial3: true,
         colorScheme: ColorScheme(
             brightness: Brightness.light,

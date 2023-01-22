@@ -36,6 +36,7 @@ class HabitListView extends ConsumerWidget {
           itemCount: habits.length,
           itemBuilder: (context, index) {
             ActivityModel activity = habits[index].activity;
+            
             return HabitCard(
               key: ValueKey(habits[index]),
               color: Theme.of(context).colorScheme.primary,
@@ -53,29 +54,5 @@ class HabitListView extends ConsumerWidget {
       error: (e, st) => const Center(child: CircularProgressIndicator()),
       loading: (() => const Center(child: CircularProgressIndicator())),
     );
-
-    // return ListView.builder(
-    //   padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 75),
-    //   itemCount: habits.length,
-    //   itemBuilder: ((context, index) {
-    //     ActivityModel activity = habits[index].activity;
-    //     return gridState.when(
-    //       data: (grid) {
-    //         return HabitCard(
-    //           color: Theme.of(context).colorScheme.primary,
-    //           counter: counters[activity.id]!.count,
-    //           habit: habits[index],
-    //           tiles: grid.gridModels[activity.id]!.gridTiles,
-    //           today: grid.gridModels[activity.id]!.today,
-    //           edit: ref.watch(editHabitController),
-    //           handleButtonClick: gridStateNotifier.handleButtonClick,
-    //           removeHabit: habitStateNotifier.removeHabit,
-    //         );
-    //       },
-    //       error: (e, st) => const Center(child: CircularProgressIndicator()),
-    //       loading: (() => const Center(child: CircularProgressIndicator())),
-    //     );
-    //   }),
-    // );
   }
 }
