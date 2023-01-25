@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/theme/theme.dart';
+import 'package:streak/src/features/user/models/theme_model.dart';
 
 class UserSimplePreferenes {
   static late SharedPreferences _preferences;

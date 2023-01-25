@@ -25,7 +25,7 @@ class HabitFocusView extends StatelessWidget {
         //   StreakCounter(today: habit., counter: counter, color: color)
         // ],
       ),
-      body: NewStreakGridFocus(),
+      body: const NewStreakGridFocus(),
     );
   }
 }

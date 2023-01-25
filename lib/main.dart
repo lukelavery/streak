@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/app.dart';
 import 'package:streak/firebase_options.dart';
-import 'package:streak/src/core/user_preferences.dart';
+import 'package:streak/src/features/user/services/user_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

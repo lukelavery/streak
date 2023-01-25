@@ -76,11 +76,6 @@ class NewerGridController extends StateNotifier<AsyncValue<NewerGridModel>> {
     if (habits != null) {
       state = AsyncValue.data(
           NewerGridModel.fromStreaks(streaks![habits!.first.activity.id]!));
-      List<GridMonthModel> monthList = state.value!.gridMonths;
-      // print('controller: ' + monthList.length.toString());
-      for (var month in monthList) {
-        print(month.dateTime.month);
-      }
     }
   }
 

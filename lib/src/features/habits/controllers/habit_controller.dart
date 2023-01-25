@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/core/user_preferences.dart';
+import 'package:streak/src/features/user/services/user_preferences.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 

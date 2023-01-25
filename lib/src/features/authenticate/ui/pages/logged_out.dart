@@ -5,10 +5,7 @@ import 'package:streak/src/features/authenticate/controllers/login_controller.da
 import 'package:streak/src/features/authenticate/domain/login_state_model.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/buttons/google_sign_in_button.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/design/welcome_logo.dart';
-import 'package:streak/src/features/authenticate/ui/widgets/forms/email_form.dart';
-import 'package:streak/src/features/authenticate/ui/widgets/forms/password_form.dart';
-import 'package:streak/src/features/authenticate/ui/widgets/forms/register_form.dart';
-import 'package:streak/src/features/authenticate/ui/widgets/forms/welcome_form.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/wrappers/login_entry_form.dart';
 
 class LogInPage extends ConsumerWidget {
   const LogInPage({Key? key}) : super(key: key);
@@ -53,7 +50,7 @@ class LogInPage extends ConsumerWidget {
               const Spacer(),
               const WelcomeLogo(),
               const SizedBox(height: 50),
-              LoginEntryForm(
+              LoginEntryWrapper(
                 loginState: loginState,
                 email: loginStateNotifier.email,
                 cancelRegistration: loginStateNotifier.cancelRegistration,
@@ -66,38 +63,5 @@ class LogInPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-class LoginEntryForm extends StatelessWidget {
-  const LoginEntryForm({
-    Key? key,
-    required this.loginState,
-    required this.email,
-    required this.cancelRegistration,
-  }) : super(key: key);
-
-  final LoginStateModel loginState;
-  final String? email;
-  final void Function() cancelRegistration;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (loginState) {
-      case LoginStateModel.welcome:
-        return const WelcomeForm();
-      case LoginStateModel.emailAddress:
-        return const EmailForm();
-      case LoginStateModel.password:
-        return const PasswordForm();
-      case LoginStateModel.register:
-        return const RegisterForm();
-      default:
-        return Row(
-          children: const [
-            Text("Internal error, this shouldn't happen..."),
-          ],
-        );
-    }
   }
 }

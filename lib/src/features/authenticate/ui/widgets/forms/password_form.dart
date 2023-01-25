@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
+import 'package:streak/src/features/authenticate/ui/widgets/design/text.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/design/text_field.dart';
-
-import '../design/text.dart';
 
 class PasswordForm extends ConsumerWidget {
   const PasswordForm({Key? key}) : super(key: key);

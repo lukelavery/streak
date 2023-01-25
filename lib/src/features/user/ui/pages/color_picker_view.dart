@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/theme/controllers/select_color_controller.dart';
-import 'package:streak/src/features/theme/theme.dart';
+import 'package:streak/src/features/user/controllers/select_color_controller.dart';
+import 'package:streak/src/features/user/controllers/theme_controller.dart';
 
 class SelectColorView extends ConsumerWidget {
   const SelectColorView({Key? key}) : super(key: key);

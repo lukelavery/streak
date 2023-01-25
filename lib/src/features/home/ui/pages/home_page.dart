@@ -8,7 +8,7 @@ import 'package:streak/src/features/home/ui/widgets/buttons/app_bar_action_butto
 import 'package:streak/src/features/home/ui/widgets/design/logo_banner.dart';
 import 'package:streak/src/features/streaks/controllers/counter_controller.dart';
 import 'package:streak/src/features/streaks/controllers/streak_controller.dart';
-import 'package:streak/src/features/authenticate/ui/pages/user_profile_page.dart';
+import 'package:streak/src/features/user/ui/pages/user_profile_page.dart';
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);

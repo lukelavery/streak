@@ -58,7 +58,6 @@ class NewerGridModel {
     DateTime nowYMD = DateTime(now.year, now.month, now.day);
     int offset = 7 - now.weekday;
     bool today = false;
-    DateTime startDate = nowYMD.add(Duration(days: offset));
 
     Set streakSet = Set.from(streaks.map(
       (e) {

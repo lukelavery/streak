@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/theme/theme.dart';
+import 'package:streak/src/features/user/controllers/theme_controller.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 import 'package:streak/src/features/authenticate/domain/user_model.dart';
-import 'package:streak/src/features/theme/ui/color_picker_view.dart';
+import 'package:streak/src/features/user/ui/pages/color_picker_view.dart';
 
 class UserProfilePage extends ConsumerWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -92,10 +92,6 @@ class UserProfilePage extends ConsumerWidget {
                           padding: EdgeInsets.only(right: 10.0),
                           child: Icon(Icons.arrow_forward_ios),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(right: 15),
-                        //   child: Container(decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(10)), height: 30, width: 30),
-                        // ),
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(

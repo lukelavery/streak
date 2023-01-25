@@ -10,7 +10,6 @@ class Header1 extends StatelessWidget {
         style: TextStyle(
           fontSize: 24,
           color: Theme.of(context).colorScheme.onSurface,
-          fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
         ),
       );
@@ -26,7 +25,6 @@ class Header2 extends StatelessWidget {
         style: TextStyle(
           fontSize: 20,
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-          fontFamily: 'Montserrat',
           fontWeight: FontWeight.w300,
         ),
       );
@@ -42,7 +40,6 @@ class Header3 extends StatelessWidget {
         style: const TextStyle(
           fontSize: 20,
           color: Colors.black,
-          fontFamily: 'Montserrat',
           fontWeight: FontWeight.w400,
         ),
         textAlign: TextAlign.center,
