@@ -31,7 +31,13 @@ class FirebaseActivityService implements ActivityService {
   }
 
   @override
-  Stream<List<ActivityModel>> getActivities() {
+  Stream<List<ActivityModel>> getActivities({String? habitType}) {
+    if (habitType != null) {
+      return habitsRef.where('type', isEqualTo: habitType).snapshots().map((event) => event.docs
+        .map((doc) =>
+            ActivityModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
+        .toList());
+    }
     return habitsRef.snapshots().map((event) => event.docs
         .map((doc) =>
             ActivityModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))

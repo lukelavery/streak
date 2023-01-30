@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/activities/controllers/activity_type_controller.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/activities/services/activity_service.dart';
@@ -9,14 +8,14 @@ import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final createHabitControllerProvider =
     StateNotifierProvider.autoDispose<CreateHabitController, int?>((ref) =>
-        CreateHabitController(ref.read, ref.watch(activityTypeController)));
+        CreateHabitController(ref.read));
 
 class CreateHabitController extends StateNotifier<int?> {
-  CreateHabitController(this._read, this._type) : super(null);
+  CreateHabitController(this._read) : super(null);
 
   final Reader _read;
   String? _name;
-  final String _type;
+  final int _type = 0;
   IconData? _icon;
   String _description = '';
 
@@ -79,7 +78,8 @@ class CreateHabitController extends StateNotifier<int?> {
       iconCodePoint: _icon!.codePoint,
       iconFontFamily: _icon!.fontFamily!,
       iconFontPackage: _icon!.fontPackage,
-      type: _type,
+      // fix
+      type: '',
     );
     final id =
         await _read(activityServiceProvider).createActivity(activity: activity);
@@ -89,7 +89,9 @@ class CreateHabitController extends StateNotifier<int?> {
         iconCodePoint: _icon!.codePoint,
         iconFontFamily: _icon!.fontFamily!,
         iconFontPackage: _icon!.fontPackage,
-        type: _type);
+        // fix
+        type: '',
+      );
     return result;
   }
 

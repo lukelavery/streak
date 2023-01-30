@@ -1,0 +1,26 @@
+query { 
+  user(login: "lukelavery") {
+    email
+    createdAt
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            weekday
+            date 
+            contributionCount 
+            color
+          }
+        }
+        months  {
+          name
+            year
+            firstDay 
+          totalWeeks 
+          
+        }
+      }
+    }
+  }
+}

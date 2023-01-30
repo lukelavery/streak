@@ -69,13 +69,13 @@ class NewerGridModel {
     List<GridMonthModel> monthList = [];
     List<GridWeekModel> weekList = [];
 
-    for (int week_index = 0; week_index < 26; week_index++) {
+    for (int weekIndex = 0; weekIndex < 26; weekIndex++) {
 
       var week = GridWeekModel(
         days: List.generate(
           7,
-          (day_index) {
-            int index = 6 - day_index + week_index * 7;
+          (dayIndex) {
+            int index = 6 - dayIndex + weekIndex * 7;
 
             if (index < offset) {
               return GridTileModel(
@@ -109,7 +109,7 @@ class NewerGridModel {
           },
           growable: false,
         ),
-        dateTime: nowYMD.subtract(Duration(days: week_index * 7 - 6 + offset)),
+        dateTime: nowYMD.subtract(Duration(days: weekIndex * 7 - 6 + offset)),
       );
       if (weekList.isEmpty) {
         weekList.insert(0, week);
@@ -123,13 +123,15 @@ class NewerGridModel {
           weekList.insert(0, week);
         }
       }
-      if (week_index == 25 && weekList.isNotEmpty) {
+      if (weekIndex == 25 && weekList.isNotEmpty) {
           monthList.add(
             GridMonthModel(weeks: weekList, dateTime: weekList.first.days.first.dateTime));
       }
     }
     return NewerGridModel(gridMonths: monthList);
   }
+
+  
 }
 
 class NewGridModel {
@@ -153,9 +155,9 @@ class NewGridModel {
 
     List<List<GridTileModel>> gridTiles = List.generate(
       26,
-      (int week_index) {
-        return List.generate(7, (day_index) {
-          int index = 6 - day_index + week_index * 7;
+      (int weekIndex) {
+        return List.generate(7, (dayIndex) {
+          int index = 6 - dayIndex + weekIndex * 7;
 
           if (index < offset) {
             return GridTileModel(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:streak/src/features/activities/ui/pages/search_view.dart';
+import 'package:streak/src/features/graphql/ui/pages/graph_ql.dart';
 import 'package:streak/src/features/habits/controllers/edit_habit_controller.dart';
-import 'package:streak/src/features/activities/ui/pages/select_activity_page.dart';
 import 'package:streak/src/features/habits/ui/habit_list_view.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/home/ui/widgets/buttons/app_bar_action_button.dart';
@@ -39,7 +40,7 @@ class MyHomePage extends ConsumerWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SelectActivityPage()));
+                      builder: (context) => const SearchView()));
             },
           ),
           AppBarActionButton(
@@ -53,6 +54,14 @@ class MyHomePage extends ConsumerWidget {
               );
             },
           ),
+          AppBarActionButton(icon: Icons.developer_mode, onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GraphQLView(),
+                ),
+              );
+          })
         ],
         title: const LogoBanner(),
       ),

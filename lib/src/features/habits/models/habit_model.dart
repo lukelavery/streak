@@ -31,13 +31,4 @@ class HabitModel {
       timestamp: timestamp.toDate(),
     );
   }
-
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'color': color,
-  //     'description': description,
-  //     'habitId': habit,
-  //     'uid': uid,
-  //   };
-  // }
 }

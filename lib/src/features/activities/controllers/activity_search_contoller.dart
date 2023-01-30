@@ -1,22 +1,21 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/activities/controllers/activity_type_controller.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/activities/services/activity_service.dart';
 
 final activitySearchControllerProvider = StateNotifierProvider.autoDispose<
-        ActivitySearchController, AsyncValue<List<ActivityModel>>>(
-    (ref) => ActivitySearchController(ref.read, ref.watch(activityTypeController)));
+    ActivitySearchController,
+    AsyncValue<SearchModel>>((ref) => ActivitySearchController(ref.read));
 
-class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityModel>>> {
-  ActivitySearchController(this._read, this.habitType)
-      : super(const AsyncValue.loading()) {
+class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
+  ActivitySearchController(this._read) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription = _read(activityServiceProvider)
-        .getActivitiesByType(habitType: habitType)
+        .getActivities(habitType: filters[habitType].value)
         .listen((habits) {
       habitList = habits;
-      state = AsyncValue.data(habitList);
+      state = AsyncValue.data(
+          SearchModel(activities: habitList, category: habitType));
     });
   }
 
@@ -27,7 +26,7 @@ class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityMod
   }
 
   final Reader _read;
-  final String habitType;
+  int habitType = 0;
   late List<ActivityModel> habitList;
   StreamSubscription<List<ActivityModel>>? _habitStreamSubscription;
   String queryText = '';
@@ -35,10 +34,29 @@ class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityMod
   void query(String q) {
     queryText = q;
     if (state.value != null) {
-      state = AsyncValue.data(habitList
-          .where(
-              (element) => element.name.toLowerCase().contains(q.toLowerCase()))
-          .toList());
+      state = AsyncValue.data(SearchModel(
+        activities: habitList
+            .where((element) =>
+                element.name.toLowerCase().contains(q.toLowerCase()))
+            .toList(),
+        category: state.value!.category,
+      ));
+    }
+  }
+
+  void filter(int index) {
+    var filter = filters[index];
+    if (state.value != null) {
+      state = AsyncValue.data(SearchModel(
+        activities: filter.value == null
+            ? habitList
+            .where((element) => element.name.toLowerCase().contains(queryText.toLowerCase()))
+                .toList()
+            : habitList
+                .where((element) => element.type == filter.value && element.name.toLowerCase().contains(queryText.toLowerCase()))
+                .toList(),
+        category: index,
+      ));
     }
   }
 
@@ -46,3 +64,26 @@ class ActivitySearchController extends StateNotifier<AsyncValue<List<ActivityMod
     await _read(activityServiceProvider).deleteActivity(activityId: activityId);
   }
 }
+
+class FilterModel {
+  final String display;
+  final String? value;
+
+  const FilterModel({required this.display, this.value});
+}
+
+class SearchModel {
+  final List<ActivityModel> activities;
+  final int category;
+
+  const SearchModel({required this.activities, required this.category});
+}
+
+const List<FilterModel> filters = [
+  FilterModel(display: 'All', value: null),
+  FilterModel(display: 'Exercise', value: 'exercise'),
+  FilterModel(display: 'Build a skill', value: 'skill'),
+  FilterModel(display: 'Organise my life', value: 'organise'),
+  FilterModel(display: 'Me time', value: 'me'),
+  FilterModel(display: 'Family & firends', value: 'friends')
+];

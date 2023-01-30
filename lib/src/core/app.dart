@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/authenticate/ui/wrappers/auth_wrapper.dart';
 import 'package:streak/src/features/user/controllers/theme_controller.dart';
 import 'package:streak/src/features/user/controllers/theme_data_controller.dart';
-import 'package:streak/src/features/user/ui/const.dart';
+import 'package:streak/src/core/constants.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
