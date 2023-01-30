@@ -30,13 +30,15 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final Color surfaceColor = Theme.of(context).colorScheme.surface;
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Card(
+          surfaceTintColor: surfaceColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          elevation: 0,
+          elevation: 0.5,
           child: ListTile(
             onTap: () {
               Navigator.push(
@@ -96,6 +98,7 @@ class HabitCard extends StatelessWidget {
                 removeHabit(habitId: habit.id);
               },
               child: Material(
+                shadowColor: Colors.grey,
                 borderRadius: BorderRadius.circular(20),
                 elevation: 1,
                 child: CircleAvatar(
@@ -182,6 +185,7 @@ class StreakCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeStreak = counter > 0 ? true : false;
+    final Color onSurfaceColor = Theme.of(context).colorScheme.onSurface;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7.0),
       child: Container(
@@ -200,7 +204,7 @@ class StreakCounter extends StatelessWidget {
               FontAwesomeIcons.fireFlameCurved,
               size: 17,
               color: activeStreak
-                  ? Theme.of(context).colorScheme.onSurface
+                  ? onSurfaceColor
                   : Colors.grey,
             ),
             const SizedBox(
@@ -213,7 +217,7 @@ class StreakCounter extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
                 color: activeStreak
-                    ? Theme.of(context).colorScheme.onSurface
+                    ? onSurfaceColor
                     : Colors.grey,
               ),
             ),

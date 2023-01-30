@@ -357,9 +357,11 @@ class GridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gridMonths = gridModel.gridMonths;
+    final Color surfaceColor = Theme.of(context).colorScheme.surface;
 
     return Card(
       elevation: 0,
+      // surfaceTintColor: surfaceColor,
       child: SizedBox(
         height: 250,
         child: ListView.builder(
