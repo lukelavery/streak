@@ -25,10 +25,12 @@ class HabitListView extends ConsumerWidget {
     final gridStateNotifier = ref.read(gridControllerProvider.notifier);
     final habitStateNotifier = ref.read(habitControllerProvider.notifier);
     final gridState = ref.watch(gridControllerProvider);
+    final editHabitStateNotifier = ref.read(editHabitController.notifier);
 
     return gridState.when(
       data: (grids) {
         return ReorderableListView.builder(
+          onReorderEnd: (_) => editHabitStateNotifier.edit(),
           onReorder: (oldIndex, newIndex) {
             habitStateNotifier.reorderHabits(oldIndex, newIndex);
           },
@@ -36,7 +38,7 @@ class HabitListView extends ConsumerWidget {
           itemCount: habits.length,
           itemBuilder: (context, index) {
             ActivityModel activity = habits[index].activity;
-            
+
             return HabitCard(
               key: ValueKey(habits[index]),
               color: Theme.of(context).colorScheme.primary,
@@ -46,7 +48,7 @@ class HabitListView extends ConsumerWidget {
               today: grids.gridModels[activity.id]!.today,
               edit: ref.watch(editHabitController),
               handleButtonClick: gridStateNotifier.handleButtonClick,
-              removeHabit: habitStateNotifier.removeHabit,
+              removeHabit: editHabitStateNotifier.removeHabit,
             );
           },
         );

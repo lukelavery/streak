@@ -16,7 +16,7 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editHabitState = ref.read(editHabitController.notifier);
+    final editHabitStateNotifier = ref.read(editHabitController.notifier);
     final habitsState = ref.watch(habitControllerProvider);
     final streaksState = ref.watch(streakControllerProvider);
 
@@ -27,20 +27,14 @@ class MyHomePage extends ConsumerWidget {
           AppBarActionButton(
             icon: Icons.edit,
             onPressed: () {
-              editHabitState.update(
-                (state) {
-                  return !state;
-                },
-              );
+              editHabitStateNotifier.edit();
             },
           ),
           AppBarActionButton(
             icon: Icons.add_circle,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SearchView()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SearchView()));
             },
           ),
           AppBarActionButton(
@@ -54,14 +48,16 @@ class MyHomePage extends ConsumerWidget {
               );
             },
           ),
-          AppBarActionButton(icon: Icons.developer_mode, onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GraphQLView(),
-                ),
-              );
-          })
+          AppBarActionButton(
+              icon: Icons.developer_mode,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GraphQLView(),
+                  ),
+                );
+              })
         ],
         title: const LogoBanner(),
       ),

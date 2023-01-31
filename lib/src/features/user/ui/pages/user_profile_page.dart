@@ -22,8 +22,32 @@ class UserProfilePage extends ConsumerWidget {
         actions: [
           IconButton(
               onPressed: () {
-                authStateNotifier.signOut();
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        actionsPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
+                              )),
+                          TextButton(
+                              onPressed: () {
+                                authStateNotifier.signOut();
+                                Navigator.popUntil(context, (route) => route.isFirst);
+                              },
+                              child: Text('Sign out')),
+                        ],
+                        title: Text("Are you sure you want to sign out?", style: TextStyle(fontSize: 20),),
+                        // content: const Text("Hello World"),
+                      );
+                    });
               },
               icon: Icon(
                 Icons.exit_to_app,
@@ -78,25 +102,35 @@ class UserProfilePage extends ConsumerWidget {
                               value: themeState.darkMode,
                               onChanged: (value) {
                                 themeStateNotifier.toggleDarkMode();
-                              SystemChrome.setSystemUIOverlayStyle(ref.read(themeController).darkMode
-                                ? const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black, systemNavigationBarIconBrightness: Brightness.light)
-                                : SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey.shade100, systemNavigationBarIconBrightness: Brightness.dark, statusBarColor: Colors.grey.shade100, statusBarBrightness: Brightness.dark));
+                                SystemChrome.setSystemUIOverlayStyle(ref
+                                        .read(themeController)
+                                        .darkMode
+                                    ? const SystemUiOverlayStyle(
+                                        systemNavigationBarColor: Colors.black,
+                                        systemNavigationBarIconBrightness:
+                                            Brightness.light)
+                                    : SystemUiOverlayStyle(
+                                        systemNavigationBarColor:
+                                            Colors.grey.shade100,
+                                        systemNavigationBarIconBrightness:
+                                            Brightness.dark,
+                                        statusBarColor: Colors.grey.shade100,
+                                        statusBarBrightness: Brightness.dark));
                               }),
                         ),
                       ),
                     ),
                     SettingsListTile(
                         title: 'Colour',
-                        trailing: 
-                        const Padding(
+                        trailing: const Padding(
                           padding: EdgeInsets.only(right: 10.0),
                           child: Icon(Icons.arrow_forward_ios),
                         ),
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SelectColorView()))
-                      ),
+                                builder: (context) =>
+                                    const SelectColorView()))),
                   ],
                 ),
               )
