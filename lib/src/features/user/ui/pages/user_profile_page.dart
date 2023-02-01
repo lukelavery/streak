@@ -27,7 +27,7 @@ class UserProfilePage extends ConsumerWidget {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         actionsPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -42,9 +42,9 @@ class UserProfilePage extends ConsumerWidget {
                                 authStateNotifier.signOut();
                                 Navigator.popUntil(context, (route) => route.isFirst);
                               },
-                              child: Text('Sign out')),
+                              child: const Text('Sign out')),
                         ],
-                        title: Text("Are you sure you want to sign out?", style: TextStyle(fontSize: 20),),
+                        title: const Text("Are you sure you want to sign out?", style: TextStyle(fontSize: 20),),
                         // content: const Text("Hello World"),
                       );
                     });

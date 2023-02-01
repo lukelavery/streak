@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/activities/ui/pages/search_view.dart';
 import 'package:streak/src/features/graphql/ui/pages/graph_ql.dart';
-import 'package:streak/src/features/habits/controllers/edit_habit_controller.dart';
 import 'package:streak/src/features/habits/ui/habit_list_view.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/home/ui/widgets/buttons/app_bar_action_button.dart';
@@ -16,7 +15,6 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editHabitStateNotifier = ref.read(editHabitController.notifier);
     final habitsState = ref.watch(habitControllerProvider);
     final streaksState = ref.watch(streakControllerProvider);
 
@@ -24,12 +22,6 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         actions: [
-          AppBarActionButton(
-            icon: Icons.edit,
-            onPressed: () {
-              editHabitStateNotifier.edit();
-            },
-          ),
           AppBarActionButton(
             icon: Icons.add_circle,
             onPressed: () {

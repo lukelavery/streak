@@ -47,35 +47,17 @@ class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   final Reader _read;
 }
 
-// final newGridControllerProvider = StateNotifierProvider.autoDispose<
-//         NewGridController, AsyncValue<NewGridViewModel>>(
-//     (ref) => NewGridController(ref.watch(streakControllerProvider).value,
-//         ref.watch(habitControllerProvider).value));
-
-// class NewGridController extends StateNotifier<AsyncValue<NewGridViewModel>> {
-//   NewGridController(this.streaks, this.habits)
-//       : super(const AsyncValue.loading()) {
-//     if (habits != null) {
-//       state = AsyncValue.data(NewGridViewModel.fromHabits(streaks, habits!));
-//     }
-//   }
-
-//   Map<String, List<StreakModel>>? streaks;
-//   List<HabitModel>? habits;
-//   // final Reader _read;
-// }
-
 final newerGridControllerProvider = StateNotifierProvider.autoDispose<
-        NewerGridController, AsyncValue<NewerGridModel>>(
+        NewerGridController, AsyncValue<GridMap>>(
     (ref) => NewerGridController(ref.watch(streakControllerProvider).value,
         ref.watch(habitControllerProvider).value));
 
-class NewerGridController extends StateNotifier<AsyncValue<NewerGridModel>> {
+class NewerGridController extends StateNotifier<AsyncValue<GridMap>> {
   NewerGridController(this.streaks, this.habits)
       : super(const AsyncValue.loading()) {
     if (habits != null) {
       state = AsyncValue.data(
-          NewerGridModel.fromStreaks(streaks![habits!.first.activity.id]!));
+          GridMap.fromHabits(streaks, habits!));
     }
   }
 

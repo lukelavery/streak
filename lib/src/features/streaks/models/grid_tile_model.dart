@@ -26,7 +26,7 @@ class GridTileModel {
   final bool future;
   final DateTime dateTime;
 
-   String get formattedDate {
+  String get formattedDate {
     return DateFormat('dd MMM yyyy').format(dateTime);
   }
 }
@@ -70,7 +70,6 @@ class NewerGridModel {
     List<GridWeekModel> weekList = [];
 
     for (int weekIndex = 0; weekIndex < 26; weekIndex++) {
-
       var week = GridWeekModel(
         days: List.generate(
           7,
@@ -114,24 +113,44 @@ class NewerGridModel {
       if (weekList.isEmpty) {
         weekList.insert(0, week);
       } else {
-        if (week.days.first.dateTime.month == weekList.first.days.first.dateTime.month) {
+        if (week.days.first.dateTime.month ==
+            weekList.first.days.first.dateTime.month) {
           weekList.insert(0, week);
         } else {
           monthList.add(GridMonthModel(
-          weeks: weekList, dateTime: weekList.first.dateTime));
+              weeks: weekList, dateTime: weekList.first.dateTime));
           weekList = [];
           weekList.insert(0, week);
         }
       }
       if (weekIndex == 25 && weekList.isNotEmpty) {
-          monthList.add(
-            GridMonthModel(weeks: weekList, dateTime: weekList.first.days.first.dateTime));
+        monthList.add(GridMonthModel(
+            weeks: weekList, dateTime: weekList.first.days.first.dateTime));
       }
     }
     return NewerGridModel(gridMonths: monthList);
   }
+}
 
-  
+class GridMap {
+  const GridMap({required this.gridMap});
+
+  final Map<String, NewerGridModel> gridMap;
+
+  factory GridMap.fromHabits(
+      Map<String, List<StreakModel>>? streaks, List<HabitModel> habits) {
+    Map<String, NewerGridModel> gridModels = {};
+
+    if (streaks != null) {
+      for (var habit in habits) {
+        if (streaks[habit.activity.id] != null) {
+          gridModels[habit.activity.id] =
+              NewerGridModel.fromStreaks(streaks[habit.activity.id]!);
+        }
+      }
+    }
+    return GridMap(gridMap: gridModels);
+  }
 }
 
 class NewGridModel {

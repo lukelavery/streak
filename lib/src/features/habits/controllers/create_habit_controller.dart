@@ -15,7 +15,6 @@ class CreateHabitController extends StateNotifier<int?> {
 
   final Reader _read;
   String? _name;
-  final int _type = 0;
   IconData? _icon;
   String _description = '';
 
