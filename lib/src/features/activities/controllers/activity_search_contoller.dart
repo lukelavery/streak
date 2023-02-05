@@ -32,12 +32,16 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
   String queryText = '';
 
   void query(String q) {
-    queryText = q;
+    if (q.length < 16) {
+      queryText = q;
+    } else {
+      queryText = q.substring(0, 15) + '...';
+    }
     if (state.value != null) {
       state = AsyncValue.data(SearchModel(
         activities: habitList
             .where((element) =>
-                element.name.toLowerCase().contains(q.toLowerCase()))
+                element.name.toLowerCase().contains(queryText.toLowerCase()))
             .toList(),
         category: state.value!.category,
       ));
@@ -50,10 +54,16 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
       state = AsyncValue.data(SearchModel(
         activities: filter.value == null
             ? habitList
-            .where((element) => element.name.toLowerCase().contains(queryText.toLowerCase()))
+                .where((element) => element.name
+                    .toLowerCase()
+                    .contains(queryText.toLowerCase()))
                 .toList()
             : habitList
-                .where((element) => element.type == filter.value && element.name.toLowerCase().contains(queryText.toLowerCase()))
+                .where((element) =>
+                    element.type == filter.value &&
+                    element.name
+                        .toLowerCase()
+                        .contains(queryText.toLowerCase()))
                 .toList(),
         category: index,
       ));

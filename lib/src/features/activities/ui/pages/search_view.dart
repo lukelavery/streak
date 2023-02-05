@@ -23,9 +23,6 @@ class SearchView extends ConsumerWidget {
           onChanged: (value) {
             activitySearchStateNotifier.query(value);
           },
-          decoration: const InputDecoration(
-            hintText: 'Search'
-          ),
         ),
         bottom: PreferredSize(
             preferredSize: const Size.fromHeight(55.0),
