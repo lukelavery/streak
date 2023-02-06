@@ -53,21 +53,22 @@ class NewerGridModel {
 
   final List<GridMonthModel> gridMonths;
 
-  factory NewerGridModel.fromStreaks(List<StreakModel> streaks) {
+  factory NewerGridModel.fromStreaks(List<StreakModel>? streaks) {
     DateTime now = DateTime.now();
     DateTime nowYMD = DateTime(now.year, now.month, now.day);
     int offset = 7 - now.weekday;
     bool today = false;
-
-    Set streakSet = Set.from(streaks.map(
-      (e) {
-        DateTime date = e.dateTime;
-        return DateTime(date.year, date.month, date.day);
-      },
-    ));
-
     List<GridMonthModel> monthList = [];
     List<GridWeekModel> weekList = [];
+
+    Set streakSet = streaks != null
+        ? Set.from(streaks.map(
+            (e) {
+              DateTime date = e.dateTime;
+              return DateTime(date.year, date.month, date.day);
+            },
+          ))
+        : {};
 
     for (int weekIndex = 0; weekIndex < 26; weekIndex++) {
       var week = GridWeekModel(
@@ -143,10 +144,10 @@ class GridMap {
 
     if (streaks != null) {
       for (var habit in habits) {
-        if (streaks[habit.activity.id] != null) {
-          gridModels[habit.activity.id] =
-              NewerGridModel.fromStreaks(streaks[habit.activity.id]!);
-        }
+        // if (streaks[habit.activity.id] != null) {
+        gridModels[habit.activity.id] =
+            NewerGridModel.fromStreaks(streaks[habit.activity.id]);
+        // }
       }
     }
     return GridMap(gridMap: gridModels);
