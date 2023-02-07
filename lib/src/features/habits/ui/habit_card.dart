@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/activities/ui/pages/activity_icon.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
 import 'package:streak/src/features/habits/ui/pages/habit_focus_view.dart';
 import 'package:streak/src/features/streaks/ui/streak_grid.dart';
@@ -55,9 +56,9 @@ class HabitCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                       backgroundColor: color.withOpacity(0.6),
-                      child: HabitIcon(
+                      child: ActivityIcon(
                         color: Colors.white,
-                        habit: habit,
+                        activity: habit.activity,
                       )),
                   const SizedBox(
                     width: 10,
@@ -228,26 +229,4 @@ class StreakCounter extends StatelessWidget {
   }
 }
 
-class HabitIcon extends StatelessWidget {
-  const HabitIcon({super.key, required this.habit, required this.color});
 
-  final HabitModel habit;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return habit.activity.iconFontPackage == "font_awesome_flutter"
-        ? FaIcon(
-            IconData(habit.activity.iconCodePoint,
-                fontFamily: habit.activity.iconFontFamily,
-                fontPackage: habit.activity.iconFontPackage),
-            color: color,
-          )
-        : Icon(
-            IconData(habit.activity.iconCodePoint,
-                fontFamily: habit.activity.iconFontFamily,
-                fontPackage: habit.activity.iconFontPackage),
-            color: color,
-          );
-  }
-}

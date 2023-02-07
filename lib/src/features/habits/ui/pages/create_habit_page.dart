@@ -6,6 +6,8 @@ import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
+import 'package:streak/src/features/habits/ui/widgets/custom_text_card.dart';
+import 'package:streak/src/features/habits/ui/widgets/icon_card.dart';
 
 class CreateHabitPage extends ConsumerWidget {
   const CreateHabitPage({Key? key, this.activity, required this.name})
@@ -76,48 +78,15 @@ class CreateHabitPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             children: [
-              // activity == null
-              //     ? Text(name)
-              //     : Row(
-              //         children: [
-              //           Icon(
-              //             IconData(
-              //               activity!.iconCodePoint,
-              //               fontFamily: activity?.iconFontFamily,
-              //               fontPackage: activity?.iconFontPackage,
-              //             ),
-              //             size: 40,
-              //           ),
-              //           SizedBox(width: 8,),
-              //           Text(
-              //             name,
-              //             style: TextStyle(
-              //               fontSize: 20
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //       color: colorScheme.surface,
-              //       borderRadius: BorderRadius.circular(10)),
-              //   child: Padding(
-              //     padding:
-              //         const EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-              //     child: TextField(
-              //       maxLength: 30,
-              //       decoration: InputDecoration(border: InputBorder.none),
-              //       onChanged: (value) =>
-              //           createHabitStateNotifier.setDescription(value),
-              //     ),
-              //   ),
-              // ),
+              const SizedBox(height: 10),
               CustomTextCard(
                 maxLength: null,
                 onChanged: createHabitStateNotifier.setDescription,
                 title: 'Activity',
                 initialValue: name,
+                activity: activity,
               ),
+              const SizedBox(height: 30),
               CustomTextCard(
                 maxLength: 30,
                 onChanged: createHabitStateNotifier.setDescription,
@@ -147,111 +116,6 @@ class CreateHabitPage extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class IconCard extends StatelessWidget {
-  const IconCard({Key? key, required this.icon, required this.selected})
-      : super(key: key);
-
-  final Icon icon;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 0.5,
-      child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: selected
-                ? Border.all(color: Theme.of(context).colorScheme.primary)
-                : null,
-          ),
-          child: icon),
-    );
-  }
-}
-
-class CustomTextCard extends StatelessWidget {
-  const CustomTextCard({
-      super.key,
-      required this.maxLength,
-      required this.onChanged,
-      required this.title,
-      this.initialValue
-    });
-
-  final int? maxLength;
-  final void Function(String) onChanged;
-  final String title;
-  final String? initialValue;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title),
-        Container(
-          decoration: BoxDecoration(
-              color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 0),
-            child: initialValue == null ? CustomTextField(maxLength: maxLength, onChanged: onChanged) : CustomTextFormField(maxLength: maxLength, onChanged: onChanged, initialValue: initialValue!)
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required this.maxLength,
-    required this.onChanged,
-  });
-
-  final int? maxLength;
-  final void Function(String) onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      maxLength: maxLength,
-      decoration: const InputDecoration(border: InputBorder.none),
-      onChanged: (value) => onChanged(value),
-    );
-  }
-}
-
-class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    super.key,
-    required this.maxLength,
-    required this.onChanged,
-    required this.initialValue
-  });
-
-  final int? maxLength;
-  final void Function(String) onChanged;
-  final String initialValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      initialValue: initialValue,
-      enabled: false,
-      maxLength: maxLength,
-      decoration: const InputDecoration(border: InputBorder.none),
-      onChanged: (value) => onChanged(value),
     );
   }
 }

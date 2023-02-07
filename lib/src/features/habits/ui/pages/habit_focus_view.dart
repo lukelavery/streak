@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:streak/src/features/activities/ui/pages/activity_icon.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/habits/ui/habit_card.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 import 'package:streak/src/features/streaks/ui/streak_grid_focus.dart';
 
@@ -12,20 +12,28 @@ class HabitFocusView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            HabitIcon(habit: habit, color: Theme.of(context).colorScheme.onSurface,),
-            const SizedBox(width: 10,),
-            Text(habit.activity.name, style: const TextStyle(fontFamily: 'Montserrat'),),
+            ActivityIcon(
+              activity: habit.activity,
+              color: colorScheme.onSurface,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              habit.activity.name,
+              style: const TextStyle(fontFamily: 'Montserrat'),
+            ),
           ],
         ),
-        // actions: [
-        //   StreakCounter(today: habit., counter: counter, color: color)
-        // ],
       ),
-      body: NewStreakGridFocus(habit: habit,),
+      body: NewStreakGridFocus(
+        habit: habit,
+      ),
     );
   }
 }
