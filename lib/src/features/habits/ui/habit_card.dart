@@ -203,7 +203,7 @@ class StreakCounter extends StatelessWidget {
           children: [
             FaIcon(
               FontAwesomeIcons.fireFlameCurved,
-              size: 17,
+              size: 50,
               color: activeStreak
                   ? onSurfaceColor
                   : Colors.grey,

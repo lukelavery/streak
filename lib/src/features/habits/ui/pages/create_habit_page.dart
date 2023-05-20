@@ -77,6 +77,7 @@ class CreateHabitPage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
               CustomTextCard(
@@ -92,30 +93,77 @@ class CreateHabitPage extends ConsumerWidget {
                 onChanged: createHabitStateNotifier.setDescription,
                 title: 'Description',
               ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Text('Icon'),
               activity == null
-                  ? Expanded(
-                      child: GridView.builder(
-                        itemCount: icons.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5),
-                        itemBuilder: ((context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              createHabitStateNotifier.setIcon(index);
-                            },
-                            child: IconCard(
-                                icon: Icon(icons[index]),
-                                selected: index == createHabitState),
-                          );
-                        }),
-                      ),
-                    )
+                  ? IconSelector(
+                      setIcon: createHabitStateNotifier.setIcon,
+                      createHabitState: createHabitState)
                   : Container(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  SmallButton(),
+                ],
+              )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class IconSelector extends StatelessWidget {
+  const IconSelector(
+      {super.key, required this.setIcon, required this.createHabitState});
+
+  final void Function(int) setIcon;
+  final int? createHabitState;
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    // Expanded(
+    //   child: 
+      SizedBox(
+        height: 150,
+        child: GridView.builder(
+          itemCount: icons.length,
+          gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
+          itemBuilder: ((context, index) {
+            return GestureDetector(
+              onTap: () {
+                setIcon(index);
+              },
+              child: IconCard(
+                  icon: Icon(icons[index]), selected: index == createHabitState),
+            );
+          }),
+        ),
+      );
+    // );
+  }
+}
+
+class SmallButton extends StatelessWidget {
+  const SmallButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      width: 100,
+      height: 35,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: colorScheme.primary.withOpacity(0.7)
+      ),
+      child: Center(child: Text('More icons', style: TextStyle(color: colorScheme.onInverseSurface, fontWeight: FontWeight.w500),)),
     );
   }
 }
