@@ -6,13 +6,13 @@ import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final habitControllerProvider = StateNotifierProvider.autoDispose<
     HabitController,
-    AsyncValue<List<HabitModel>>>((ref) => HabitController(ref.read));
+    AsyncValue<List<HabitModel>>>((ref) => HabitController(ref));
 
 class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
-  HabitController(this._read) : super(const AsyncValue.loading()) {
+  HabitController(this._ref) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
     _habitStreamSubscription =
-        _read(habitServiceProvider).getHabits().listen((habits) {
+        _ref.read(habitServiceProvider).getHabits().listen((habits) {
       final map = UserSimplePreferenes.getHabitOrder();
       if (map != null) {
         int maxVal = map.values.length + 1;
@@ -32,13 +32,13 @@ class HabitController extends StateNotifier<AsyncValue<List<HabitModel>>> {
     super.dispose();
   }
 
-  final Reader _read;
+  final Ref _ref;
   AsyncValue<List<HabitModel>>? previousState;
 
   StreamSubscription<List<HabitModel>>? _habitStreamSubscription;
 
   Future<void> removeHabit({required String habitId}) async {
-    await _read(habitServiceProvider).removeHabit(habitId: habitId);
+    await _ref.read(habitServiceProvider).removeHabit(habitId: habitId);
   }
 
   void reorderHabits(int oldIndex, int newIndex) {

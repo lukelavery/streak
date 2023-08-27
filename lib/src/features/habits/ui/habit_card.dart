@@ -31,7 +31,7 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final Color surfaceColor = Theme.of(context).colorScheme.surface;
+    final Color surfaceColor = Theme.of(context).colorScheme.surface;
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
@@ -203,10 +203,8 @@ class StreakCounter extends StatelessWidget {
           children: [
             FaIcon(
               FontAwesomeIcons.fireFlameCurved,
-              size: 50,
-              color: activeStreak
-                  ? onSurfaceColor
-                  : Colors.grey,
+              size: 20,
+              color: activeStreak ? onSurfaceColor : Colors.grey,
             ),
             const SizedBox(
               width: 4,
@@ -217,9 +215,7 @@ class StreakCounter extends StatelessWidget {
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
-                color: activeStreak
-                    ? onSurfaceColor
-                    : Colors.grey,
+                color: activeStreak ? onSurfaceColor : Colors.grey,
               ),
             ),
           ],
@@ -228,5 +224,3 @@ class StreakCounter extends StatelessWidget {
     );
   }
 }
-
-

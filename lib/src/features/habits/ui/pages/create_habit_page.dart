@@ -102,9 +102,9 @@ class CreateHabitPage extends ConsumerWidget {
                       setIcon: createHabitStateNotifier.setIcon,
                       createHabitState: createHabitState)
                   : Container(),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
+                children: [
                   SmallButton(),
                 ],
               )
@@ -125,26 +125,26 @@ class IconSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    // Expanded(
-    //   child: 
-      SizedBox(
-        height: 150,
-        child: GridView.builder(
-          itemCount: icons.length,
-          gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
-          itemBuilder: ((context, index) {
-            return GestureDetector(
-              onTap: () {
-                setIcon(index);
-              },
-              child: IconCard(
-                  icon: Icon(icons[index]), selected: index == createHabitState),
-            );
-          }),
-        ),
-      );
+    return
+        // Expanded(
+        //   child:
+        SizedBox(
+      height: 150,
+      child: GridView.builder(
+        itemCount: icons.length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
+        itemBuilder: ((context, index) {
+          return GestureDetector(
+            onTap: () {
+              setIcon(index);
+            },
+            child: IconCard(
+                icon: Icon(icons[index]), selected: index == createHabitState),
+          );
+        }),
+      ),
+    );
     // );
   }
 }
@@ -160,10 +160,14 @@ class SmallButton extends StatelessWidget {
       width: 100,
       height: 35,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: colorScheme.primary.withOpacity(0.7)
-      ),
-      child: Center(child: Text('More icons', style: TextStyle(color: colorScheme.onInverseSurface, fontWeight: FontWeight.w500),)),
+          borderRadius: BorderRadius.circular(15),
+          color: colorScheme.primary.withOpacity(0.7)),
+      child: Center(
+          child: Text(
+        'More icons',
+        style: TextStyle(
+            color: colorScheme.onInverseSurface, fontWeight: FontWeight.w500),
+      )),
     );
   }
 }

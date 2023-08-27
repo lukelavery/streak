@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/activities/ui/pages/search_view.dart';
-import 'package:streak/src/features/graphql/ui/pages/graph_ql.dart';
 import 'package:streak/src/features/habits/ui/habit_list_view.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/home/ui/widgets/buttons/app_bar_action_button.dart';
@@ -40,16 +39,6 @@ class MyHomePage extends ConsumerWidget {
               );
             },
           ),
-          AppBarActionButton(
-              icon: Icons.developer_mode,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GraphQLView(),
-                  ),
-                );
-              })
         ],
         title: const LogoBanner(),
       ),
@@ -58,9 +47,9 @@ class MyHomePage extends ConsumerWidget {
           return streaksState.when(
             data: (data) {
               if (habits.isEmpty) {
-                return Center(
+                return const Center(
                   child: Column(
-                    children: const [
+                    children: [
                       Spacer(),
                       Text(
                         'Create a habit to get started.',

@@ -8,12 +8,12 @@ import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final editHabitController =
     StateNotifierProvider.autoDispose<EditHabitController, bool>(
-        (ref) => EditHabitController(ref.read));
+        (ref) => EditHabitController(ref));
 
 class EditHabitController extends StateNotifier<bool> {
-  EditHabitController(this._read) : super(false);
+  EditHabitController(this._ref) : super(false);
 
-  final Reader _read;
+  final Ref _ref;
 
   Timer? timer;
 
@@ -25,7 +25,7 @@ class EditHabitController extends StateNotifier<bool> {
 
   Future<void> removeHabit({required String habitId}) async {
     edit();
-    await _read(habitServiceProvider).removeHabit(habitId: habitId);
+    await _ref.read(habitServiceProvider).removeHabit(habitId: habitId);
   }
 
   @override

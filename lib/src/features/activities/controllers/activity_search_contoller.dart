@@ -5,12 +5,13 @@ import 'package:streak/src/features/activities/services/activity_service.dart';
 
 final activitySearchControllerProvider = StateNotifierProvider.autoDispose<
     ActivitySearchController,
-    AsyncValue<SearchModel>>((ref) => ActivitySearchController(ref.read));
+    AsyncValue<SearchModel>>((ref) => ActivitySearchController(ref));
 
 class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
-  ActivitySearchController(this._read) : super(const AsyncValue.loading()) {
+  ActivitySearchController(this._ref) : super(const AsyncValue.loading()) {
     _habitStreamSubscription?.cancel();
-    _habitStreamSubscription = _read(activityServiceProvider)
+    _habitStreamSubscription = _ref
+        .read(activityServiceProvider)
         .getActivities(habitType: filters[habitType].value)
         .listen((habits) {
       habitList = habits;
@@ -25,7 +26,7 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
     super.dispose();
   }
 
-  final Reader _read;
+  final Ref _ref;
   int habitType = 0;
   late List<ActivityModel> habitList;
   StreamSubscription<List<ActivityModel>>? _habitStreamSubscription;
@@ -35,7 +36,7 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
     if (q.length < 16) {
       queryText = q;
     } else {
-      queryText = q.substring(0, 15) + '...';
+      queryText = '${q.substring(0, 15)}...';
     }
     if (state.value != null) {
       state = AsyncValue.data(SearchModel(
@@ -71,7 +72,9 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
   }
 
   void deleteActivity({required String activityId}) async {
-    await _read(activityServiceProvider).deleteActivity(activityId: activityId);
+    await _ref
+        .read(activityServiceProvider)
+        .deleteActivity(activityId: activityId);
   }
 }
 

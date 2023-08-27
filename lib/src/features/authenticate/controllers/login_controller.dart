@@ -5,12 +5,12 @@ import 'package:streak/src/features/authenticate/services/auth_service.dart';
 
 final loginControllerProvider =
     StateNotifierProvider.autoDispose<LoginController, LoginStateModel>(
-        (ref) => LoginController(ref.read));
+        (ref) => LoginController(ref));
 
 class LoginController extends StateNotifier<LoginStateModel> {
-  LoginController(this._read) : super(LoginStateModel.welcome);
+  LoginController(this._ref) : super(LoginStateModel.welcome);
 
-  final Reader _read;
+  final Ref _ref;
   String _email = '';
   String _password = '';
   String _confirmationPassword = '';
@@ -36,7 +36,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
   Future<void> _verifyEmail() async {
     if (_email != '') {
       try {
-        var result = await _read(authRepositoryProvider).verifyEmail(email);
+        var result = await _ref.read(authRepositoryProvider).verifyEmail(email);
         if (result == true) {
           state = LoginStateModel.password;
         } else {
@@ -56,7 +56,8 @@ class LoginController extends StateNotifier<LoginStateModel> {
       if (_password == '') {
         throw const CustomException(message: 'Password is empty');
       }
-      await _read(authRepositoryProvider)
+      await _ref
+          .read(authRepositoryProvider)
           .signInWithEmailAndPassword(_email, _password);
     } on CustomException catch (e) {
       _handleException(e);
@@ -65,7 +66,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
 
   Future<void> signInWithGoogle() async {
     try {
-      await _read(authRepositoryProvider).signInWithGoogle();
+      await _ref.read(authRepositoryProvider).signInWithGoogle();
     } on CustomException catch (e) {
       _handleException(e);
     }
@@ -79,7 +80,9 @@ class LoginController extends StateNotifier<LoginStateModel> {
       if (_password != _confirmationPassword) {
         throw const CustomException(message: 'Passwords do not match.');
       }
-      await _read(authRepositoryProvider).registerAccount(_email, _password);
+      await _ref
+          .read(authRepositoryProvider)
+          .registerAccount(_email, _password);
     } on CustomException catch (e) {
       _handleException(e);
     }
@@ -103,7 +106,7 @@ class LoginController extends StateNotifier<LoginStateModel> {
   }
 
   void _handleException(CustomException e) {
-    _read(customExceptionProvider.notifier).state = null;
-    _read(customExceptionProvider.notifier).state = e;
+    _ref.read(customExceptionProvider.notifier).state = null;
+    _ref.read(customExceptionProvider.notifier).state = e;
   }
 }

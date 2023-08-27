@@ -7,13 +7,13 @@ import 'package:streak/src/features/activities/services/activity_service.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 
 final createHabitControllerProvider =
-    StateNotifierProvider.autoDispose<CreateHabitController, int?>((ref) =>
-        CreateHabitController(ref.read));
+    StateNotifierProvider.autoDispose<CreateHabitController, int?>(
+        (ref) => CreateHabitController(ref));
 
 class CreateHabitController extends StateNotifier<int?> {
-  CreateHabitController(this._read) : super(null);
+  CreateHabitController(this._ref) : super(null);
 
-  final Reader _read;
+  final Ref _ref;
   String? _name;
   IconData? _icon;
   String _description = '';
@@ -54,12 +54,14 @@ class CreateHabitController extends StateNotifier<int?> {
       throw const CustomException(message: 'Please enter a description.');
     } else {
       if (activity.id == '') {
-        await _read(activityServiceProvider).createActivity(activity: activity);
+        await _ref
+            .read(activityServiceProvider)
+            .createActivity(activity: activity);
       } else {
-        await _read(habitServiceProvider).addHabit(
-          activity: activity,
-          description: description,
-        );
+        await _ref.read(habitServiceProvider).addHabit(
+              activity: activity,
+              description: description,
+            );
       }
     }
   }
@@ -80,22 +82,23 @@ class CreateHabitController extends StateNotifier<int?> {
       // fix
       type: '',
     );
-    final id =
-        await _read(activityServiceProvider).createActivity(activity: activity);
+    final id = await _ref
+        .read(activityServiceProvider)
+        .createActivity(activity: activity);
     final ActivityModel result = ActivityModel(
-        id: id,
-        name: _name!,
-        iconCodePoint: _icon!.codePoint,
-        iconFontFamily: _icon!.fontFamily!,
-        iconFontPackage: _icon!.fontPackage,
-        // fix
-        type: '',
-      );
+      id: id,
+      name: _name!,
+      iconCodePoint: _icon!.codePoint,
+      iconFontFamily: _icon!.fontFamily!,
+      iconFontPackage: _icon!.fontPackage,
+      // fix
+      type: '',
+    );
     return result;
   }
 
   void _handleException(CustomException e) {
-    _read(customExceptionProvider.notifier).state = null;
-    _read(customExceptionProvider.notifier).state = e;
+    _ref.read(customExceptionProvider.notifier).state = null;
+    _ref.read(customExceptionProvider.notifier).state = e;
   }
 }

@@ -21,6 +21,12 @@ class StreakGrid extends StatelessWidget {
               padding: const EdgeInsets.all(1.5),
               child: Container(
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: tiles[(181 - (parentIndex * 7 + index))].future
+                        ? color.withOpacity(0.2)
+                        : color.withOpacity(0.1),
+                    width: 0.5,
+                  ),
                   borderRadius: BorderRadius.circular(2),
                   color: tiles[(181 - (parentIndex * 7 + index))].future
                       ? Theme.of(context).colorScheme.surface

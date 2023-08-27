@@ -6,10 +6,10 @@ class LogoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       alignment: Alignment.centerLeft,
       clipBehavior: Clip.none,
-      children: const [
+      children: [
         Positioned(
             left: 23,
             child: Text(

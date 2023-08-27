@@ -46,10 +46,11 @@ class SearchView extends ConsumerWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: activitySearchState.value?.category == index
-                                        ? primaryColor
-                                        : surfaceColor,
-                                      ),
+                                  color: activitySearchState.value?.category ==
+                                          index
+                                      ? primaryColor
+                                      : surfaceColor,
+                                ),
                                 color: surfaceColor,
                                 borderRadius: BorderRadius.circular(15)),
                             child: Center(

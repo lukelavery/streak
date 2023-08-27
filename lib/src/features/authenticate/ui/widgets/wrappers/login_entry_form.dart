@@ -29,8 +29,8 @@ class LoginEntryWrapper extends StatelessWidget {
       case LoginStateModel.register:
         return const RegisterForm();
       default:
-        return Row(
-          children: const [
+        return const Row(
+          children: [
             Text("Internal error, this shouldn't happen..."),
           ],
         );
