@@ -20,6 +20,11 @@ class SearchView extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         title: TextField(
+          decoration: const InputDecoration(
+            hintText: 'Search activities',
+            hintStyle: TextStyle(color: Colors.grey),
+            border: InputBorder.none,
+          ),
           onChanged: (value) {
             activitySearchStateNotifier.query(value);
           },

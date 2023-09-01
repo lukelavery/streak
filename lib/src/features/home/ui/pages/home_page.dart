@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:streak/src/features/activities/ui/pages/search_view.dart';
 import 'package:streak/src/features/habits/ui/habit_list_view.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
@@ -21,13 +22,6 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         actions: [
-          AppBarActionButton(
-            icon: Icons.add_circle,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SearchView()));
-            },
-          ),
           AppBarActionButton(
             icon: Icons.account_circle,
             onPressed: () {
@@ -51,13 +45,26 @@ class MyHomePage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Spacer(),
-                      Text(
-                        'Create a habit to get started.',
-                        style: TextStyle(fontFamily: 'Montserrat'),
+                      FaIcon(
+                        FontAwesomeIcons.bolt,
+                        size: 50,
+                        color: Colors.grey,
                       ),
-                      Spacer(
-                        flex: 2,
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Spacer(),
+                          Icon(Icons.add_circle, color: Colors.grey, size: 20),
+                          SizedBox(width: 5),
+                          Text(
+                            'Create a habit to get started.',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat', color: Colors.grey),
+                          ),
+                          Spacer()
+                        ],
                       ),
+                      Spacer()
                     ],
                   ),
                 );
@@ -76,6 +83,17 @@ class MyHomePage extends ConsumerWidget {
         error: (e, st) => const Center(
           child: CircularProgressIndicator(),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SearchView(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
