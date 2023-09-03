@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/activities/models/icons.dart';
+import 'package:streak/src/features/activities/ui/pages/select_icon_page.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 import 'package:streak/src/features/habits/controllers/habit_controller.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
@@ -96,18 +97,11 @@ class CreateHabitPage extends ConsumerWidget {
               const SizedBox(
                 height: 30,
               ),
-              const Text('Icon'),
               activity == null
                   ? IconSelector(
                       setIcon: createHabitStateNotifier.setIcon,
                       createHabitState: createHabitState)
                   : Container(),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SmallButton(),
-                ],
-              )
             ],
           ),
         ),
@@ -125,27 +119,35 @@ class IconSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Expanded(
-        //   child:
+    return Column(
+      children: [
+        const Text('Icon'),
         SizedBox(
-      height: 150,
-      child: GridView.builder(
-        itemCount: icons.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
-        itemBuilder: ((context, index) {
-          return GestureDetector(
-            onTap: () {
-              setIcon(index);
-            },
-            child: IconCard(
-                icon: Icon(icons[index]), selected: index == createHabitState),
-          );
-        }),
-      ),
+          height: 150,
+          child: GridView.builder(
+            itemCount: iconListSmall.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5),
+            itemBuilder: ((context, index) {
+              return GestureDetector(
+                onTap: () {
+                  setIcon(index);
+                },
+                child: IconCard(
+                    icon: Icon(iconListLarge[index]),
+                    selected: index == createHabitState),
+              );
+            }),
+          ),
+        ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SmallButton(),
+          ],
+        )
+      ],
     );
-    // );
   }
 }
 
@@ -156,18 +158,24 @@ class SmallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
-      width: 100,
-      height: 35,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: colorScheme.primary.withOpacity(0.7)),
-      child: Center(
-          child: Text(
-        'More icons',
-        style: TextStyle(
-            color: colorScheme.onInverseSurface, fontWeight: FontWeight.w500),
-      )),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SelectIconPage()));
+      },
+      child: Container(
+        width: 100,
+        height: 35,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: colorScheme.primary.withOpacity(0.7)),
+        child: Center(
+            child: Text(
+          'More icons',
+          style: TextStyle(
+              color: colorScheme.onInverseSurface, fontWeight: FontWeight.w500),
+        )),
+      ),
     );
   }
 }

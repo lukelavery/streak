@@ -48,7 +48,6 @@ class HabitCard extends StatelessWidget {
                     habit: habit,
                     edit: edit,
                     today: today,
-                    counter: counter,
                   ),
                 ),
               );

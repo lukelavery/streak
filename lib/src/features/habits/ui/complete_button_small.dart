@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
 
-class CompleteButton extends StatelessWidget {
-  const CompleteButton({
+class CompleteButtonSmall extends StatelessWidget {
+  const CompleteButtonSmall({
     Key? key,
     required this.today,
     required this.handleButtonClick,
@@ -23,29 +23,20 @@ class CompleteButton extends StatelessWidget {
         handleButtonClick(activityId: activity.id);
       }),
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             color: today ? color.withOpacity(0.8) : color.withOpacity(0.2),
             borderRadius: BorderRadius.circular(7)),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                'complete',
-                style: TextStyle(
-                  color: today ? Colors.white : Colors.grey,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                ),
+              padding: EdgeInsets.all(3.0),
+              child: Icon(
+                // Icons.check_circle_outline,
+                Icons.task_alt,
+                color: today ? Colors.white : Colors.grey,
+                size: 17,
               ),
-            ),
-            Icon(
-              // Icons.check_circle_outline,
-              Icons.task_alt,
-              color: today ? Colors.white : Colors.grey,
-              size: 17,
             ),
           ],
         ),

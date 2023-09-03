@@ -29,7 +29,7 @@ class CreateHabitController extends StateNotifier<int?> {
   }
 
   void setIcon(int index) {
-    _icon = icons[index];
+    _icon = iconListLarge[index];
     state = index;
   }
 
