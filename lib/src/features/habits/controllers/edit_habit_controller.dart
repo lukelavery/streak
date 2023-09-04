@@ -2,10 +2,6 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/services/habit_service.dart';
 
-// final editHabitController = StateProvider<bool>((ref) {
-//   return false;
-// });
-
 final editHabitController =
     StateNotifierProvider.autoDispose<EditHabitController, bool>(
         (ref) => EditHabitController(ref));

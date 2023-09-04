@@ -42,7 +42,6 @@ class CompleteButton extends StatelessWidget {
               ),
             ),
             Icon(
-              // Icons.check_circle_outline,
               Icons.task_alt,
               color: today ? Colors.white : Colors.grey,
               size: 17,

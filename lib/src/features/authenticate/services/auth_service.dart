@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/authenticate/domain/user_model.dart';
+import 'package:streak/src/features/authenticate/models/user_model.dart';
 
 abstract class AuthService {
   Stream<UserModel> get authStateChanges;
@@ -31,7 +31,11 @@ class FirebaseAuthService implements AuthService {
     return _auth.authStateChanges().map((user) {
       if (user != null) {
         return UserModel(
-            uid: user.uid, email: user.email, isVerified: user.emailVerified, name: user.displayName, photoUrl: user.photoURL);
+            uid: user.uid,
+            email: user.email,
+            isVerified: user.emailVerified,
+            name: user.displayName,
+            photoUrl: user.photoURL);
       } else {
         return const UserModel(uid: null, email: null, isVerified: false);
       }

@@ -4,9 +4,6 @@ import 'package:streak/src/features/activities/models/icons.dart';
 import 'package:streak/src/features/habits/controllers/create_habit_controller.dart';
 import 'package:streak/src/features/habits/ui/widgets/icon_card.dart';
 
-// page with list view of all material icons
-// used to select an icon for a custom habit
-
 class SelectIconPage extends ConsumerWidget {
   const SelectIconPage({super.key});
 

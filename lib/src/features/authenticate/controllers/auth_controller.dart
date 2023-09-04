@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streak/src/features/authenticate/domain/user_model.dart';
+import 'package:streak/src/features/authenticate/models/user_model.dart';
 import 'package:streak/src/features/authenticate/services/auth_service.dart';
 
 final authControllerProvider =

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
 import 'package:streak/src/features/authenticate/controllers/login_controller.dart';
-import 'package:streak/src/features/authenticate/domain/login_state_model.dart';
+import 'package:streak/src/features/authenticate/models/login_state_model.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/buttons/google_sign_in_button.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/design/welcome_logo.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/wrappers/login_entry_form.dart';
@@ -56,7 +56,9 @@ class LogInPage extends ConsumerWidget {
                 cancelRegistration: loginStateNotifier.cancelRegistration,
               ),
               const SizedBox(height: 50),
-              GoogleSignInButton(signInWithGoogle: loginStateNotifier.signInWithGoogle,),
+              GoogleSignInButton(
+                signInWithGoogle: loginStateNotifier.signInWithGoogle,
+              ),
               const Spacer(flex: 2),
             ],
           ),

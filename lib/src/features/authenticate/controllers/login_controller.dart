@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/core/custom_exception.dart';
-import 'package:streak/src/features/authenticate/domain/login_state_model.dart';
+import 'package:streak/src/features/authenticate/models/login_state_model.dart';
 import 'package:streak/src/features/authenticate/services/auth_service.dart';
 
 final loginControllerProvider =

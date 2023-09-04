@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streak/src/features/authenticate/domain/login_state_model.dart';
+import 'package:streak/src/features/authenticate/models/login_state_model.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/email_form.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/password_form.dart';
 import 'package:streak/src/features/authenticate/ui/widgets/forms/register_form.dart';

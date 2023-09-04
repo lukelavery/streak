@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/habits/models/habit_model.dart';
-import 'package:streak/src/features/streaks/controllers/grid_controller.dart';
+import 'package:streak/src/features/streaks/controllers/grid_map_controller.dart';
 import 'package:streak/src/features/streaks/models/grid_tile_model.dart';
 
 class NewStreakGridFocus extends ConsumerWidget {
@@ -11,10 +11,11 @@ class NewStreakGridFocus extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(newerGridControllerProvider);
+    final state = ref.watch(gridMapControllerProvider);
     return state.when(
       data: (data) {
-        return Center(child: GridView(gridModel: data.gridMap[habit.activity.id]!));
+        return Center(
+            child: GridView(gridModel: data.gridMap[habit.activity.id]!));
       },
       error: (error, stackTrace) => Text(error.toString()),
       loading: () => const Text('loading'),
@@ -146,7 +147,7 @@ class GridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gridMonths = gridModel.gridMonths;
-    
+
     return Card(
       elevation: 0,
       // surfaceTintColor: surfaceColor,

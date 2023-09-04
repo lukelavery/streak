@@ -48,20 +48,3 @@ class GridController extends StateNotifier<AsyncValue<GridViewModel>> {
   List<HabitModel>? habits;
   final Ref _ref;
 }
-
-final newerGridControllerProvider =
-    StateNotifierProvider.autoDispose<NewerGridController, AsyncValue<GridMap>>(
-        (ref) => NewerGridController(ref.watch(streakControllerProvider).value,
-            ref.watch(habitControllerProvider).value));
-
-class NewerGridController extends StateNotifier<AsyncValue<GridMap>> {
-  NewerGridController(this.streaks, this.habits)
-      : super(const AsyncValue.loading()) {
-    if (habits != null) {
-      state = AsyncValue.data(GridMap.fromHabits(streaks, habits!));
-    }
-  }
-
-  Map<String, List<StreakModel>>? streaks;
-  List<HabitModel>? habits;
-}

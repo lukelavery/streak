@@ -57,7 +57,6 @@ class NewerGridModel {
     DateTime now = DateTime.now();
     DateTime nowYMD = DateTime(now.year, now.month, now.day);
     int offset = 7 - now.weekday;
-    bool today = false;
     List<GridMonthModel> monthList = [];
     List<GridWeekModel> weekList = [];
 
@@ -98,9 +97,6 @@ class NewerGridModel {
                   Duration(days: offset - index),
                 ),
               );
-            }
-            if (streakSet.contains(nowYMD)) {
-              today = true;
             }
             return GridTileModel(
                 streak: false,

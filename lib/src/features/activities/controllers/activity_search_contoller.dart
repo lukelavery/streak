@@ -1,11 +1,22 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/activities/models/filter_model.dart';
+import 'package:streak/src/features/activities/models/search_model.dart';
 import 'package:streak/src/features/activities/services/activity_service.dart';
 
 final activitySearchControllerProvider = StateNotifierProvider.autoDispose<
     ActivitySearchController,
     AsyncValue<SearchModel>>((ref) => ActivitySearchController(ref));
+
+const List<FilterModel> filters = [
+  FilterModel(display: 'All', value: null),
+  FilterModel(display: 'Exercise', value: 'exercise'),
+  FilterModel(display: 'Build a skill', value: 'skill'),
+  FilterModel(display: 'Organise my life', value: 'organise'),
+  FilterModel(display: 'Me time', value: 'me'),
+  FilterModel(display: 'Family & firends', value: 'friends')
+];
 
 class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
   ActivitySearchController(this._ref) : super(const AsyncValue.loading()) {
@@ -77,26 +88,3 @@ class ActivitySearchController extends StateNotifier<AsyncValue<SearchModel>> {
         .deleteActivity(activityId: activityId);
   }
 }
-
-class FilterModel {
-  final String display;
-  final String? value;
-
-  const FilterModel({required this.display, this.value});
-}
-
-class SearchModel {
-  final List<ActivityModel> activities;
-  final int category;
-
-  const SearchModel({required this.activities, required this.category});
-}
-
-const List<FilterModel> filters = [
-  FilterModel(display: 'All', value: null),
-  FilterModel(display: 'Exercise', value: 'exercise'),
-  FilterModel(display: 'Build a skill', value: 'skill'),
-  FilterModel(display: 'Organise my life', value: 'organise'),
-  FilterModel(display: 'Me time', value: 'me'),
-  FilterModel(display: 'Family & firends', value: 'friends')
-];

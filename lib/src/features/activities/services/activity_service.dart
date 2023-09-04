@@ -4,7 +4,6 @@ import 'package:streak/src/features/activities/models/activity_model.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
 
 abstract class ActivityService {
-  // Stream<List<ActivityModel>> getActivitiesByType({required String habitType});
   Stream<List<ActivityModel>> getActivities();
   Future<void> createActivity({required ActivityModel activity});
   Future<void> deleteActivity({required String activityId});
@@ -21,22 +20,17 @@ class FirebaseActivityService implements ActivityService {
   CollectionReference habitsRef =
       FirebaseFirestore.instance.collection('habits_new');
 
-  // @override
-  // Stream<List<ActivityModel>> getActivitiesByType({required String habitType}) {
-  //   final ref = habitsRef.where('type', isEqualTo: habitType);
-  //   return ref.snapshots().map((event) => event.docs
-  //       .map((doc) =>
-  //           ActivityModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
-  //       .toList());
-  // }
-
   @override
   Stream<List<ActivityModel>> getActivities({String? habitType}) {
     if (habitType != null) {
-      return habitsRef.where('type', isEqualTo: habitType).orderBy('name').snapshots().map((event) => event.docs
-        .map((doc) =>
-            ActivityModel.fromMap(doc.id, doc.data() as Map<String, dynamic>?))
-        .toList());
+      return habitsRef
+          .where('type', isEqualTo: habitType)
+          .orderBy('name')
+          .snapshots()
+          .map((event) => event.docs
+              .map((doc) => ActivityModel.fromMap(
+                  doc.id, doc.data() as Map<String, dynamic>?))
+              .toList());
     }
     return habitsRef.orderBy('name').snapshots().map((event) => event.docs
         .map((doc) =>

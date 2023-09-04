@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/user/controllers/theme_controller.dart';
 import 'package:streak/src/features/authenticate/controllers/auth_controller.dart';
-import 'package:streak/src/features/authenticate/domain/user_model.dart';
+import 'package:streak/src/features/authenticate/models/user_model.dart';
 import 'package:streak/src/features/user/ui/pages/color_picker_view.dart';
 
 class UserProfilePage extends ConsumerWidget {
@@ -26,8 +26,8 @@ class UserProfilePage extends ConsumerWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        actionsPadding:
-                            const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        actionsPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -35,16 +35,24 @@ class UserProfilePage extends ConsumerWidget {
                               },
                               child: Text(
                                 'Cancel',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withOpacity(0.7)),
                               )),
                           TextButton(
                               onPressed: () {
                                 authStateNotifier.signOut();
-                                Navigator.popUntil(context, (route) => route.isFirst);
+                                Navigator.popUntil(
+                                    context, (route) => route.isFirst);
                               },
                               child: const Text('Sign out')),
                         ],
-                        title: const Text("Are you sure you want to sign out?", style: TextStyle(fontSize: 20),),
+                        title: const Text(
+                          "Are you sure you want to sign out?",
+                          style: TextStyle(fontSize: 20),
+                        ),
                         // content: const Text("Hello World"),
                       );
                     });

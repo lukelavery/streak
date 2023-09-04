@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streak/src/features/activities/controllers/activity_search_contoller.dart';
 import 'package:streak/src/features/activities/models/activity_model.dart';
+import 'package:streak/src/features/activities/models/filter_model.dart';
 import 'package:streak/src/features/habits/ui/pages/create_habit_page.dart';
 
 class SearchView extends ConsumerWidget {

@@ -65,10 +65,15 @@ class HabitCard extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    habit.activity.name,
-                    style: const TextStyle(
-                        fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
+                  Column(
+                    children: [
+                      Text(
+                        habit.activity.name,
+                        style: const TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                   const Spacer(),
                   StreakCounter(
@@ -85,13 +90,6 @@ class HabitCard extends StatelessWidget {
                 ],
               ),
             ),
-            // subtitle: Padding(
-            //   padding: const EdgeInsets.only(bottom: 5.0),
-            //   child: StreakGrid(
-            //     tiles: tiles,
-            //     color: color,
-            //   ),
-            // ),
           ),
         ),
       ),

@@ -30,9 +30,8 @@ class CompleteButtonSmall extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(3.0),
               child: Icon(
-                // Icons.check_circle_outline,
                 Icons.task_alt,
                 color: today ? Colors.white : Colors.grey,
                 size: 17,
